@@ -1,0 +1,32 @@
+{
+  "name": "d3Kit",
+  "version": "2.1.0",
+  "authors": [
+    "Krist Wongsuphasawat <kristw@twitter.com>",
+    "Robert Harris <rharris@twitter.com>"
+  ],
+  "description": "A set of tools to speed D3 develompment.",
+  "main": "dist/d3kit.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "d3",
+    "visualization",
+    "javascript"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.4.11"
+  },
+  "devDependencies": {
+    "chai": "~1.9.1"
+  }
+}
