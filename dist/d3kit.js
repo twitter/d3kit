@@ -731,7 +731,7 @@ modules_factory = function (Skeleton, helper) {
      * @param  Function      constructor    constructor function function(skeleton){...}
      * @return Function                     function(chartNode, options) that return your chart
      */
-    function createChartClass(defaultOptions, customEvents, constructor) {
+    function createChart(defaultOptions, customEvents, constructor) {
       var newChartClass = function (chartNode, options) {
         var skeleton = new Skeleton(chartNode, helper.deepExtend({}, defaultOptions, options), customEvents);
         if (constructor)
@@ -749,7 +749,7 @@ modules_factory = function (Skeleton, helper) {
       };
       return newChartClass;
     }
-    return { createChartClass: createChartClass };
+    return { createChart: createChart };
   }();
   // return module
   return module;  //---------------------------------------------------
