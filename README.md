@@ -5,7 +5,7 @@ d3Kit is a set of tools to speed [D3](https://github.com/mbostock/d3) related pr
 Here are a few examples of how to use d3Kit.
 - placeholder
 
-Want to learn more? [See the wiki]((https://github.com/twitter/d3kit/wiki)).
+Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki).
 
 ### Authors
 
