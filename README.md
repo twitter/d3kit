@@ -1,7 +1,7 @@
 ## d3Kit
 
 d3Kit is a set of tools to speed [D3](https://github.com/mbostock/d3) related project development. 
-It is a lightweight library to help you do the basic setup tasks you need when building vis with d3.
+It is a lightweight library (~8KB, minified) to help you do the basic setup tasks you need when building vis with d3.
 
 Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki).
 
