@@ -12,10 +12,12 @@ d3Kit features include, but are not limited to:
 Here are a few examples of d3Kit in action:
 * [Dot in a box](http://bl.ocks.org/treboresque/f839966214cf66627df6)
 * [Bubble Chart](http://bl.ocks.org/kristw/75999459f1a34e05d580)
-
-Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki) or [API Reference](https://github.com/twitter/d3kit/wiki/API-reference)
+* [Reusable Bubble Chart](http://bl.ocks.org/kristw/d8b15dd09a4c3510621c)
+* [Circle Chartlet](http://bl.ocks.org/treboresque/0f01e42fb3c9268d7105)
 
 For more examples, [check out our gallery](https://github.com/twitter/d3kit/wiki/Gallery).
+
+Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki) or [API Reference](https://github.com/twitter/d3kit/wiki/API-reference)
 
 ### Authors
 
