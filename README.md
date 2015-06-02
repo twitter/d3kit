@@ -4,7 +4,7 @@ d3Kit is a set of tools to speed [D3](https://github.com/mbostock/d3) related pr
 It is a lightweight library (~8KB, minified) to help you do the basic groundwork tasks you need when building visualization with d3.
 d3Kit features include, but are not limited to:
 
-* Setup ```<svg>``` according to d3's [margin convention](http://bl.ocks.org/mbostock/3019563) and support auto-resizing. We called it a "Skeleton" for your visualization.
+* Setup ```<svg>``` according to d3's [margin convention](http://bl.ocks.org/mbostock/3019563), make it support auto-resizing and add other convenient functions. We called it a "Skeleton" for your visualization.
 * Help you create reusable component.
 * Help you create reusable subcomponent (a.k.a. Chartlet).
 * and many more...
