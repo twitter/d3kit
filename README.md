@@ -9,7 +9,7 @@ Here are a few examples:
 
 Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki) or [API Reference](https://github.com/twitter/d3kit/wiki/API-reference)
 
-For more examples, [check out the gallery](https://github.com/twitter/d3kit/wiki/Gallery)
+For more examples, [check out our gallery](https://github.com/twitter/d3kit/wiki/Gallery).
 
 ### Authors
 
