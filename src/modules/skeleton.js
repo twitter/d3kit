@@ -9,12 +9,11 @@ function(d3, LayerOrganizer, helper){
 //---------------------------------------------------
 
 // Constants
-
 var DEFAULT_OPTIONS = {
   margin: {top: 30, right: 30, bottom: 30, left: 30},
   offset: [0.5, 0.5],
-  defaultChartWidth:  720,
-  defaultChartHeight: 500
+  initialWidth:  720,
+  initialHeight: 500
 };
 
 var BASE_EVENTS = ['data', 'options', 'resize'];
@@ -52,8 +51,8 @@ function Skeleton(chartNode, customOptions, customEvents){
 
   // set default dimension
   dimension([
-    _options.defaultChartWidth,
-    _options.defaultChartHeight
+    _options.initialWidth,
+    _options.initialHeight
   ]);
 
   function data(newValue, doNotDispatch){
