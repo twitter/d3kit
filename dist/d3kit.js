@@ -337,8 +337,8 @@ modules_skeleton = function (d3, LayerOrganizer, helper) {
       0.5,
       0.5
     ],
-    defaultChartWidth: 720,
-    defaultChartHeight: 500
+    initialWidth: 720,
+    initialHeight: 500
   };
   var BASE_EVENTS = [
     'data',
@@ -370,8 +370,8 @@ modules_skeleton = function (d3, LayerOrganizer, helper) {
     var _dispatch = d3.dispatch.apply(d3, _customEvents);
     // set default dimension
     dimension([
-      _options.defaultChartWidth,
-      _options.defaultChartHeight
+      _options.initialWidth,
+      _options.initialHeight
     ]);
     function data(newValue, doNotDispatch) {
       // getter
