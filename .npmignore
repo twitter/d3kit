@@ -1,0 +1,7 @@
+src
+node_modules
+bower_components
+karma.conf.js
+Gruntfile.js
+test
+tests

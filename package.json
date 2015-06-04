@@ -1,6 +1,6 @@
 {
   "name": "d3kit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A kit of tools to speed D3 related project development.",
   "main": "dist/d3kit.js",
   "bin": {
@@ -38,7 +38,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.twitter.biz/d3kit"
+    "url": "https://github.com/twitter/d3kit"
   },
   "keywords": [
     "d3",
