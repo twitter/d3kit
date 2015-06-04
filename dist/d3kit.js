@@ -809,7 +809,7 @@ modules_chartlet = function (d3, helper) {
       });
       return this;
     }
-    function getCustomEvents() {
+    function getCustomEventNames() {
       return customEvents;
     }
     // exports
@@ -822,7 +822,7 @@ modules_chartlet = function (d3, helper) {
       inheritPropertyFrom: inheritPropertyFrom,
       inheritPropertiesFrom: inheritPropertiesFrom,
       publishEventsTo: publishEventsTo,
-      getCustomEvents: getCustomEvents,
+      getCustomEventNames: getCustomEventNames,
       property: property,
       enter: _wrapAction(enter, 'enterDone'),
       update: _wrapAction(update, 'updateDone'),
