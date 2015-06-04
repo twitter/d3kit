@@ -28,7 +28,7 @@ bower install d3kit
 or
 
 ```
-bower install d3kit
+npm install d3kit
 ```
 
 ### Authors
