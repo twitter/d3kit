@@ -25,6 +25,12 @@ Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki) or [AP
 bower install d3kit
 ```
 
+or
+
+```
+bower install d3kit
+```
+
 ### Authors
 
 * Robert Harris [@trebor](https://twitter.com/trebor)
