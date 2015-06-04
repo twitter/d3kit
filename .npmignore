@@ -6,3 +6,4 @@ karma.conf.js
 Gruntfile.js
 test
 tests
+tmp
