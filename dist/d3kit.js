@@ -245,9 +245,6 @@ modules_helper = function () {
                   // END code for this module
                   //---------------------------------------------------
 }();
-/**
- * version 1.0.1
- */
 var modules_layerOrganizer;
 modules_layerOrganizer = function (helper) {
   //---------------------------------------------------
