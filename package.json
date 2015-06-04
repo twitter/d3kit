@@ -3,12 +3,6 @@
   "version": "1.0.2",
   "description": "A kit of tools to speed D3 related project development.",
   "main": "dist/d3kit.js",
-  "bin": {
-    "d3kit": "src/d3kit.js"
-  },
-  "directories": {
-    "example": "examples"
-  },
   "dependencies": {},
   "devDependencies": {
     "amdclean": "^2.2.7",
