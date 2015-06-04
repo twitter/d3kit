@@ -1,7 +1,7 @@
 /* jshint expr: true */
 
 define(['./factory'], function(factory){
-  describe.only('#createChart', function(){
+  describe('#createChart', function(){
     var Chart = factory.createChart({}, ['test'], function(skeleton){
       return skeleton;
     });

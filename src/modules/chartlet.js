@@ -55,7 +55,7 @@ function Chartlet(enter, update, exit, customEvents) {
     return this;
   }
 
-  function getCustomEvents() {
+  function getCustomEventNames() {
     return customEvents;
   }
 
@@ -67,7 +67,7 @@ function Chartlet(enter, update, exit, customEvents) {
     inheritPropertyFrom: inheritPropertyFrom,
     inheritPropertiesFrom: inheritPropertiesFrom,
     publishEventsTo: publishEventsTo,
-    getCustomEvents: getCustomEvents,
+    getCustomEventNames: getCustomEventNames,
 
     property: property,
     enter: _wrapAction(enter, 'enterDone'),

@@ -46,7 +46,7 @@ define([
         expect(function(){ chartlet.enter(); }).to.not.throw(Error);
         expect(function(){ chartlet.update(); }).to.not.throw(Error);
         expect(function(){ chartlet.exit(); }).to.not.throw(Error);
-        expect(chartlet.getCustomEvents()).to.deep.equal(customEvents);
+        expect(chartlet.getCustomEventNames()).to.deep.equal(customEvents);
       });
       it('arguments "update", "exit" and "customEvents" are optional', function(){
         var comp = new Chartlet(enter);
