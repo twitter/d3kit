@@ -10,8 +10,8 @@ Recommendations and requirements for how to best contribute to **d3Kit**. As alw
 
 ### Pull requests
 - Submit pull requests against the `dev` branch
-- Try not to pollute your pull request with unintended changes--keep them simple and small
+- Try not to pollute your pull request with unintended changes. Please keep them simple and small.
 
 ### License
-By contributing your code, you agree to license your contribution under the terms of the MIT license:
+By contributing your code, you agree to license your contributions under the terms of the MIT license:
 https://github.com/twitter/d3kit/blob/master/LICENSE
