@@ -67,14 +67,19 @@ module.exports = function(grunt) {
 
     // Karma test runner configuration options
     karma: {
-      dev: {
+      options: {
         configFile: 'karma.conf.js',
         browsers: [
-          // 'Firefox'
-          // 'Chrome',
           'PhantomJS'
-        ],
+        ]
+      },
+      dev: {
+        singleRun: false,
         autoWatch: true
+      },
+      ci: {
+        singleRun: true,
+        autoWatch: false
       }
     },
 
@@ -152,5 +157,6 @@ module.exports = function(grunt) {
     ['clean:dep']);
   grunt.registerTask('default',  'Watch for changes and trigger builds.',
     ['watch']);
-  grunt.registerTask('test', ['karma']);
+  grunt.registerTask('test', ['karma:dev']);
+  grunt.registerTask('test-ci', ['karma:ci']);
 };

@@ -27,7 +27,7 @@
     "time-grunt": "~1.0.0"
   },
   "scripts": {
-    "test": "grunt test",
+    "test": "grunt test-ci",
     "prepublish": "npm run clean:dist && grunt build"
   },
   "repository": {
