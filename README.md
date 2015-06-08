@@ -2,10 +2,7 @@
 
 d3Kit is a set of tools to speed [D3](https://github.com/mbostock/d3) related project development.
 
-![Image of Foo](https://raw.githubusercontent.com/twitter/d3kit/dev/resources/skeleton.png)
-![Image of Foo](resources/skeleton.png)
-
-<a href="url"><img src="resources/skeleton.png" align="center" height="48" width="48" ></a>
+<a href="http://bl.ocks.org/kristw/7eef5cb21f3dfc1c0a4c"><img src="resources/skeleton.png" align="center" height="600"></a>
 
 It is a lightweight library (~8KB, minified) to help you do the basic groundwork tasks you need when building visualization with d3.
 d3Kit features include, but are not limited to:
