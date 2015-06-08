@@ -1,7 +1,7 @@
-Recommendations and requirements for how to best contribute to **d3Kit**. As always, thanks for contributing--we hope these guidelines make it easier and shed some light on our approach and processes.
+Recommendations and requirements for how to best contribute to **d3Kit**. As always, thanks for contributing, and we hope these guidelines make it easier and shed some light on our approach and processes.
 
 ### Key branches
-- `master` is the latest, deployed version
+- `master` is the latest released version
 - `dev` is where development happens and all pull requests should be submitted
 
 ### Versioning
