@@ -1,8 +1,10 @@
 language: node_js
 node_js:
-   - "0.10"
-   - "0.8"
-before_install: npm install -g grunt-cli
+  - "0.10"
+  - "0.8"
+before_install:
+  - npm install -g grunt-cli
+  - bower install
 install: npm install
 before_script:
   - export DISPLAY=:99.0
