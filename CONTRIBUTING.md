@@ -6,7 +6,7 @@ Recommendations and requirements for how to best contribute to **d3Kit**. As alw
 
 ### Versioning
 
-**d3Kit** comforms to the (Semantic Versioning)[http://semver.org/] standard.
+**d3Kit** comforms to the [Semantic Versioning](http://semver.org/) standard.
 
 ### Pull requests
 - Submit pull requests against the `dev` branch
