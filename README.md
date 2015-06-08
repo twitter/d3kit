@@ -3,7 +3,7 @@
 d3Kit is a set of tools to speed [D3](https://github.com/mbostock/d3) related project development.
 
 <div style="width:100%;">
-  <a href="http://bl.ocks.org/kristw/7eef5cb21f3dfc1c0a4c" style="width:100%;">
+  <a href="http://bl.ocks.org/kristw/7eef5cb21f3dfc1c0a4c" width="100%" style="width:100%;">
     <img src="resources/skeleton.png" align="middle" height="400">
   </a>
 </div>
