@@ -1,5 +1,7 @@
 ## d3Kit
 
+[![Build Status](https://secure.travis-ci.org/twitter/d3kit.png?branch=master)](http://travis-ci.org/twitter/d3kit)
+
 **d3Kit** is a set of tools to speed [D3](https://github.com/mbostock/d3) related project development.
 
 <p align="center">
