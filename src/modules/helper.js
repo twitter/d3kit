@@ -214,7 +214,7 @@ var module = (function(){
 
   function isFunction(functionToCheck){
     var getType = {};
-    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    return !!functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
   }
 
   //---------------------------------------------------
@@ -254,6 +254,7 @@ var module = (function(){
   return {
     $: $,
     $$: $$,
+
     dasherize: dasherize,
     debounce: debounce,
 
