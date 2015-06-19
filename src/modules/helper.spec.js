@@ -167,6 +167,7 @@ define([
         expect(helper.isNumber(-1)).to.be.true;
       });
       it('should return false for string even if it is a number', function(){
+        expect(helper.isNumber('')).to.be.false;
         expect(helper.isNumber('1')).to.be.false;
         expect(helper.isNumber('0')).to.be.false;
         expect(helper.isNumber('what')).to.be.false;
