@@ -1,6 +1,6 @@
 {
-  "name": "d3kit",
-  "version": "1.0.5",
+  "name": "d3Kit",
+  "version": "1.0.6",
   "description": "A kit of tools to speed D3 related project development.",
   "main": "dist/d3kit.js",
   "dependencies": {},

@@ -73,10 +73,11 @@ modules_helper = function () {
           continue;
         for (var key in obj) {
           if (obj.hasOwnProperty(key)) {
-            if (isObject(obj[key]) && !Array.isArray(obj[key])) {
-              out[key] = deepExtend(out[key], obj[key]);
+            var value = obj[key];
+            if (isObject(value) && !Array.isArray(value) && !isFunction(value)) {
+              out[key] = deepExtend(out[key], value);
             } else
-              out[key] = obj[key];
+              out[key] = value;
           }
         }
       }
@@ -192,6 +193,10 @@ modules_helper = function () {
     function isNumber(value) {
       return typeof value == 'number' || value && typeof value == 'object' && toString.call(value) == numberClass || false;
     }
+    function isFunction(functionToCheck) {
+      var getType = {};
+      return !!functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    }
     //---------------------------------------------------
     // From underscore.string
     //---------------------------------------------------
@@ -230,6 +235,7 @@ modules_helper = function () {
       deepExtend: deepExtend,
       extend: extend,
       isElement: isElement,
+      isFunction: isFunction,
       isNaN: isNaN,
       isNumber: isNumber,
       isObject: isObject,
