@@ -4,7 +4,7 @@ define([
   './helper'
 ], function(helper){
 
-  describe.only('helper', function(){
+  describe('helper', function(){
 
     describe('#dasherize(str)', function(){
       it('should convert input to dash-case', function(){
