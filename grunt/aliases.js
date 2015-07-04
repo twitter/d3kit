@@ -23,6 +23,10 @@ module.exports = {
     tasks: ['watch']
   },
 
+  // Tasks related to test
+  'test': ['karma:dev'],
+  'test-ci': ['karma:ci'],
+
   // Tasks related to publishing
   'publish:patch': {
     description: 'Bundle code, bump version by 0.0.1 and publish to npm and bower',

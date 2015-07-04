@@ -31,5 +31,5 @@ module.exports = function (grunt) {
     }
   });
 
-  // For task alias, see grunt/aliases.js
+  // For task aliases, see grunt/aliases.js
 };
