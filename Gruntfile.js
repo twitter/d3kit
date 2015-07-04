@@ -140,23 +140,82 @@ module.exports = function(grunt) {
           spawn: false,
         },
       }
+    },
+
+    bump: {
+      options: {
+        files: ['package.json', 'bower.json'],
+        updateConfigs: [],
+        commit: true,
+        commitMessage: 'Release v%VERSION%',
+        commitFiles: ['package.json', 'bower.json'],
+        createTag: true,
+        tagName: 'v%VERSION%',
+        tagMessage: 'Version %VERSION%',
+        push: true,
+        pushTo: 'origin',
+        gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
+        globalReplace: false,
+        prereleaseName: false,
+        regExp: false
+      }
+    },
+
+    shell: {
+      options: {
+        stderr: false
+      },
+      publish: {
+        command: 'npm publish'
+      }
     }
+
   });
 
-  // tasks
+  // Tasks
 
   grunt.registerTask('build',    'Build D3Kit distribution package.',[
+    'clean:dist',
     'requirejs:dist',
     'concat:dist',
     'uglify:dist',
     'clean:tmp'
   ]);
+
   grunt.registerTask('clear',    'Remove all distribution files.',
     ['clean:dist']);
   grunt.registerTask('clearDev', 'Remove all dependancies and build tools.',
     ['clean:dep']);
+
   grunt.registerTask('default',  'Watch for changes and trigger builds.',
     ['watch']);
+
+  // Tasks related to test
+
   grunt.registerTask('test', ['karma:dev']);
   grunt.registerTask('test-ci', ['karma:ci']);
+
+  // Tasks related to publishing
+
+  grunt.registerTask('publish:patch', 'Bundle code, bump and publish to npm', [
+    'build',
+    'bump:patch',
+    'shell:publish'
+  ]);
+
+  grunt.registerTask('publish:minor', 'Bundle code, bump and publish to npm', [
+    'build',
+    'bump:minor',
+    'shell:publish'
+  ]);
+
+  grunt.registerTask('publish:major', 'Bundle code, bump and publish to npm', [
+    'build',
+    'bump:major',
+    'shell:publish'
+  ]);
+
+  grunt.registerTask('publish', 'Bundle code, bump and publish to npm', [
+    'publish:patch'
+  ]);
 };

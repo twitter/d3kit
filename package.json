@@ -7,6 +7,7 @@
   "devDependencies": {
     "amdclean": "^2.2.7",
     "grunt": "~0.4.5",
+    "grunt-bump": "^0.3.1",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-contrib-concat": "~0.5.0",
     "grunt-contrib-requirejs": "~0.4.4",
@@ -14,6 +15,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-exec": "^0.4.6",
     "grunt-karma": "~0.8.3",
+    "grunt-shell": "^1.1.2",
     "karma": "~0.12.21",
     "karma-chrome-launcher": "~0.1.4",
     "karma-coverage": "~0.2.6",
@@ -27,8 +29,7 @@
     "time-grunt": "~1.0.0"
   },
   "scripts": {
-    "test": "grunt test-ci",
-    "prepublish": "npm run clean:dist && grunt build"
+    "test": "grunt test-ci"
   },
   "repository": {
     "type": "git",
@@ -40,5 +41,5 @@
     "javascript"
   ],
   "author": "@kristw, @trebor",
-  "license": "Apache 2"
+  "license": "MIT"
 }
