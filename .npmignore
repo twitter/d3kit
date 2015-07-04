@@ -2,6 +2,7 @@ src
 coverage
 node_modules
 bower_components
+grunt/*.js
 karma.conf.js
 Gruntfile.js
 test
