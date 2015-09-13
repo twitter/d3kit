@@ -19,10 +19,12 @@
     "**/.*",
     "node_modules",
     "bower_components",
+    "resources",
     "src",
     "grunt/.*",
     "karma.conf.js",
     "Gruntfile.js",
+    "package.json",
     "test",
     "tests"
   ],
