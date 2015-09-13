@@ -21,7 +21,7 @@
     "bower_components",
     "resources",
     "src",
-    "grunt/.*",
+    "grunt",
     "karma.conf.js",
     "Gruntfile.js",
     "package.json",
