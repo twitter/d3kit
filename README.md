@@ -31,13 +31,13 @@ Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki) or [AP
 ### Can't wait to try it?
 
 ```
-bower install d3kit
+bower install d3kit --save
 ```
 
 or
 
 ```
-npm install d3kit
+npm install d3kit --save
 ```
 
 ### Authors
