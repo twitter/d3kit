@@ -2,7 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/twitter/d3kit.png?branch=master)](http://travis-ci.org/twitter/d3kit)
 
-**d3Kit** is a set of tools to speed [D3](https://github.com/mbostock/d3) related project development.
+**d3Kit** is a set of thin scaffolds and utilities for speeding visualization development with [D3](https://github.com/mbostock/d3).
+It is a lightweight library (~8KB, minified) to relieve you from the same groundwork tasks you found yourself doing again and again. Writing code in d3Kit way also help you create reusable and responsive components easily.
 
 <p align="center">
   <a href="http://bl.ocks.org/kristw/7eef5cb21f3dfc1c0a4c" style="width:100%;">
@@ -10,12 +11,12 @@
   </a>
 </p>
 
-It is a lightweight library (~8KB, minified) to help you do the basic groundwork tasks you need when building visualizations with d3.
 d3Kit features include, but are not limited to:
 
 * Setup ```<svg>``` according to d3's [margin convention](http://bl.ocks.org/mbostock/3019563), make it support auto-resizing and add other convenient functions. We called it a "Skeleton" for your visualization.
 * Help you create reusable component.
 * Help you create reusable subcomponent (a.k.a. Chartlet).
+* Help you manage layers within a visualization.
 * and many more...
 
 Here are a few examples of d3Kit in action:
