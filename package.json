@@ -3,7 +3,9 @@
   "version": "1.0.9",
   "description": "A kit of tools to speed D3 related project development.",
   "main": "dist/d3kit.js",
-  "dependencies": {},
+  "dependencies": {
+    "d3": "~3.5.16"
+  },
   "devDependencies": {
     "amdclean": "^2.2.7",
     "grunt": "~0.4.5",
