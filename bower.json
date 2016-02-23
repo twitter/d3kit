@@ -6,7 +6,7 @@
     "Robert Harris <rharris@twitter.com>"
   ],
   "description": "A set of tools to speed D3 develompment.",
-  "main": "dist/d3kit.js",
+  "main": "dist/d3kit.min.js",
   "moduleType": [
     "amd"
   ],
