@@ -25,32 +25,5 @@ module.exports = {
 
   // Tasks related to test
   'test': ['karma:dev'],
-  'test-ci': ['karma:ci'],
-
-  // Tasks related to publishing
-  'publish:patch': {
-    description: 'Bundle code, bump version by 0.0.1 and publish to npm and bower',
-    tasks: [
-      'build',
-      'bump:patch',
-      'shell:publish'
-    ]
-  },
-  'publish:minor': {
-    description: 'Bundle code, bump version by 0.1 and publish to npm and bower',
-    tasks: [
-      'build',
-      'bump:minor',
-      'shell:publish'
-    ]
-  },
-  'publish:major': {
-    description: 'Bundle code, bump version by 1 and publish to npm and bower',
-    tasks: [
-      'build',
-      'bump:major',
-      'shell:publish'
-    ]
-  },
-  'publish': ['publish:patch']
+  'test-ci': ['karma:ci']
 };
