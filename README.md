@@ -1,6 +1,6 @@
 ## d3Kit
 
-[![Build Status](https://secure.travis-ci.org/twitter/d3kit.png?branch=master)](http://travis-ci.org/twitter/d3kit)
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
 **d3Kit** is a set of thin scaffolds and utilities for speeding visualization development with [D3](https://github.com/mbostock/d3).
 It is a lightweight library (~8KB, minified) to relieve you from the same groundwork tasks you found yourself doing again and again. Writing code in d3Kit way also help you create reusable and responsive components easily.
@@ -45,3 +45,11 @@ npm install d3kit --save
 
 * Robert Harris [@trebor](https://twitter.com/trebor)
 * Krist Wongsuphasawat [@kristw](https://twitter.com/kristw)
+
+
+[npm-image]: https://badge.fury.io/js/d3kit.svg
+[npm-url]: https://npmjs.org/package/d3kit
+[travis-image]: https://travis-ci.org/twitter/d3kit.svg?branch=master
+[travis-url]: https://travis-ci.org/twitter/d3kit
+[daviddm-image]: https://david-dm.org/twitter/d3kit.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/twitter/d3kit
