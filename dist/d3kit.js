@@ -273,14 +273,15 @@ modules_layerOrganizer = function (helper) {
   // layers.get('glass'),
   // layers.get('label')
   //
-  return function (mainContainer) {
+  return function (mainContainer, tag) {
     var layers = {};
+    tag = tag || 'g';
     function createLayerFromName(container, layerName, prefix) {
       var id = prefix ? prefix + '.' + layerName : layerName;
       if (layers.hasOwnProperty(id)) {
         throw 'invalid or duplicate layer id: ' + id;
       }
-      var layer = container.append('g').classed(helper.dasherize(layerName) + '-layer', true);
+      var layer = container.append(tag).classed(helper.dasherize(layerName) + '-layer', true);
       layers[id] = layer;
       return layer;
     }
