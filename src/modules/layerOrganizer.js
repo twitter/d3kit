@@ -23,8 +23,9 @@ function(helper){
 // layers.get('label')
 //
 
-return function (mainContainer) {
+return function (mainContainer, tag) {
   var layers = {};
+  tag = tag || 'g';
 
   function createLayerFromName(container, layerName, prefix){
     var id = prefix ? prefix + '.' + layerName : layerName;
@@ -32,7 +33,7 @@ return function (mainContainer) {
       throw 'invalid or duplicate layer id: ' + id;
     }
 
-    var layer = container.append('g')
+    var layer = container.append(tag)
       .classed(helper.dasherize(layerName)+'-layer', true);
 
     layers[id] = layer;
