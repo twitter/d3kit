@@ -31,7 +31,7 @@
     "time-grunt": "~1.2.1"
   },
   "scripts": {
-    "build": "gulp build",
+    "build": "grunt build",
     "test": "grunt test-ci",
     "preversion": "npm test",
     "version": "npm run build && git add -A dist",
