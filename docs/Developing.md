@@ -1,4 +1,4 @@
-> [Docs](README) ▸ **Developing d3Kit**
+> [Docs](README.md) ▸ **Developing d3Kit**
 
 ### One-time setup
 

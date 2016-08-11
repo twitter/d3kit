@@ -1,4 +1,4 @@
-> [Docs](README) ▸ **API Reference**
+> [Docs](README.md) ▸ **API Reference**
 
 ## d3Kit.Skeleton
 

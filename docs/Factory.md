@@ -1,4 +1,4 @@
-> [Docs](README) ▸ [[API Reference]] ▸ **Factory**
+> [Docs](README.md) ▸ [API Reference](API.md) ▸ **Factory**
 
 ## d3Kit.factory
 

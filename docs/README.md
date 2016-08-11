@@ -1,8 +1,8 @@
 **d3Kit** is a lightweight (~8KB, minified) scaffold for building components with [d3.js](http://d3js.org/). After working on various projects, we found ourselves implementing the same block of code over and over to set the dimension, dispatch events, manage auto-resizing, etc. These repetitive tasks are extracted into d3Kit for everyone's sake.
 
-Please read [Getting started guide](Getting-started) for how to use d3Kit in your project and see [[API Reference]] for full documentation.
+Please read [Getting started guide](Getting-started) for how to use d3Kit in your project and see [API Reference](API.md) for full documentation.
 
-[[Gallery]] is also a good place to browse examples.
+[Gallery](Gallery.md) is also a good place to browse examples.
 
 At a glance, here are a few things d3Kit provides for you:
 

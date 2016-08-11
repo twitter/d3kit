@@ -1,4 +1,4 @@
-> [Docs](README) ▸ **Gallery**
+> [Docs](README.md) ▸ **Gallery**
 
 ## Examples
 

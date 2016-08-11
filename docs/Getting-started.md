@@ -1,4 +1,4 @@
-> [Docs](README) ▸ **Getting started**
+> [Docs](README.md) ▸ **Getting started**
 
 d3Kit supports AMD (RequireJS), CommonJS (Browserify) and can also work without any.
 Its only dependency is [d3.js](http://d3js.org/).
