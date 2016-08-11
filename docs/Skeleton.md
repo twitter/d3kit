@@ -1,4 +1,4 @@
- > [Wiki](Home) ▸ [[API Reference]] ▸ **Skeleton**
+ > [Docs](README) ▸ [[API Reference]] ▸ **Skeleton**
 
 ## d3Kit.Skeleton
 
