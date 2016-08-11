@@ -1,4 +1,4 @@
-> [Wiki](Home) ▸ **Gallery**
+> [Docs](README) ▸ **Gallery**
 
 ## Examples
 

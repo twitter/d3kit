@@ -1,4 +1,4 @@
-> [Wiki](Home) ▸ [[API Reference]] ▸ **Helper**
+> [Docs](README) ▸ [[API Reference]] ▸ **Helper**
 
 ## d3Kit.helper
 

@@ -1,4 +1,4 @@
-> [Wiki](Home) ▸ [[API Reference]] ▸ **Chartlet**
+> [Docs](README) ▸ [[API Reference]] ▸ **Chartlet**
 
 ## d3Kit.Chartlet
 

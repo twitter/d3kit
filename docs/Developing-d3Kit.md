@@ -1,4 +1,4 @@
-> [Wiki](Home) ▸ **Developing d3Kit**
+> [Docs](README) ▸ **Developing d3Kit**
 
 ### One-time setup
 

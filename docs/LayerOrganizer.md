@@ -1,4 +1,4 @@
-> [Wiki](Home) ▸ [[API Reference]] ▸ **LayerOrganizer**
+> [Docs](README) ▸ [[API Reference]] ▸ **LayerOrganizer**
 
 ## d3Kit.LayerOrganizer
 
