@@ -1,5 +1,16 @@
 # Change logs
 
+## v2.x.x
+
+### 2.0.0 (2016-08-16)
+
+Make d3Kit compatible with D3 v4. Key changes are due to:
+
+- Removal of `d3.functor` and `d3.rebind`. Implement helper functions as replacements.
+- API changes for `d3.dispatch`. Now use `dispatch.call('x', ...)` instead of `dispatch.x(...)`
+
+The npm package also moves D3 to `peerDependencies` instead of `dependencies`.
+
 ## v1.x.x
 
 ### 1.1.0 (2016-04-07)
