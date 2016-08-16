@@ -6,19 +6,19 @@
  * @param  {[type]} prefix   [description]
  * @return {[type]}          [description]
  */
-function bindMouseEventsToDispatcher(selection, dispatch, prefix){
+function bindMouseEventsToDispatcher(selection, dispatch, prefix) {
   return selection
-    .on('click', dispatch[prefix+'Click'])
-    .on('mouseover', dispatch[prefix+'MouseOver'])
-    .on('mousemove', dispatch[prefix+'MouseMove'])
-    .on('mouseout', dispatch[prefix+'MouseOut']);
+    .on('click', dispatch[prefix + 'Click'])
+    .on('mouseover', dispatch[prefix + 'MouseOver'])
+    .on('mousemove', dispatch[prefix + 'MouseMove'])
+    .on('mouseout', dispatch[prefix + 'MouseOut']);
 }
 
-function removeAllChildren(selection, noTransition){
-  if(noTransition){
+function removeAllChildren(selection, noTransition) {
+  if (noTransition) {
     return selection.selectAll('*').remove();
   }
-  else{
+  else {
     return selection.selectAll('*')
       .transition()
         .style('opacity', 0)
@@ -28,14 +28,14 @@ function removeAllChildren(selection, noTransition){
 
 // Returns true if it is a DOM element
 // From http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
-function isElement(o){
+function isElement(o) {
   return (
-    typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-    o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+    typeof HTMLElement === 'object' ? o instanceof HTMLElement : // DOM2
+    o && typeof o === 'object' && o !== null && o.nodeType === 1 && typeof o.nodeName === 'string'
   );
 }
 
-var isNaN = Number.isNaN ? Number.isNaN : window.isNaN;
+const isNaN = Number.isNaN ? Number.isNaN : window.isNaN;
 
 // Check whether s is element if not then do the querySelector
 function $(s) {
@@ -54,16 +54,16 @@ function $$(s) {
 function deepExtend(out) {
   out = out || {};
 
-  for (var i = 1; i < arguments.length; i++) {
-    var obj = arguments[i];
+  for (let i = 1; i < arguments.length; i++) {
+    const obj = arguments[i];
 
     if (!obj)
       continue;
 
-    for (var key in obj) {
+    for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
-        var value = obj[key];
-        if (isObject(value) && !Array.isArray(value) && !isFunction(value)){
+        const value = obj[key];
+        if (isObject(value) && !Array.isArray(value) && !isFunction(value)) {
           out[key] = deepExtend(out[key], value);
         }
         else
@@ -78,11 +78,11 @@ function deepExtend(out) {
 function extend(out) {
   out = out || {};
 
-  for (var i = 1; i < arguments.length; i++) {
+  for (let i = 1; i < arguments.length; i++) {
     if (!arguments[i])
       continue;
 
-    for (var key in arguments[i]) {
+    for (const key in arguments[i]) {
       if (arguments[i].hasOwnProperty(key))
         out[key] = arguments[i][key];
     }
@@ -91,15 +91,15 @@ function extend(out) {
   return out;
 }
 
-function on(element, type, listener){
+function on(element, type, listener) {
   if (element.addEventListener) {
     element.addEventListener(type, listener, false);
-  } else if (element.attachEvent)  {
-    element.attachEvent('on'+type, listener);
+  } else if (element.attachEvent) {
+    element.attachEvent('on' + type, listener);
   }
 }
 
-function off(element, type, listener){
+function off(element, type, listener) {
   element.removeEventListener(type, listener, false);
 }
 
@@ -124,15 +124,15 @@ function off(element, type, listener){
  * @return Function           debounced function
  */
 function debounce(func, wait, immediate) {
-  var timeout;
+  let timeout;
 
-  var outputFn = function() {
-    var context = this, args = arguments;
-    var later = function() {
+  const outputFn = function () {
+    let context = this, args = arguments;
+    const later = function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     };
-    var callNow = immediate && !timeout;
+    const callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
@@ -144,7 +144,7 @@ function debounce(func, wait, immediate) {
   // so we know this function is debounced
   outputFn.isDebounced = true;
   // and provide a way to call the original function immediately
-  outputFn.now = function(){
+  outputFn.now = function () {
     clearTimeout(timeout);
     return func.apply(this, arguments);
   };
@@ -157,13 +157,13 @@ function debounce(func, wait, immediate) {
 //---------------------------------------------------
 
 /** Used to determine if values are of the language type Object */
-var objectTypes = {
+const objectTypes = {
   'boolean': false,
   'function': true,
   'object': true,
   'number': false,
   'string': false,
-  'undefined': false
+  'undefined': false,
 };
 
 function isObject(value) {
@@ -175,13 +175,13 @@ function isObject(value) {
 }
 
 /** `Object#toString` result shortcuts */
-var numberClass = '[object Number]';
+const numberClass = '[object Number]';
 
 /** Used for native method references */
-var objectProto = Object.prototype;
+const objectProto = Object.prototype;
 
 /** Used to resolve the internal [[Class]] of values */
-var toString = objectProto.toString;
+const toString = objectProto.toString;
 
 /**
  * Checks if `value` is a number.
@@ -203,8 +203,8 @@ function isNumber(value) {
     value && typeof value == 'object' && toString.call(value) == numberClass || false;
 }
 
-function isFunction(functionToCheck){
-  var getType = {};
+function isFunction(functionToCheck) {
+  const getType = {};
   return !!functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
 }
 
@@ -213,14 +213,14 @@ function isFunction(functionToCheck){
 //---------------------------------------------------
 /* jshint ignore:start */
 
-var nativeTrim = String.prototype.trim;
+const nativeTrim = String.prototype.trim;
 
-function escapeRegExp(str){
+function escapeRegExp(str) {
   if (str == null) return '';
   return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 }
 
-var defaultToWhiteSpace = function(characters) {
+const defaultToWhiteSpace = function (characters) {
   if (characters == null)
     return '\\s';
   else if (characters.source)
@@ -229,37 +229,37 @@ var defaultToWhiteSpace = function(characters) {
     return '[' + escapeRegExp(characters) + ']';
 };
 
-function trim(str, characters){
+function trim(str, characters) {
   if (str == null) return '';
   if (!characters && nativeTrim) return nativeTrim.call(str);
   characters = defaultToWhiteSpace(characters);
   return String(str).replace(new RegExp('\^' + characters + '+|' + characters + '+$', 'g'), '');
 }
 
-function dasherize(str){
+function dasherize(str) {
   return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 }
 
 
 // Copies a variable number of methods from source to target.
 function rebind(target, source) {
-  var i = 1, n = arguments.length, method;
+  let i = 1, n = arguments.length, method;
   while (++i < n) target[method = arguments[i]] = d3_rebind(target, source, source[method]);
   return target;
-};
+}
 
 // Method is assumed to be a standard D3 getter-setter:
 // If passed with no arguments, gets the value.
 // If passed with arguments, sets the value and returns the target.
 function d3_rebind(target, source, method) {
-  return function() {
-    var value = method.apply(source, arguments);
+  return function () {
+    const value = method.apply(source, arguments);
     return value === source ? target : value;
   };
 }
 
 function functor(v) {
-  return typeof v === "function" ? v : function() { return v; };
+  return typeof v === 'function' ? v : function () { return v; };
 }
 
 

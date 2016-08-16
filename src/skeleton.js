@@ -1,83 +1,83 @@
 import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
-import LayerOrganizer from'./layerOrganizer.js';
+import LayerOrganizer from './layerOrganizer.js';
 import helper from './helper.js';
 
 // Constants
-var DEFAULT_OPTIONS = {
-  margin: {top: 30, right: 30, bottom: 30, left: 30},
+const DEFAULT_OPTIONS = {
+  margin: { top: 30, right: 30, bottom: 30, left: 30 },
   offset: [0.5, 0.5],
-  initialWidth:  720,
-  initialHeight: 500
+  initialWidth: 720,
+  initialHeight: 500,
 };
 
-var BASE_EVENTS = ['data', 'options', 'resize'];
+const BASE_EVENTS = ['data', 'options', 'resize'];
 
 // Core Skeleton
 function Skeleton(chartNode, customOptions, customEvents) {
-  var skeleton = {};
+  const skeleton = {};
 
   chartNode = helper.$(chartNode);
 
-  var _data = null;
+  let _data = null;
 
-  var _options = helper.deepExtend({}, DEFAULT_OPTIONS, customOptions);
+  let _options = helper.deepExtend({}, DEFAULT_OPTIONS, customOptions);
 
-  var _totalWidth  = 0;
-  var _totalHeight = 0;
-  var _innerWidth  = 0;
-  var _innerHeight = 0;
+  let _totalWidth = 0;
+  let _totalHeight = 0;
+  let _innerWidth = 0;
+  let _innerHeight = 0;
 
-  var _autoResizeDetection = 'window'; // either 'window' or 'dom';
-  var _autoResizeMode = false;
-  var _autoResizeFn = null;
-  var _autoResizeToAspectRatio = false;
+  let _autoResizeDetection = 'window'; // either 'window' or 'dom';
+  let _autoResizeMode = false;
+  let _autoResizeFn = null;
+  let _autoResizeToAspectRatio = false;
 
   // add svg element
-  var _svg = select(chartNode).append('svg');
-  var _vis = _svg.append('g');
+  const _svg = select(chartNode).append('svg');
+  const _vis = _svg.append('g');
   updateOffset();
 
-  var _layers = new LayerOrganizer(_vis);
+  const _layers = new LayerOrganizer(_vis);
 
   // setup event dispatcher
-  var _customEvents = customEvents ? customEvents.concat(BASE_EVENTS) : BASE_EVENTS;
-  var _dispatch = dispatch.apply(this, _customEvents);
+  const _customEvents = customEvents ? customEvents.concat(BASE_EVENTS) : BASE_EVENTS;
+  const _dispatch = dispatch.apply(this, _customEvents);
 
   // set default dimension
   dimension([
     _options.initialWidth,
-    _options.initialHeight
+    _options.initialHeight,
   ]);
 
-  function data(newValue, doNotDispatch){
+  function data(newValue, doNotDispatch) {
     // getter
-    if(arguments.length === 0){
+    if (arguments.length === 0) {
       return _data;
     }
     // setter
     _data = newValue;
     // dispatch
-    if(!doNotDispatch){
+    if (!doNotDispatch) {
       _dispatch.call('data', this, newValue);
     }
     return skeleton;
   }
 
-  function options(newValue, doNotDispatch){
+  function options(newValue, doNotDispatch) {
     // getter
-    if(arguments.length === 0){
+    if (arguments.length === 0) {
       return _options;
     }
 
     // setter
     _options = helper.deepExtend(_options, newValue);
 
-    if(newValue){
-      if(newValue.margin){
+    if (newValue) {
+      if (newValue.margin) {
         updateMargin(doNotDispatch);
       }
-      else if(newValue.offset){
+      else if (newValue.offset) {
         // When the margin is changed,
         // updateOffset() is already called within updateMargin()
         // so "else if" is used here instead of "if".
@@ -88,30 +88,30 @@ function Skeleton(chartNode, customOptions, customEvents) {
     }
 
     // dispatch
-    if(!doNotDispatch){
+    if (!doNotDispatch) {
       _dispatch.call('options', this, newValue);
     }
     return skeleton;
   }
 
-  function updateOffset(){
+  function updateOffset() {
     _vis.attr('transform', 'translate(' + (_options.margin.left + _options.offset[0]) + ',' + (_options.margin.top + _options.offset[1]) + ')');
   }
 
-  function updateMargin(doNotDispatch){
+  function updateMargin(doNotDispatch) {
     updateOffset();
 
-    _innerWidth  = _totalWidth - _options.margin.left - _options.margin.right;
+    _innerWidth = _totalWidth - _options.margin.left - _options.margin.right;
     _innerHeight = _totalHeight - _options.margin.top - _options.margin.bottom;
 
-    if(!doNotDispatch){
+    if (!doNotDispatch) {
       _dispatch.call('resize', this, [_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
     }
   }
 
-  function margin(newValue, doNotDispatch){
+  function margin(newValue, doNotDispatch) {
     // getter
-    if(arguments.length === 0){
+    if (arguments.length === 0) {
       return _options.margin;
     }
 
@@ -122,9 +122,9 @@ function Skeleton(chartNode, customOptions, customEvents) {
     return skeleton;
   }
 
-  function offset(newValue){
+  function offset(newValue) {
     // getter
-    if(arguments.length === 0){
+    if (arguments.length === 0) {
       return _options.offset;
     }
 
@@ -135,24 +135,24 @@ function Skeleton(chartNode, customOptions, customEvents) {
     return skeleton;
   }
 
-  function width(newValue, doNotDispatch){
+  function width(newValue, doNotDispatch) {
     // getter
-    if(arguments.length === 0 || newValue===null || newValue===undefined){
+    if (arguments.length === 0 || newValue === null || newValue === undefined) {
       return _totalWidth;
     }
 
     // setter
-    if(helper.isNumber(newValue)){
+    if (helper.isNumber(newValue)) {
       _totalWidth = +newValue;
     }
-    else if(newValue.trim().toLowerCase()=='auto'){
+    else if (newValue.trim().toLowerCase() == 'auto') {
       _totalWidth = chartNode.clientWidth;
     }
-    else{
-      _totalWidth = +((newValue+'').replace(/px/gi, '').trim());
+    else {
+      _totalWidth = +((newValue + '').replace(/px/gi, '').trim());
     }
 
-    if(helper.isNaN(_totalWidth)){
+    if (helper.isNaN(_totalWidth)) {
       throw Error('invalid width: ' + _totalWidth);
     }
 
@@ -163,30 +163,30 @@ function Skeleton(chartNode, customOptions, customEvents) {
     _svg.attr('width', _totalWidth);
 
     // dispatch
-    if(!doNotDispatch){
+    if (!doNotDispatch) {
       _dispatch.call('resize', this, [_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
     }
     return skeleton;
   }
 
-  function height(newValue, doNotDispatch){
+  function height(newValue, doNotDispatch) {
     // getter
-    if(arguments.length === 0 || newValue===null || newValue===undefined){
+    if (arguments.length === 0 || newValue === null || newValue === undefined) {
       return _totalHeight;
     }
 
     // setter
-    if(helper.isNumber(newValue)){
+    if (helper.isNumber(newValue)) {
       _totalHeight = +newValue;
     }
-    else if(newValue.trim().toLowerCase()=='auto'){
+    else if (newValue.trim().toLowerCase() == 'auto') {
       _totalHeight = chartNode.clientHeight;
     }
-    else{
-      _totalHeight = +((newValue+'').replace(/px/gi, '').trim());
+    else {
+      _totalHeight = +((newValue + '').replace(/px/gi, '').trim());
     }
 
-    if(helper.isNaN(_totalHeight)){
+    if (helper.isNaN(_totalHeight)) {
       throw Error('invalid height: ' + _totalHeight);
     }
 
@@ -197,14 +197,14 @@ function Skeleton(chartNode, customOptions, customEvents) {
     _svg.attr('height', _totalHeight);
 
     // dispatch
-    if(!doNotDispatch){
+    if (!doNotDispatch) {
       _dispatch.call('resize', this, [_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
     }
     return skeleton;
   }
 
-  function dimension(values, doNotDispatch){
-    if(arguments.length === 0){
+  function dimension(values, doNotDispatch) {
+    if (arguments.length === 0) {
       return [_totalWidth, _totalHeight];
     }
     width(values[0], true);
@@ -213,49 +213,49 @@ function Skeleton(chartNode, customOptions, customEvents) {
     return skeleton;
   }
 
-  function autoResize(newMode){
-    if(arguments.length === 0){
+  function autoResize(newMode) {
+    if (arguments.length === 0) {
       return _autoResizeMode;
     }
-    else if(_autoResizeMode!=newMode){
+    else if (_autoResizeMode != newMode) {
       return setupAutoResize(newMode, _autoResizeDetection);
     }
     return skeleton;
   }
 
-  function autoResizeDetection(newDetection){
-    if(arguments.length === 0){
+  function autoResizeDetection(newDetection) {
+    if (arguments.length === 0) {
       return _autoResizeDetection;
     }
-    else if(_autoResizeDetection!=newDetection){
+    else if (_autoResizeDetection != newDetection) {
       return setupAutoResize(_autoResizeMode, newDetection);
     }
     return skeleton;
   }
 
-  function autoResizeToAspectRatio(ratio){
-    if(arguments.length === 0){
+  function autoResizeToAspectRatio(ratio) {
+    if (arguments.length === 0) {
       return _autoResizeToAspectRatio;
     }
 
-    if(ratio===null || ratio===undefined || ratio==='' || ratio===false || (ratio+'').toLowerCase()==='false'){
+    if (ratio === null || ratio === undefined || ratio === '' || ratio === false || (ratio + '').toLowerCase() === 'false') {
       _autoResizeToAspectRatio = false;
     }
-    else if(!helper.isNumber(ratio)){
+    else if (!helper.isNumber(ratio)) {
       _autoResizeToAspectRatio = false;
     }
-    else if(+ratio===0){
+    else if (+ratio === 0) {
       _autoResizeToAspectRatio = false;
     }
-    else{
+    else {
       _autoResizeToAspectRatio = +ratio;
     }
     return skeleton;
   }
 
-  function clearAutoResizeListener(){
-    if(_autoResizeFn){
-      switch(_autoResizeDetection){
+  function clearAutoResizeListener() {
+    if (_autoResizeFn) {
+      switch (_autoResizeDetection) {
         case 'dom':
           helper.off(chartNode, 'resize', _autoResizeFn);
           break;
@@ -269,9 +269,9 @@ function Skeleton(chartNode, customOptions, customEvents) {
     return skeleton;
   }
 
-  function setAutoResizeListener(fn){
-    if(fn){
-      switch(_autoResizeDetection){
+  function setAutoResizeListener(fn) {
+    if (fn) {
+      switch (_autoResizeDetection) {
         case 'dom':
           helper.on(chartNode, 'resize', fn);
           break;
@@ -285,22 +285,22 @@ function Skeleton(chartNode, customOptions, customEvents) {
     return skeleton;
   }
 
-  function setupAutoResize(newMode, newDetection){
-    newMode = newMode && (newMode+'').toLowerCase()=='false' ? false : newMode;
+  function setupAutoResize(newMode, newDetection) {
+    newMode = newMode && (newMode + '').toLowerCase() == 'false' ? false : newMode;
     newDetection = newDetection || _autoResizeDetection;
 
     // check if there is change in listener
-    if(newMode!=_autoResizeMode){
+    if (newMode != _autoResizeMode) {
       clearAutoResizeListener();
       _autoResizeMode = newMode;
       _autoResizeDetection = newDetection;
-      if(newMode){
-        _autoResizeFn = helper.debounce(function(){
-          if(_autoResizeToAspectRatio){
+      if (newMode) {
+        _autoResizeFn = helper.debounce(function () {
+          if (_autoResizeToAspectRatio) {
             resizeToFitContainer(_autoResizeMode, true);
             resizeToAspectRatio(_autoResizeToAspectRatio);
           }
-          else{
+          else {
             resizeToFitContainer(_autoResizeMode);
           }
         }, 100);
@@ -308,26 +308,26 @@ function Skeleton(chartNode, customOptions, customEvents) {
       }
     }
     // change detection mode only
-    else if(newDetection!=_autoResizeDetection){
-      var oldAutoResizeFn = _autoResizeFn;
+    else if (newDetection != _autoResizeDetection) {
+      const oldAutoResizeFn = _autoResizeFn;
       clearAutoResizeListener();
       _autoResizeDetection = newDetection;
       setAutoResizeListener(oldAutoResizeFn);
     }
 
-    if(_autoResizeFn) _autoResizeFn();
+    if (_autoResizeFn) _autoResizeFn();
 
     return skeleton;
   }
 
-  function getCustomEventNames(){
+  function getCustomEventNames() {
     return customEvents || [];
   }
 
-  function mixin(mixer){
-    var self = skeleton;
-    if(helper.isObject(mixer)){
-      Object.keys(mixer).forEach(function(key){
+  function mixin(mixer) {
+    const self = skeleton;
+    if (helper.isObject(mixer)) {
+      Object.keys(mixer).forEach(function (key) {
         self[key] = mixer[key];
       });
     }
@@ -335,8 +335,8 @@ function Skeleton(chartNode, customOptions, customEvents) {
   }
 
   // This function is only syntactic sugar
-  function resizeToFitContainer(mode, doNotDispatch){
-    switch(mode){
+  function resizeToFitContainer(mode, doNotDispatch) {
+    switch (mode) {
       case 'all':
       case 'full':
       case 'both':
@@ -353,64 +353,64 @@ function Skeleton(chartNode, customOptions, customEvents) {
     return skeleton;
   }
 
-  function resizeToAspectRatio(ratio, doNotDispatch){
-    var w = _totalWidth;
-    var h = _totalHeight;
+  function resizeToAspectRatio(ratio, doNotDispatch) {
+    const w = _totalWidth;
+    const h = _totalHeight;
 
-    if(!helper.isNumber(ratio)) throw 'Invalid ratio: must be a Number';
+    if (!helper.isNumber(ratio)) throw 'Invalid ratio: must be a Number';
 
     ratio = +ratio;
 
     // no need to resize if already at ratio
-    if( (w/h).toFixed(4) == ratio.toFixed(4) ) return skeleton;
+    if ((w / h).toFixed(4) == ratio.toFixed(4)) return skeleton;
 
-    var estimatedH = Math.floor(w / ratio);
-    if(estimatedH > h){
+    const estimatedH = Math.floor(w / ratio);
+    if (estimatedH > h) {
       width(Math.floor(h * ratio), doNotDispatch);
     }
-    else{
+    else {
       height(estimatedH, doNotDispatch);
     }
     return skeleton;
   }
 
-  function hasData(){
-    return _data!==null && _data!==undefined;
+  function hasData() {
+    return _data !== null && _data !== undefined;
   }
 
-  function hasNonZeroArea(){
+  function hasNonZeroArea() {
     return (_innerWidth > 0 && _innerHeight > 0);
   }
 
   // define public fields and functions
   helper.extend(skeleton, {
     // getter only
-    getCustomEventNames: getCustomEventNames,
-    getDispatcher: function(){ return _dispatch; },
-    getInnerWidth: function(){ return _innerWidth; },
-    getInnerHeight: function(){ return _innerHeight; },
-    getLayerOrganizer: function(){ return _layers; },
-    getRootG: function(){ return _vis; },
-    getSvg: function(){ return _svg; },
+    getCustomEventNames,
+    getDispatcher() { return _dispatch; },
+    getInnerWidth() { return _innerWidth; },
+    getInnerHeight() { return _innerHeight; },
+    getLayerOrganizer() { return _layers; },
+    getRootG() { return _vis; },
+    getSvg() { return _svg; },
 
     // getter & setter
-    data: data,
-    options: options,
-    margin: margin,
-    offset: offset,
-    width: width,
-    height: height,
-    dimension: dimension,
-    autoResize: autoResize,
-    autoResizeDetection: autoResizeDetection,
-    autoResizeToAspectRatio: autoResizeToAspectRatio,
+    data,
+    options,
+    margin,
+    offset,
+    width,
+    height,
+    dimension,
+    autoResize,
+    autoResizeDetection,
+    autoResizeToAspectRatio,
 
     // functions
-    hasData: hasData,
-    hasNonZeroArea: hasNonZeroArea,
-    mixin: mixin,
-    resizeToFitContainer: resizeToFitContainer,
-    resizeToAspectRatio: resizeToAspectRatio
+    hasData,
+    hasNonZeroArea,
+    mixin,
+    resizeToFitContainer,
+    resizeToAspectRatio,
   });
 
   // bind events

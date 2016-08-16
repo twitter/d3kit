@@ -18,64 +18,63 @@ import helper from './helper.js';
 //
 
 export default function (mainContainer, tag) {
-  var layers = {};
+  const layers = {};
   tag = tag || 'g';
 
-  function createLayerFromName(container, layerName, prefix){
-    var id = prefix ? prefix + '.' + layerName : layerName;
-    if(layers.hasOwnProperty(id)){
+  function createLayerFromName(container, layerName, prefix) {
+    const id = prefix ? prefix + '.' + layerName : layerName;
+    if (layers.hasOwnProperty(id)) {
       throw 'invalid or duplicate layer id: ' + id;
     }
 
-    var layer = container.append(tag)
-      .classed(helper.dasherize(layerName)+'-layer', true);
+    const layer = container.append(tag)
+      .classed(helper.dasherize(layerName) + '-layer', true);
 
     layers[id] = layer;
     return layer;
   }
 
-  function createLayerFromInfo(container, layerInfo, prefix){
-    if(Array.isArray(layerInfo)){
-      return layerInfo.map(function(info){
+  function createLayerFromInfo(container, layerInfo, prefix) {
+    if (Array.isArray(layerInfo)) {
+      return layerInfo.map(function (info) {
         createLayerFromInfo(container, info, prefix);
       });
     }
-    else if(helper.isObject(layerInfo)){
-      var parentKey = Object.keys(layerInfo)[0];
-      var parentLayer = createLayerFromName(container, parentKey, prefix);
+    else if (helper.isObject(layerInfo)) {
+      const parentKey = Object.keys(layerInfo)[0];
+      const parentLayer = createLayerFromName(container, parentKey, prefix);
       createLayerFromInfo(parentLayer, layerInfo[parentKey], prefix ? prefix + '.' + parentKey : parentKey);
       return parentLayer;
     }
-    else{
+    else {
       return createLayerFromName(container, layerInfo, prefix);
     }
   }
 
-  function createLayer(layerInfo){
+  function createLayer(layerInfo) {
     return createLayerFromInfo(mainContainer, layerInfo);
   }
 
-  function create(layerNames){
-    if(Array.isArray(layerNames)){
+  function create(layerNames) {
+    if (Array.isArray(layerNames)) {
       return layerNames.map(createLayer);
     }
-    else{
+    else {
       return createLayer(layerNames);
     }
   }
 
-  function get(layerName){
+  function get(layerName) {
     return layers[layerName];
   }
 
-  function has(layerName){
+  function has(layerName) {
     return !!layers[layerName];
   }
 
   return {
-    create: create,
-    get: get,
-    has: has
+    create,
+    get,
+    has,
   };
-
-};
+}

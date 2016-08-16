@@ -1,14 +1,14 @@
 import { dispatch } from 'd3-dispatch';
 import helper from './helper.js';
 
-function NOOP(selection, done){ done(); }
+function NOOP(selection, done) { done(); }
 
 function Chartlet(enter, update, exit, customEvents) {
   update = update || NOOP;
   exit = exit || NOOP;
   customEvents = customEvents || [];
-  var _propertyCache = {};
-  var _dispatch = dispatch.apply(this, ['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
+  const _propertyCache = {};
+  const _dispatch = dispatch.apply(this, ['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
 
   // getter and setter of chartlet properties
 
@@ -28,29 +28,29 @@ function Chartlet(enter, update, exit, customEvents) {
   }
 
   function _wrapAction(action, doneHookName) {
-    return function(selection) {
-      action(selection, helper.debounce(function(d, i) {
+    return function (selection) {
+      action(selection, helper.debounce(function (d, i) {
         _dispatch.call(doneHookName, this, selection);
       }), 5);
     };
   }
 
   function inheritPropertyFrom(chartlet, from, to) {
-    _propertyCache[to || from] = function(d, i) {return chartlet.property(from)(d, i);};
+    _propertyCache[to || from] = function (d, i) { return chartlet.property(from)(d, i); };
     return this;
   }
 
   function inheritPropertiesFrom(chartlet, froms, tos) {
-    froms.forEach(function(from, i) {
+    froms.forEach(function (from, i) {
       inheritPropertyFrom(chartlet, from, tos && i < tos.length ? tos[i] : undefined);
     });
     return this;
   }
 
   function publishEventsTo(foreignDispatcher) {
-    customEvents.forEach(function(event) {
-      _dispatch.on(event, function() {
-        var args = Array.prototype.slice.call(arguments);
+    customEvents.forEach(function (event) {
+      _dispatch.on(event, function () {
+        const args = Array.prototype.slice.call(arguments);
         foreignDispatcher.apply(event, this, args);
       });
     });
@@ -62,19 +62,19 @@ function Chartlet(enter, update, exit, customEvents) {
   }
 
   // exports
-  var exports = {
+  const exports = {
     // for use by child chartlet
-    getDispatcher: function(){ return _dispatch; },
-    getPropertyValue: getPropertyValue,
-    inheritPropertyFrom: inheritPropertyFrom,
-    inheritPropertiesFrom: inheritPropertiesFrom,
-    publishEventsTo: publishEventsTo,
-    getCustomEventNames: getCustomEventNames,
+    getDispatcher() { return _dispatch; },
+    getPropertyValue,
+    inheritPropertyFrom,
+    inheritPropertiesFrom,
+    publishEventsTo,
+    getCustomEventNames,
 
-    property: property,
+    property,
     enter: _wrapAction(enter, 'enterDone'),
     update: _wrapAction(update, 'updateDone'),
-    exit: _wrapAction(exit, 'exitDone')
+    exit: _wrapAction(exit, 'exitDone'),
   };
 
   // bind events to exports

@@ -8,10 +8,10 @@ import helper from './helper.js';
  * @param  Function      constructor    constructor function function(skeleton){...}
  * @return Function                     function(chartNode, options) that return your chart
  */
-export function createChart(defaultOptions, customEvents, constructor){
-  var newChartClass = function(chartNode, options){
-    var skeleton = new Skeleton(chartNode, helper.deepExtend({}, defaultOptions, options), customEvents);
-    if(constructor) constructor(skeleton);
+export function createChart(defaultOptions, customEvents, constructor) {
+  const newChartClass = function (chartNode, options) {
+    const skeleton = new Skeleton(chartNode, helper.deepExtend({}, defaultOptions, options), customEvents);
+    if (constructor) constructor(skeleton);
     return skeleton;
   };
 
@@ -22,7 +22,7 @@ export function createChart(defaultOptions, customEvents, constructor){
    * This is a static method for class, not instance method.
    * @return Array[String] names of custom events
    */
-  newChartClass.getCustomEvents = function(){
+  newChartClass.getCustomEvents = function () {
     return customEvents;
   };
 
