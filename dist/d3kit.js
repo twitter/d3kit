@@ -518,6 +518,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _svg;
 	    },
 
+
 	    // getter & setter
 	    data: data,
 	    options: options,
@@ -632,25 +633,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	;
-
-	// EXAMPLE USAGE:
-	//
-	// var layers = new d3LayerOrganizer(vis);
-	// layers.create([
-	//   {'axis': ['bar', 'mark']},
-	//   'glass',
-	//   'label'
-	// ]);
-	//
-	// Then access the layers via
-	// layers.get('axis'),
-	// layers.get('axis.bar'),
-	// layers.get('axis.mark'),
-	// layers.get('glass'),
-	// layers.get('label')
-	//
-
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
@@ -686,8 +668,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Returns true if it is a DOM element
 	// From http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
 	function isElement(o) {
-	  return (typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === "object" ? o instanceof HTMLElement : //DOM2
-	  o && (typeof o === 'undefined' ? 'undefined' : _typeof(o)) === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName === "string";
+	  return (typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? o instanceof HTMLElement : // DOM2
+	  o && (typeof o === 'undefined' ? 'undefined' : _typeof(o)) === 'object' && o !== null && o.nodeType === 1 && typeof o.nodeName === 'string';
 	}
 
 	var isNaN = Number.isNaN ? Number.isNaN : window.isNaN;
@@ -774,7 +756,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @return Function           debounced function
 	 */
 	function debounce(func, wait, immediate) {
-	  var timeout;
+	  var timeout = void 0;
 
 	  var outputFn = function outputFn() {
 	    var context = this,
@@ -889,11 +871,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	function rebind(target, source) {
 	  var i = 1,
 	      n = arguments.length,
-	      method;
+	      method = void 0;
 	  while (++i < n) {
 	    target[method = arguments[i]] = d3_rebind(target, source, source[method]);
 	  }return target;
-	};
+	}
 
 	// Method is assumed to be a standard D3 getter-setter:
 	// If passed with no arguments, gets the value.
@@ -906,7 +888,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	function functor(v) {
-	  return typeof v === "function" ? v : function () {
+	  return typeof v === 'function' ? v : function () {
 	    return v;
 	  };
 	}
@@ -1027,6 +1009,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    getDispatcher: function getDispatcher() {
 	      return _dispatch;
 	    },
+
 	    getPropertyValue: getPropertyValue,
 	    inheritPropertyFrom: inheritPropertyFrom,
 	    inheritPropertiesFrom: inheritPropertiesFrom,

@@ -5,9 +5,9 @@ const gulp          = require('gulp');
 const $             = require('gulp-load-plugins')();
 const webpack       = require('webpack-stream');
 const webpackConfig = require('./webpack.config.js');
+const browserSync   = require('browser-sync');
 
 import {createBuildAndWatchTasks} from './tasks/core.js';
-import {createBrowserSyncTask} from './tasks/browserSync.js';
 
 // -------------------------------------------
 // Configuration
@@ -76,7 +76,15 @@ gulp.task('webpack', function() {
 
 const buildTasks = [{name: 'webpack', pattern: patterns.js}];
 createBuildAndWatchTasks(buildTasks);
-createBrowserSyncTask('examples');
+
+gulp.task('browser-sync', ['build'], function() {
+  browserSync.init({
+    server: './examples',
+    files: ['examples/**/*.*'],
+    browser: 'google chrome',
+    port: 7000,
+  });
+});
 
 gulp.task('run', ['watch', 'browser-sync']);
 gulp.task('default', ['run']);
