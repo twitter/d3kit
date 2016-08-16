@@ -3,11 +3,12 @@
   "version": "1.1.0",
   "description": "A kit of tools to speed D3 related project development.",
   "main": "dist/d3kit.min.js",
-  "dependencies": {
-    "d3": "~3.5.16"
+  "peerDependencies": {
+    "d3": "^4.2.1"
   },
   "devDependencies": {
     "amdclean": "^2.2.7",
+    "d3": "^4.2.1",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
     "grunt-contrib-clean": "~0.6.0",

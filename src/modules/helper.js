@@ -249,6 +249,29 @@ var module = (function(){
     return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
   }
 
+
+  // Copies a variable number of methods from source to target.
+  function rebind(target, source) {
+    var i = 1, n = arguments.length, method;
+    while (++i < n) target[method = arguments[i]] = d3_rebind(target, source, source[method]);
+    return target;
+  };
+
+  // Method is assumed to be a standard D3 getter-setter:
+  // If passed with no arguments, gets the value.
+  // If passed with arguments, sets the value and returns the target.
+  function d3_rebind(target, source, method) {
+    return function() {
+      var value = method.apply(source, arguments);
+      return value === source ? target : value;
+    };
+  }
+
+  function functor(v) {
+    return typeof v === "function" ? v : function() { return v; };
+  }
+
+
   /* jshint ignore:end */
 
   return {
@@ -269,6 +292,9 @@ var module = (function(){
     on: on,
     off: off,
     trim: trim,
+
+    rebind: rebind,
+    functor: functor,
 
     removeAllChildren: removeAllChildren,
     bindMouseEventsToDispatcher: bindMouseEventsToDispatcher

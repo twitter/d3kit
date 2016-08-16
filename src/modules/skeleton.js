@@ -64,7 +64,7 @@ function Skeleton(chartNode, customOptions, customEvents){
     _data = newValue;
     // dispatch
     if(!doNotDispatch){
-      _dispatch.data(newValue);
+      _dispatch.call('data', this, this, newValue);
     }
     return skeleton;
   }
@@ -94,7 +94,7 @@ function Skeleton(chartNode, customOptions, customEvents){
 
     // dispatch
     if(!doNotDispatch){
-      _dispatch.options(newValue);
+      _dispatch.call('options', this, newValue);
     }
     return skeleton;
   }
@@ -110,7 +110,7 @@ function Skeleton(chartNode, customOptions, customEvents){
     _innerHeight = _totalHeight - _options.margin.top - _options.margin.bottom;
 
     if(!doNotDispatch){
-      _dispatch.resize([_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
+      _dispatch.call('resize', this, [_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
     }
   }
 
@@ -169,7 +169,7 @@ function Skeleton(chartNode, customOptions, customEvents){
 
     // dispatch
     if(!doNotDispatch){
-      _dispatch.resize([_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
+      _dispatch.call('resize', this, [_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
     }
     return skeleton;
   }
@@ -203,7 +203,7 @@ function Skeleton(chartNode, customOptions, customEvents){
 
     // dispatch
     if(!doNotDispatch){
-      _dispatch.resize([_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
+      _dispatch.call('resize', this, [_totalWidth, _totalHeight, _innerWidth, _innerHeight]);
     }
     return skeleton;
   }
@@ -326,9 +326,7 @@ function Skeleton(chartNode, customOptions, customEvents){
   }
 
   function getCustomEventNames(){
-    return Object.keys(_dispatch).filter(function(d){
-      return BASE_EVENTS.indexOf(d) < 0;
-    });
+    return customEvents || [];
   }
 
   function mixin(mixer){
@@ -421,7 +419,7 @@ function Skeleton(chartNode, customOptions, customEvents){
   });
 
   // bind events
-  d3.rebind(skeleton, _dispatch, 'on');
+  helper.rebind(skeleton, _dispatch, 'on');
 
   return skeleton;
 }

@@ -4,7 +4,7 @@ define([
   'd3',
   './layerOrganizer'
 ], function(d3, LayerOrganizer){
-  describe.only('LayerOrganizer', function(){
+  describe('LayerOrganizer', function(){
 
     describe('new LayerOrganizer(container) will create layers as <g> by default', function(){
       var container, layers;

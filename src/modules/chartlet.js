@@ -13,12 +13,12 @@ function Chartlet(enter, update, exit, customEvents) {
   function property(name, value) {
     // if functioning as a setter, set property in cache
     if (arguments.length > 1) {
-      _propertyCache[name] = d3.functor(value);
+      _propertyCache[name] = helper.functor(value);
       return this;
     }
 
     // functioning as a getter, return property accessor
-    return d3.functor(_propertyCache[name]);
+    return helper.functor(_propertyCache[name]);
   }
 
   function getPropertyValue(name, d, i) {
@@ -28,10 +28,7 @@ function Chartlet(enter, update, exit, customEvents) {
   function _wrapAction(action, doneHookName) {
     return function(selection) {
       action(selection, helper.debounce(function(d, i) {
-        var doneHook = _dispatch[doneHookName];
-        if (doneHook) {
-          doneHook(selection);
-        }
+        _dispatch.call(doneHookName, this, selection);
       }), 5);
     };
   }
@@ -50,7 +47,10 @@ function Chartlet(enter, update, exit, customEvents) {
 
   function publishEventsTo(foreignDispatcher) {
     customEvents.forEach(function(event) {
-      _dispatch.on(event, foreignDispatcher[event]);
+      _dispatch.on(event, function() {
+        var args = Array.prototype.slice.call(arguments);
+        foreignDispatcher.apply(event, this, args);
+      });
     });
     return this;
   }
@@ -76,7 +76,7 @@ function Chartlet(enter, update, exit, customEvents) {
   };
 
   // bind events to exports
-  d3.rebind(exports, _dispatch, 'on');
+  helper.rebind(exports, _dispatch, 'on');
 
   // return exports
   return exports;

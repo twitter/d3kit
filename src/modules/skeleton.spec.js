@@ -33,7 +33,7 @@ define([
     describe('#getDispatcher()', function(){
       it('should return event dispatcher', function(){
         expect(skeleton.getDispatcher()).to.be.an('Object');
-        expect(skeleton.getDispatcher().data).to.be.a('Function');
+        expect(skeleton.getDispatcher().call).to.be.a('Function');
       });
     });
 
@@ -67,7 +67,7 @@ define([
       it('should return d3 selection of the root <g>', function(){
         var g = skeleton.getRootG();
         expect(g.size()).to.equal(1);
-        expect(g[0][0].tagName).to.equal('g');
+        expect(g.node().tagName).to.equal('g');
       });
     });
 
@@ -75,7 +75,7 @@ define([
       it('should return d3 selection of the <svg>', function(){
         var svg = skeleton.getSvg();
         expect(svg.size()).to.equal(1);
-        expect(svg[0][0].tagName).to.equal('svg');
+        expect(svg.node().tagName).to.equal('svg');
       });
     });
 

@@ -1,9 +1,6 @@
 /* jshint expr: true */
 
-define([
-  'd3',
-  './chartlet'
-], function(d3, Chartlet){
+define(['./chartlet'], function(Chartlet){
   describe('Chartlet', function(){
     var enter, update, exit, chartlet;
     var customEvents = ['fooEvent'];
@@ -68,7 +65,7 @@ define([
       });
       it('returned dispatcher should handle enter/update/exit events', function(){
         var dispatcher = chartlet.getDispatcher();
-        expect(dispatcher).to.include.keys(['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
+        expect(dispatcher._).to.include.keys(['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
       });
     });
 
@@ -210,7 +207,7 @@ define([
         var child = new Chartlet(callback, callback, callback, ['foo'])
           .publishEventsTo(parent.getDispatcher());
 
-        child.getDispatcher().foo(99);
+        child.getDispatcher().call('foo', this, 99);
       });
     });
   });
