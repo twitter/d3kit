@@ -41,6 +41,7 @@
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-mocha": "^4.3.0",
     "gh-pages": "^0.11.0",
     "gulp": "^3.9.0",
     "gulp-load-plugins": "^1.1.0",
