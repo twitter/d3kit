@@ -1,13 +1,7 @@
-define([
-  'd3-selection',
-  'd3-dispatch',
-  './layerOrganizer',
-  './helper'
-],
-function(d3Selection, d3Dispatch, LayerOrganizer, helper){
-//---------------------------------------------------
-// BEGIN code for this module
-//---------------------------------------------------
+import { select } from 'd3-selection';
+import { dispatch } from 'd3-dispatch';
+import LayerOrganizer from'./layerOrganizer.js';
+import helper from './helper.js';
 
 // Constants
 var DEFAULT_OPTIONS = {
@@ -20,7 +14,7 @@ var DEFAULT_OPTIONS = {
 var BASE_EVENTS = ['data', 'options', 'resize'];
 
 // Core Skeleton
-function Skeleton(chartNode, customOptions, customEvents){
+function Skeleton(chartNode, customOptions, customEvents) {
   var skeleton = {};
 
   chartNode = helper.$(chartNode);
@@ -40,7 +34,7 @@ function Skeleton(chartNode, customOptions, customEvents){
   var _autoResizeToAspectRatio = false;
 
   // add svg element
-  var _svg = d3Selection.select(chartNode).append('svg');
+  var _svg = select(chartNode).append('svg');
   var _vis = _svg.append('g');
   updateOffset();
 
@@ -48,7 +42,7 @@ function Skeleton(chartNode, customOptions, customEvents){
 
   // setup event dispatcher
   var _customEvents = customEvents ? customEvents.concat(BASE_EVENTS) : BASE_EVENTS;
-  var _dispatch = d3Dispatch.dispatch.apply(d3, _customEvents);
+  var _dispatch = dispatch.apply(this, _customEvents);
 
   // set default dimension
   dimension([
@@ -65,7 +59,7 @@ function Skeleton(chartNode, customOptions, customEvents){
     _data = newValue;
     // dispatch
     if(!doNotDispatch){
-      _dispatch.call('data', this, this, newValue);
+      _dispatch.call('data', this, newValue);
     }
     return skeleton;
   }
@@ -425,10 +419,4 @@ function Skeleton(chartNode, customOptions, customEvents){
   return skeleton;
 }
 
-// return module
-return Skeleton;
-
-//---------------------------------------------------
-// END code for this module
-//---------------------------------------------------
-});
+export default Skeleton;

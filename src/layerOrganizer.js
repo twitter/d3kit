@@ -1,11 +1,5 @@
-define([
-  './helper'
-],
-function(helper){
-//---------------------------------------------------
-// BEGIN code for this module
-//---------------------------------------------------
-//
+import helper from './helper.js';
+
 // EXAMPLE USAGE:
 //
 // var layers = new d3LayerOrganizer(vis);
@@ -23,7 +17,7 @@ function(helper){
 // layers.get('label')
 //
 
-return function (mainContainer, tag) {
+export default function (mainContainer, tag) {
   var layers = {};
   tag = tag || 'g';
 
@@ -85,8 +79,3 @@ return function (mainContainer, tag) {
   };
 
 };
-
-//---------------------------------------------------
-// END code for this module
-//---------------------------------------------------
-});

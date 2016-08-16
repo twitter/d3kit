@@ -11,6 +11,8 @@ Make d3Kit compatible with D3 v4. Key changes are due to:
 
 The npm package also remove `d3` from `dependencies` and add `d3-selection` and `d3-dispatch` to `peerDependencies` instead.
 
+In terms of development, switch from grunt to gulp and webpack and prepare to migrate each module to es2015.
+
 ## v1.x.x
 
 ### 1.1.0 (2016-04-07)

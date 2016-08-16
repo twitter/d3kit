@@ -1,4 +1,6 @@
-define(['d3-dispatch', './helper'], function(d3, helper) {
+import { dispatch } from 'd3-dispatch';
+import helper from './helper.js';
+
 function NOOP(selection, done){ done(); }
 
 function Chartlet(enter, update, exit, customEvents) {
@@ -6,7 +8,7 @@ function Chartlet(enter, update, exit, customEvents) {
   exit = exit || NOOP;
   customEvents = customEvents || [];
   var _propertyCache = {};
-  var _dispatch = d3.dispatch.apply(d3, ['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
+  var _dispatch = dispatch.apply(this, ['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
 
   // getter and setter of chartlet properties
 
@@ -81,6 +83,5 @@ function Chartlet(enter, update, exit, customEvents) {
   // return exports
   return exports;
 }
-// return module
-return Chartlet;
-});
+
+export default Chartlet;

@@ -16,42 +16,22 @@ bower install
 
 ### Normal workflow
 
-- Run grunt to automatically build the D3Kit distribution when one of the source files has changed.
+To run in development mode
 
-```
-grunt
-```
-
-- Run unit test. This will run once, then watch for file changes and re-run the tests automatically.
-
-```
-grunt test
+```bash
+npm run dev
 ```
 
-- Build library once (will create files in the dist folder)
+See your site at [localhost:7000](http://localhost:7000). It will automagically refresh when you change the code (via browsersync).
 
-```
-grunt build
-```
+### Test
 
-- See all available grunt tasks:
-
-```
-grunt --help
-```
-
-### Releasing
-
-Use one of these commands to build, bump version and push tags (bower use tags to keep track of versions).
-
-```
-npm version patch // will add version by 0.0.1
-npm version minor // will add version by 0.1
-npm version major // will add version by 1
+```bash
+# Run this command to test once.
+npm run test
+# Or run this command to test and retest when files are changed.
+npm run tdd
 ```
 
-If everything looks good, then
+Test coverage will be generated to ```coverage``` directory.
 
-```
-npm publish
-```
