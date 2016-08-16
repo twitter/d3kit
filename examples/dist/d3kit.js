@@ -59,6 +59,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.helper = exports.LayerOrganizer = exports.Chartlet = exports.Skeleton = exports.factory = undefined;
 
 	var _skeleton = __webpack_require__(1);
 
@@ -75,15 +76,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  enumerable: true,
 	  get: function get() {
 	    return _interopRequireDefault(_chartlet).default;
-	  }
-	});
-
-	var _factory = __webpack_require__(7);
-
-	Object.defineProperty(exports, 'factory', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_factory).default;
 	  }
 	});
 
@@ -105,7 +97,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
+	var _factory = __webpack_require__(7);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var factory = exports.factory = { createChart: _factory.createChart };
 
 /***/ },
 /* 1 */
