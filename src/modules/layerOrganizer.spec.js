@@ -1,7 +1,7 @@
 /* jshint expr: true */
 
 define([
-  'd3',
+  'd3-selection',
   './layerOrganizer'
 ], function(d3, LayerOrganizer){
   describe('LayerOrganizer', function(){

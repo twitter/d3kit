@@ -17,6 +17,8 @@ module.exports = {
       uglify2: {},
       paths: {
         'd3':                'empty:',
+        'd3-selection':      'empty:',
+        'd3-dispatch':       'empty:',
         'jquery':            'empty:',
         'lodash':            'empty:',
         'underscore.string': 'empty:'

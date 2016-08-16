@@ -1,7 +1,7 @@
 /* jshint expr: true */
 
 define([
-  'd3',
+  'd3-selection',
   './skeleton'
 ], function(d3, Skeleton){
   describe('Skeleton', function(){

@@ -1,4 +1,4 @@
-define(['d3', './helper'], function(d3, helper) {
+define(['d3-dispatch', './helper'], function(d3, helper) {
 function NOOP(selection, done){ done(); }
 
 function Chartlet(enter, update, exit, customEvents) {

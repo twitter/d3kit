@@ -1,9 +1,10 @@
 define([
-  'd3',
+  'd3-selection',
+  'd3-dispatch',
   './layerOrganizer',
   './helper'
 ],
-function(d3, LayerOrganizer, helper){
+function(d3Selection, d3Dispatch, LayerOrganizer, helper){
 //---------------------------------------------------
 // BEGIN code for this module
 //---------------------------------------------------
@@ -39,7 +40,7 @@ function Skeleton(chartNode, customOptions, customEvents){
   var _autoResizeToAspectRatio = false;
 
   // add svg element
-  var _svg = d3.select(chartNode).append('svg');
+  var _svg = d3Selection.select(chartNode).append('svg');
   var _vis = _svg.append('g');
   updateOffset();
 
@@ -47,7 +48,7 @@ function Skeleton(chartNode, customOptions, customEvents){
 
   // setup event dispatcher
   var _customEvents = customEvents ? customEvents.concat(BASE_EVENTS) : BASE_EVENTS;
-  var _dispatch = d3.dispatch.apply(d3, _customEvents);
+  var _dispatch = d3Dispatch.dispatch.apply(d3, _customEvents);
 
   // set default dimension
   dimension([

@@ -38,7 +38,7 @@ bower install d3kit --save
 or
 
 ```
-npm install d3 d3kit --save
+npm install d3-selection d3-dispatch d3kit --save
 ```
 
 ### Authors
