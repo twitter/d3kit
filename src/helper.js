@@ -9,7 +9,7 @@
 function bindMouseEventsToDispatcher(selection, dispatch, prefix) {
   return selection
     .on('click', function(d, i) {dispatch.call(prefix + 'Click', this, d, i);})
-    .on('mouseover', function(d, i) {dispatch.call(prefix + 'MouseOvern', this, d, i);})
+    .on('mouseover', function(d, i) {dispatch.call(prefix + 'MouseOver', this, d, i);})
     .on('mousemove', function(d, i) {dispatch.call(prefix + 'MouseMove', this, d, i);})
     .on('mouseout', function(d, i) {dispatch.call(prefix + 'MouseOut', this, d, i);});
 }
