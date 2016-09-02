@@ -6,7 +6,7 @@
 It is a lightweight library (~8KB, minified) to relieve you from the same groundwork tasks you found yourself doing again and again. Writing code in d3Kit way also help you create reusable and responsive components easily.
 
 <p align="center">
-  <a href="http://bl.ocks.org/kristw/7eef5cb21f3dfc1c0a4c" style="width:100%;">
+  <a href="https://bl.ocks.org/trebor/554ffd04106ab92cb8014cd9500f428c" style="width:100%;">
     <img src="resources/skeleton.png" height="400">
   </a>
 </p>
@@ -20,10 +20,10 @@ d3Kit features include, but are not limited to:
 * and many more...
 
 Here are a few examples of d3Kit in action:
-* [Dot in a box](http://bl.ocks.org/treboresque/f839966214cf66627df6)
-* [Bubble Chart](http://bl.ocks.org/kristw/75999459f1a34e05d580)
-* [Reusable Bubble Chart](http://bl.ocks.org/kristw/d8b15dd09a4c3510621c)
-* [Circle Chartlet](http://bl.ocks.org/treboresque/0f01e42fb3c9268d7105)
+* [Dot in a box](https://bl.ocks.org/trebor/b7155e556a90781d78ebe4101a35d062)
+* [Bubble Chart](https://bl.ocks.org/trebor/ccc5bb7da3fcaa73aa7cbee973d6dcb6)
+* [Reusable Bubble Chart](https://bl.ocks.org/trebor/2f4115302d3db4084ab6792863d7731e)
+* [Circle Chartlet](https://bl.ocks.org/trebor/3817668ce6a358a685cab29907c0f52f)
 
 For more examples, [check out our gallery](https://github.com/twitter/d3kit/wiki/Gallery).
 
