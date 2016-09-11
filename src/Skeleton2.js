@@ -1,6 +1,8 @@
 import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
 import debounce from 'lodash/debounce.js';
+import FitWatcher from 'slimfit/src/FitWatcher.js';
+import Fitter from 'slimfit/src/Fitter.js';
 import LayerOrganizer from './layerOrganizer.js';
 import helper from './helper.js';
 
@@ -168,13 +170,39 @@ class Skeleton {
     if(fitOptions) {
       this.state.fitOptions = fitOptions;
     }
+
+    const fitter = new Fitter(fitOptions);
+    const {changed, dimension} = fitter.fit(
+      this.svg.node(),
+      this.container.node()
+    );
+
+    if(changed) {
+      this.dimension([dimension.width, dimension.height]);
+    }
     return this;
   }
 
-  autoFit(enable, fitOptions) {
+  autoFit(enable, fitOptions, watchOptions) {
     this.state.autoFit = enable;
     if(fitOptions) {
       this.state.fitOptions = fitOptions;
+    }
+    if(enable) {
+      if(this.fitWatcher) {
+        this.fitWatcher.destroy();
+      }
+      this.fitWatcher = new FitWatcher(
+        this.svg.node(),
+        this.container.node(),
+        this.state.fitOptions,
+        watchOptions
+      )
+        .on('change', dim => this.dimension([dim.width, dim.height]))
+        .start();
+    } else if (this.fitWatcher) {
+      this.fitWatcher.destroy();
+      this.fitWatcher = null;
     }
     return this;
   }
