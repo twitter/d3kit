@@ -1,5 +1,6 @@
 import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
+import debounce from 'lodash/debounce.js';
 import LayerOrganizer from './layerOrganizer.js';
 import helper from './helper.js';
 
@@ -26,12 +27,12 @@ class Skeleton {
 
     this.setupDispatcher(customEvents);
 
-    this.updateDimension = helper.debounce(this.updateDimension.bind(this), 0);
-    this.dispatchData = helper.debounce(this.dispatchData.bind(this), 0);
-    this.dispatchOptions = helper.debounce(this.dispatchOptions.bind(this), 0);
-    this.dispatchResize = helper.debounce(this.dispatchResize.bind(this), 0);
+    this.updateDimension = debounce(this.updateDimension.bind(this), 1);
+    this.dispatchData = debounce(this.dispatchData.bind(this), 1);
+    this.dispatchOptions = debounce(this.dispatchOptions.bind(this), 1);
+    this.dispatchResize = debounce(this.dispatchResize.bind(this), 1);
 
-    this.updateDimension.now();
+    this.updateDimension();
   }
 
   setupDispatcher(eventNames) {
@@ -150,7 +151,7 @@ class Skeleton {
     const y = top + offset.y;
 
     this.rootG
-      .attr('transform', `translate(${x}, ${y})`);
+      .attr('transform', `translate(${x},${y})`);
 
     return this;
   }
