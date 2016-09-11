@@ -4,49 +4,43 @@ import LayerOrganizer from './layerOrganizer.js';
 import helper from './helper.js';
 
 class Skeleton {
-  constructor(selector, options) {
-    const mergedOptions = helper.deepExtend({
-      initialWidth: 720,
-      initialHeight: 500
-    }, options);
+  constructor(selector, options, customEvents) {
+    const mergedOptions = helper.deepExtend({}, Skeleton.DEFAULT_OPTIONS, options);
 
     this.state = {
       width: mergedOptions.initialWidth,
       height: mergedOptions.initialHeight,
       innerWidth: 0,
       innerHeight: 0,
-      margin: {
-        top: 30,
-        right: 30,
-        bottom: 30,
-        left: 30
-      },
-      offset: {
-        x: 0.5,
-        y: 0.5,
-      },
       autoFit: false,
       fitOptions: null,
       options: mergedOptions,
       data: null,
     };
 
+    this.customEvents = customEvents;
     this.container = select(selector);
     this.svg = this.container.append('svg');
     this.rootG = this.svg.append('g');
     this.layers = new LayerOrganizer(this.rootG);
 
-    this.setupDispatcher();
+    this.setupDispatcher(customEvents);
 
-    this.updateDimension = helper.debounce(this.updateDimension, 0);
-    this.fireEventResize = helper.debounce(this.fireEventResize, 0);
+    this.updateDimension = helper.debounce(this.updateDimension.bind(this), 0);
+    this.dispatchData = helper.debounce(this.dispatchData.bind(this), 0);
+    this.dispatchOptions = helper.debounce(this.dispatchOptions.bind(this), 0);
+    this.dispatchResize = helper.debounce(this.dispatchResize.bind(this), 0);
 
-    this.updateDimension();
+    this.updateDimension.now();
   }
 
   setupDispatcher(eventNames) {
-    this.eventNames = ['data', 'options', 'resize'].concat(eventNames);
+    this.eventNames = Skeleton.DEFAULT_EVENTS.concat(eventNames);
     this.dispatcher = dispatch.apply(this, this.eventNames);
+  }
+
+  getCustomEventNames() {
+    return this.customEvents;
   }
 
   getInnerWidth() {
@@ -59,22 +53,22 @@ class Skeleton {
 
   width(...args) {
     if(args.length === 0) return this.state.width;
-    const newValue = Math.floor(args[0]);
+    const newValue = Math.floor(+args[0]);
     if(newValue !== this.state.width) {
       this.state.width = newValue;
       this.updateDimension();
-      this.fireEventResize();
+      this.dispatchResize();
     }
     return this;
   }
 
   height(...args) {
     if(args.length === 0) return this.state.height;
-    const newValue = Math.floor(args[0]);
+    const newValue = Math.floor(+args[0]);
     if(newValue !== this.state.height) {
       this.state.height = newValue;
       this.updateDimension();
-      this.fireEventResize();
+      this.dispatchResize();
     }
     return this;
   }
@@ -84,49 +78,76 @@ class Skeleton {
       return [this.state.width, this.state.height];
     }
     const [w, h] = args[0];
-    this.width(w);
-    this.height(h);
+    this.width(w).height(h);
+    return this;
+  }
+
+  data(...args) {
+    if(args.length === 0) return this.state.data;
+    const [newData] = args;
+    this.state.data = newData;
+    this.dispatchData();
     return this;
   }
 
   margin(...args) {
-    if(args.length === 0) return this.state.margin;
-    const newMargin = Object.assign({}, this.state.margin, args[0]);
-    const changed = Object.keys(this.state.margin).some(field => {
-      return this.state.margin[field] !== newMargin[field];
+    if(args.length === 0) return this.state.options.margin;
+    const oldMargin = this.state.options.margin;
+    const newMargin = Object.assign({}, this.state.options.margin, args[0]);
+    const changed = Object.keys(oldMargin).some(field => {
+      return oldMargin[field] !== newMargin[field];
     });
     if(changed) {
-      this.state.margin = newMargin;
+      this.state.options.margin = newMargin;
       this.updateDimension();
-      this.fireEventResize();
+      this.dispatchResize();
     }
     return this;
   }
 
   offset(...args) {
-    if(args.length === 0) return this.state.offset;
-    const newOffset = Object.assign({}, this.state.ofset, args[0]);
-    const changed = Object.keys(this.state.offset).some(field => {
-      return this.state.offset[field] !== newOffset[field];
+    if(args.length === 0) return this.state.options.offset;
+    const oldOffset = this.state.options.offset;
+    const newOffset = Object.assign({}, this.state.offset, args[0]);
+    const changed = Object.keys(oldOffset).some(field => {
+      return oldOffset[field] !== newOffset[field];
     });
     if(changed) {
-      this.state.offset = newOffset;
+      this.state.options.offset = newOffset;
       this.updateDimension();
-      this.fireEventResize();
+      this.dispatchResize();
     }
     return this;
   }
 
+  options(...args) {
+    if(args.length === 0) return this.state.options;
+    const [newOptions] = args;
+    if(newOptions.margin) {
+      this.margin(newOptions.margin);
+    }
+    if(newOptions.offset) {
+      this.offset(newOptions.offset);
+    }
+    this.state.options = helper.deepExtend(this.state.options, newOptions);
+    this.dispatchOptions();
+    return this;
+  }
+
   updateDimension() {
-    this.state.innerWidth = this.state.width - this.state.margin.left - this.state.margin.right;
-    this.state.innerHeight = this.state.height - this.state.margin.top - this.state.margin.bottom;
+    const {width, height} = this.state;
+    const {offset, margin} = this.state.options;
+    const {top, right, bottom, left} = margin;
+
+    this.state.innerWidth = width - left - right;
+    this.state.innerHeight = height - top - bottom;
 
     this.svg
-      .attr('width', this.state.width)
-      .attr('height', this.state.height);
+      .attr('width', width)
+      .attr('height', height);
 
-    const x = this.state.margin.left + this.state.offset.x;
-    const y = this.state.margin.top + this.state.offset.y;
+    const x = left + offset.x;
+    const y = top + offset.y;
 
     this.rootG
       .attr('transform', `translate(${x}, ${y})`);
@@ -138,28 +159,14 @@ class Skeleton {
     return this.state.data !== null && this.state.data !== undefined;
   }
 
-  data(...args) {
-    if(args.length === 0) return this.state.data;
-    const [newData] = args;
-    this.state.data = newData;
-    this.dispatcher.call('data', this, newData);
-    return this;
-  }
-
-  options(...args) {
-    if(args.length === 0) return this.state.options;
-    const [newOptions] = args;
-    this.state.options = helper.deepExtend(this.state.options, newOptions);
-    this.dispatcher.call('options', this, newOptions);
-    return this;
-  }
-
   hasNonZeroArea() {
     return (this.state.innerWidth > 0 && this.state.innerHeight > 0);
   }
 
   fit(fitOptions) {
-    this.state.fitOptions = fitOptions;
+    if(fitOptions) {
+      this.state.fitOptions = fitOptions;
+    }
     return this;
   }
 
@@ -171,8 +178,19 @@ class Skeleton {
     return this;
   }
 
-  fireEventResize() {
-    this.dispatcher.call('resize', this, [_width, _height, _innerWidth, _innerHeight]);
+  dispatchData() {
+    this.dispatcher.call('data', this, this.state.data);
+    return this;
+  }
+
+  dispatchOptions() {
+    this.dispatcher.call('options', this, this.state.options);
+    return this;
+  }
+
+  dispatchResize() {
+    const {width, height, innerWidth, innerHeight} = this.state;
+    this.dispatcher.call('resize', this, [width, height, innerWidth, innerHeight]);
     return this;
   }
 
@@ -186,5 +204,22 @@ class Skeleton {
     return this;
   }
 }
+
+Skeleton.DEFAULT_OPTIONS = {
+  initialWidth: 720,
+  initialHeight: 500,
+  margin: {
+    top: 30,
+    right: 30,
+    bottom: 30,
+    left: 30
+  },
+  offset: {
+    x: 0.5,
+    y: 0.5,
+  },
+};
+
+Skeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
 export default Skeleton;
