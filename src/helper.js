@@ -1,31 +1,3 @@
-/**
- * Example usage:
- * selection.call(d3Kit.helper.bindMouseEventsToDispatcher, dispatch, 'bar')
- *
- * @param  {[type]} dispatch [description]
- * @param  {[type]} prefix   [description]
- * @return {[type]}          [description]
- */
-function bindMouseEventsToDispatcher(selection, dispatch, prefix) {
-  return selection
-    .on('click', function(d, i) {dispatch.call(prefix + 'Click', this, d, i);})
-    .on('mouseover', function(d, i) {dispatch.call(prefix + 'MouseOver', this, d, i);})
-    .on('mousemove', function(d, i) {dispatch.call(prefix + 'MouseMove', this, d, i);})
-    .on('mouseout', function(d, i) {dispatch.call(prefix + 'MouseOut', this, d, i);});
-}
-
-function removeAllChildren(selection, noTransition) {
-  if (noTransition) {
-    return selection.selectAll('*').remove();
-  }
-  else {
-    return selection.selectAll('*')
-      .transition()
-        .style('opacity', 0)
-        .remove();
-  }
-}
-
 // Returns true if it is a DOM element
 // From http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
 function isElement(o) {
@@ -36,16 +8,6 @@ function isElement(o) {
 }
 
 const isNaN = Number.isNaN ? Number.isNaN : window.isNaN;
-
-// Check whether s is element if not then do the querySelector
-function $(s) {
-  return isElement(s) ? s : document.querySelector(s);
-}
-
-// To get a proper array from a NodeList that matches the CSS selector
-function $$(s) {
-  return Array.isArray(s) ? s : [].slice.call(document.querySelectorAll(s));
-}
 
 //---------------------------------------------------
 // From http://youmightnotneedjquery.com/
@@ -266,9 +228,6 @@ function functor(v) {
 /* jshint ignore:end */
 
 export default {
-  $,
-  $$,
-
   dasherize,
   debounce,
 
@@ -286,7 +245,4 @@ export default {
 
   rebind,
   functor,
-
-  removeAllChildren,
-  bindMouseEventsToDispatcher,
 };

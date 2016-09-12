@@ -7,7 +7,6 @@ describe.only('Skeleton2', () => {
   beforeEach(() => {
     element = document.body.appendChild(document.createElement('div'));
     skeleton = new Skeleton(element, null, ['custom1', 'custom2']);
-    skeleton.updateDimension.flush();
     $element = select(element);
     $svg = $element.select('svg');
   });
@@ -45,7 +44,7 @@ describe.only('Skeleton2', () => {
         .options({
           margin: { left: 10, right: 10 },
         })
-        .updateDimension.flush();
+        .updateDimensionNow();
       expect(skeleton.getInnerWidth()).to.equal(80);
     });
   });
@@ -57,7 +56,7 @@ describe.only('Skeleton2', () => {
         .options({
           margin: { top: 10, bottom: 20 },
         })
-        .updateDimension.flush();
+        .updateDimensionNow();
       expect(skeleton.getInnerHeight()).to.equal(70);
     });
   });
@@ -131,7 +130,7 @@ describe.only('Skeleton2', () => {
       skeleton
         .width(100)
         .margin({ left: 15, right: 15 })
-        .updateDimension.flush();
+        .updateDimensionNow();
 
       expect(skeleton.getInnerWidth()).to.equal(70);
     });
@@ -139,7 +138,7 @@ describe.only('Skeleton2', () => {
       skeleton
         .height(100)
         .margin({ top: 10, bottom: 10 })
-        .updateDimension.flush();
+        .updateDimensionNow();
 
       expect(skeleton.getInnerHeight()).to.equal(80);
     });
@@ -148,7 +147,7 @@ describe.only('Skeleton2', () => {
         .margin({ left: 30, top: 30 })
         .offset({x: 0.5, y: 0.5})
         .margin({ left: 10, top: 10 })
-        .updateDimension.flush();
+        .updateDimensionNow();
 
       const translate = skeleton.rootG.attr('transform');
       expect(translate).to.equal('translate(10.5,10.5)');
@@ -180,7 +179,7 @@ describe.only('Skeleton2', () => {
         .offset({x: 0.5, y: 0.5})
         .margin({ left: 10, top: 10 })
         .offset({x: 2, y: 3})
-        .updateDimension.flush();
+        .updateDimensionNow();
       const translate = skeleton.rootG.attr('transform');
       expect(translate).to.equal('translate(12,13)');
     });
@@ -194,7 +193,7 @@ describe.only('Skeleton2', () => {
     it('should set <svg> width when called with Number as the first argument', () => {
       skeleton
         .width(300)
-        .updateDimension.flush();
+        .updateDimensionNow();
       expect(+$svg.attr('width')).to.equal(300);
     });
     it('after setting, should dispatch "resize" event', done => {
@@ -215,7 +214,7 @@ describe.only('Skeleton2', () => {
     it('should set <svg> height when called with Number as the first argument', () => {
       skeleton
         .height(300)
-        .updateDimension.flush();
+        .updateDimensionNow();
       expect(+$svg.attr('height')).to.equal(300);
     });
     it('after setting, should dispatch "resize" event', done => {

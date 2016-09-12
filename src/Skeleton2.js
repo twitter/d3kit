@@ -8,14 +8,17 @@ import helper from './helper.js';
 
 class Skeleton {
   constructor(selector, options, customEvents) {
-    const mergedOptions = helper.deepExtend({}, Skeleton.DEFAULT_OPTIONS, options);
+    const mergedOptions = helper.deepExtend(
+      {},
+      Skeleton.DEFAULT_OPTIONS,
+      options
+    );
 
     this.state = {
       width: mergedOptions.initialWidth,
       height: mergedOptions.initialHeight,
       innerWidth: 0,
       innerHeight: 0,
-      autoFit: false,
       fitOptions: null,
       options: mergedOptions,
       data: null,
@@ -34,7 +37,7 @@ class Skeleton {
     this.dispatchOptions = debounce(this.dispatchOptions.bind(this), 1);
     this.dispatchResize = debounce(this.dispatchResize.bind(this), 1);
 
-    this.updateDimension();
+    this.updateDimensionNow();
   }
 
   setupDispatcher(eventNames) {
@@ -149,21 +152,28 @@ class Skeleton {
       .attr('width', width)
       .attr('height', height);
 
-    const x = left + offset.x;
-    const y = top + offset.y;
-
-    this.rootG
-      .attr('transform', `translate(${x},${y})`);
+    this.rootG.attr(
+      'transform',
+      `translate(${left + offset.x},${top + offset.y})`
+    );
 
     return this;
   }
 
+  updateDimensionNow() {
+    this.updateDimension();
+    this.updateDimension.flush();
+    return this;
+  }
+
   hasData() {
-    return this.state.data !== null && this.state.data !== undefined;
+    const {data} = this.state;
+    return data !== null && data !== undefined;
   }
 
   hasNonZeroArea() {
-    return (this.state.innerWidth > 0 && this.state.innerHeight > 0);
+    const {innerWidth, innerHeight} = this.state;
+    return (innerWidth > 0 && innerHeight > 0);
   }
 
   fit(fitOptions) {
@@ -184,7 +194,6 @@ class Skeleton {
   }
 
   autoFit(enable, fitOptions, watchOptions) {
-    this.state.autoFit = enable;
     if(fitOptions) {
       this.state.fitOptions = fitOptions;
     }
@@ -231,6 +240,17 @@ class Skeleton {
   off(name) {
     this.dispatcher.on(name, null);
     return this;
+  }
+
+  destroy() {
+    this.eventNames.forEach(name => {
+      this.off(name);
+    });
+
+    if(this.fitWatcher) {
+      this.fitWatcher.destroy();
+      this.fitWatcher = null;
+    }
   }
 }
 
