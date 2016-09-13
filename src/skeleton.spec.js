@@ -258,6 +258,31 @@ describe('Skeleton', () => {
     });
   });
 
+  describe('fit(fitOptions)', ()=>{
+    it('should fit the skeleton to container as instructed', ()=>{
+      $element
+        .style('width', '500px')
+        .style('height', '500px');
+      skeleton
+        .fit({
+          width: '100%',
+          height: '100%',
+        })
+        .updateDimensionNow();
+
+      expect(skeleton.dimension()).to.deep.equal([500,500]);
+
+      skeleton
+        .fit({
+          width: '50%',
+          height: '80%',
+        })
+        .updateDimensionNow();
+
+      expect(skeleton.dimension()).to.deep.equal([250,400]);
+    });
+  });
+
   describe('.hasData()', () => {
     it('should return true when data are not null nor undefined', () => {
       skeleton.data({});

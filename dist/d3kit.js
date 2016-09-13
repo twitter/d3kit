@@ -141,7 +141,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Skeleton = function () {
-	  function Skeleton(selector, options, customEvents) {
+	  _createClass(Skeleton, null, [{
+	    key: 'getCustomEventNames',
+	    value: function getCustomEventNames() {
+	      return [];
+	    }
+	  }]);
+
+	  function Skeleton(selector, options) {
 	    _classCallCheck(this, Skeleton);
 
 	    var mergedOptions = (0, _helper.deepExtend)({}, Skeleton.DEFAULT_OPTIONS, options);
@@ -156,12 +163,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      data: null
 	    };
 
-	    this.customEvents = customEvents;
 	    this.container = (0, _d3Selection.select)(selector);
 	    this.svg = this.container.append('svg');
 	    this.rootG = this.svg.append('g');
 	    this.layers = new _layerOrganizer2.default(this.rootG);
 
+	    var customEvents = this.constructor.getCustomEventNames();
 	    this.setupDispatcher(customEvents);
 
 	    this.updateDimension = (0, _debounce2.default)(this.updateDimension.bind(this), 1);
@@ -174,14 +181,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  _createClass(Skeleton, [{
 	    key: 'setupDispatcher',
-	    value: function setupDispatcher(eventNames) {
-	      this.eventNames = Skeleton.DEFAULT_EVENTS.concat(eventNames);
+	    value: function setupDispatcher() {
+	      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+	      this.customEventNames = customEventNames;
+	      this.eventNames = Skeleton.DEFAULT_EVENTS.concat(customEventNames);
 	      this.dispatcher = _d3Dispatch.dispatch.apply(this, this.eventNames);
 	    }
 	  }, {
 	    key: 'getCustomEventNames',
 	    value: function getCustomEventNames() {
-	      return this.customEvents;
+	      return this.customEventNames;
 	    }
 	  }, {
 	    key: 'getInnerWidth',
@@ -1474,47 +1484,81 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	exports.default = function (mainContainer, tag) {
-	  var layers = {};
-	  tag = tag || 'g';
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-	  function createLayerFromName(container, layerName, prefix) {
-	    var id = prefix ? prefix + '.' + layerName : layerName;
-	    if (layers.hasOwnProperty(id)) {
-	      throw 'invalid or duplicate layer id: ' + id;
+	// EXAMPLE USAGE:
+	//
+	// var layers = new d3LayerOrganizer(vis);
+	// layers.create([
+	//   {'axis': ['bar', 'mark']},
+	//   'glass',
+	//   'label'
+	// ]);
+	//
+	// Then access the layers via
+	// layers.get('axis'),
+	// layers.get('axis.bar'),
+	// layers.get('axis.mark'),
+	// layers.get('glass'),
+	// layers.get('label')
+	//
+
+	exports.default = function (mainContainer) {
+	  var layers = {};
+
+	  function createLayerFromName(container, layerName) {
+	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
+
+	    var chunks = layerName.split('.');
+	    var name = void 0,
+	        tag = void 0;
+	    if (chunks.length > 1) {
+	      tag = chunks[0].length > 0 ? chunks[0] : 'g';
+	      name = chunks[1];
+	    } else {
+	      tag = 'g';
+	      name = chunks[0];
 	    }
 
-	    var layer = container.append(tag).classed((0, _kebabCase2.default)(layerName) + '-layer', true);
+	    var id = '' + prefix + name;
+	    if (layers.hasOwnProperty(id)) {
+	      throw new Error('invalid or duplicate layer id: ' + id);
+	    }
+	    var className = (0, _kebabCase2.default)(name) + '-layer';
+	    var layer = container.append(tag).classed(className, true);
 
 	    layers[id] = layer;
 	    return layer;
 	  }
 
-	  function createLayerFromInfo(container, layerInfo, prefix) {
-	    if (Array.isArray(layerInfo)) {
-	      return layerInfo.map(function (info) {
-	        createLayerFromInfo(container, info, prefix);
+	  function createLayerFromConfig(container, config) {
+	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
+
+	    if (Array.isArray(config)) {
+	      return config.map(function (info) {
+	        return createLayerFromConfig(container, info, prefix);
 	      });
-	    } else if ((0, _isObject2.default)(layerInfo)) {
-	      var parentKey = Object.keys(layerInfo)[0];
+	    } else if ((0, _isObject2.default)(config)) {
+	      var _Object$keys = Object.keys(config);
+
+	      var _Object$keys2 = _slicedToArray(_Object$keys, 1);
+
+	      var parentKey = _Object$keys2[0];
+
 	      var parentLayer = createLayerFromName(container, parentKey, prefix);
-	      createLayerFromInfo(parentLayer, layerInfo[parentKey], prefix ? prefix + '.' + parentKey : parentKey);
+	      createLayerFromConfig(parentLayer, config[parentKey], '' + prefix + parentKey + '.');
 	      return parentLayer;
-	    } else {
-	      return createLayerFromName(container, layerInfo, prefix);
 	    }
+
+	    return createLayerFromName(container, config, prefix);
 	  }
 
-	  function createLayer(layerInfo) {
-	    return createLayerFromInfo(mainContainer, layerInfo);
+	  function createLayer(config) {
+	    return createLayerFromConfig(mainContainer, config);
 	  }
 
 	  function create(layerNames) {
-	    if (Array.isArray(layerNames)) {
-	      return layerNames.map(createLayer);
-	    } else {
-	      return createLayer(layerNames);
-	    }
+	    return Array.isArray(layerNames) ? layerNames.map(createLayer) : createLayer(layerNames);
 	  }
 
 	  function get(layerName) {
@@ -2087,6 +2131,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  return out;
 	}
+
+	//---------------------------------------------------
+	// From D3 v3
+	//---------------------------------------------------
 
 	// Method is assumed to be a standard D3 getter-setter:
 	// If passed with no arguments, gets the value.
