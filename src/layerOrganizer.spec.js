@@ -12,7 +12,7 @@ describe('LayerOrganizer', () => {
   });
 
   describe('new LayerOrganizer(container)', () => {
-    it('should create an organizer', ()=>{
+    it('should create an organizer', () => {
       const l = new LayerOrganizer(container);
       expect(l).to.exist;
     });

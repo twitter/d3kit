@@ -48,8 +48,7 @@ export default function (mainContainer) {
     if (Array.isArray(config)) {
       return config
         .map(info => createLayerFromConfig(container, info, prefix));
-    }
-    else if (isObject(config)) {
+    } else if (isObject(config)) {
       const [parentKey] = Object.keys(config);
       const parentLayer = createLayerFromName(container, parentKey, prefix);
       createLayerFromConfig(parentLayer, config[parentKey], `${prefix}${parentKey}.`);
