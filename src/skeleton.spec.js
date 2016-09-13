@@ -15,16 +15,16 @@ describe('Skeleton', () => {
     it('should create <svg> inside the element', () => {
       expect($element.select('svg').size()).to.be.equal(1);
     });
-    it('which is accessible from skeleton.svg', ()=>{
+    it('which is accessible from skeleton.svg', () => {
       expect(skeleton.svg).to.exist;
     });
     it('should create <g> inside the <svg> above', () => {
       expect($element.select('svg').select('g').size()).to.be.equal(1);
     });
-    it('which is accessible from skeleton.rootG', ()=>{
+    it('which is accessible from skeleton.rootG', () => {
       expect(skeleton.rootG).to.exist;
     });
-    it('should create a dispatcher as skeleton.dispatcher', ()=>{
+    it('should create a dispatcher as skeleton.dispatcher', () => {
       const dispatcher = skeleton.dispatcher;
       expect(dispatcher).to.be.an('Object');
       expect(dispatcher.call).to.be.a('Function');
@@ -145,7 +145,7 @@ describe('Skeleton', () => {
     it('should update the root <g> transform/translate', () => {
       skeleton
         .margin({ left: 30, top: 30 })
-        .offset({x: 0.5, y: 0.5})
+        .offset({ x: 0.5, y: 0.5 })
         .margin({ left: 10, top: 10 })
         .updateDimensionNow();
 
@@ -164,21 +164,21 @@ describe('Skeleton', () => {
 
   describe('.offset(offset)', () => {
     it('should return offset when called without argument', () => {
-      const offset = {x: 1, y: 1};
+      const offset = { x: 1, y: 1 };
       skeleton.offset(offset);
       expect(skeleton.offset()).to.deep.equal(offset);
     });
     it('should set offset when called with at least one argument', () => {
       skeleton
-        .offset({x: 1, y: 1})
-        .offset({x: 2, y: 3});
-      expect(skeleton.offset()).to.deep.equal({x: 2, y: 3});
+        .offset({ x: 1, y: 1 })
+        .offset({ x: 2, y: 3 });
+      expect(skeleton.offset()).to.deep.equal({ x: 2, y: 3 });
     });
     it('should update the root <g> transform/translate', () => {
       skeleton
-        .offset({x: 0.5, y: 0.5})
+        .offset({ x: 0.5, y: 0.5 })
         .margin({ left: 10, top: 10 })
-        .offset({x: 2, y: 3})
+        .offset({ x: 2, y: 3 })
         .updateDimensionNow();
       const translate = skeleton.rootG.attr('transform');
       expect(translate).to.equal('translate(12,13)');
@@ -295,5 +295,4 @@ describe('Skeleton', () => {
       }, 0);
     });
   });
-
 });

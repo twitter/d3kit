@@ -58,9 +58,9 @@ class Skeleton {
   }
 
   width(...args) {
-    if(args.length === 0) return this.state.width;
+    if (args.length === 0) return this.state.width;
     const newValue = Math.floor(+args[0]);
-    if(newValue !== this.state.width) {
+    if (newValue !== this.state.width) {
       this.state.width = newValue;
       this.updateDimension();
       this.dispatchResize();
@@ -69,9 +69,9 @@ class Skeleton {
   }
 
   height(...args) {
-    if(args.length === 0) return this.state.height;
+    if (args.length === 0) return this.state.height;
     const newValue = Math.floor(+args[0]);
-    if(newValue !== this.state.height) {
+    if (newValue !== this.state.height) {
       this.state.height = newValue;
       this.updateDimension();
       this.dispatchResize();
@@ -89,7 +89,7 @@ class Skeleton {
   }
 
   data(...args) {
-    if(args.length === 0) return this.state.data;
+    if (args.length === 0) return this.state.data;
     const [newData] = args;
     this.state.data = newData;
     this.dispatchData();
@@ -97,13 +97,12 @@ class Skeleton {
   }
 
   margin(...args) {
-    if(args.length === 0) return this.state.options.margin;
+    if (args.length === 0) return this.state.options.margin;
     const oldMargin = this.state.options.margin;
     const newMargin = extend({}, this.state.options.margin, args[0]);
-    const changed = Object.keys(oldMargin).some(field => {
-      return oldMargin[field] !== newMargin[field];
-    });
-    if(changed) {
+    const changed = Object.keys(oldMargin)
+      .some(field => oldMargin[field] !== newMargin[field]);
+    if (changed) {
       this.state.options.margin = newMargin;
       this.updateDimension();
       this.dispatchResize();
@@ -112,13 +111,12 @@ class Skeleton {
   }
 
   offset(...args) {
-    if(args.length === 0) return this.state.options.offset;
+    if (args.length === 0) return this.state.options.offset;
     const oldOffset = this.state.options.offset;
     const newOffset = Object.assign({}, this.state.offset, args[0]);
-    const changed = Object.keys(oldOffset).some(field => {
-      return oldOffset[field] !== newOffset[field];
-    });
-    if(changed) {
+    const changed = Object.keys(oldOffset)
+      .some(field => oldOffset[field] !== newOffset[field]);
+    if (changed) {
       this.state.options.offset = newOffset;
       this.updateDimension();
       this.dispatchResize();
@@ -127,12 +125,12 @@ class Skeleton {
   }
 
   options(...args) {
-    if(args.length === 0) return this.state.options;
+    if (args.length === 0) return this.state.options;
     const [newOptions] = args;
-    if(newOptions.margin) {
+    if (newOptions.margin) {
       this.margin(newOptions.margin);
     }
-    if(newOptions.offset) {
+    if (newOptions.offset) {
       this.offset(newOptions.offset);
     }
     this.state.options = deepExtend(this.state.options, newOptions);
@@ -141,9 +139,9 @@ class Skeleton {
   }
 
   updateDimension() {
-    const {width, height} = this.state;
-    const {offset, margin} = this.state.options;
-    const {top, right, bottom, left} = margin;
+    const { width, height } = this.state;
+    const { offset, margin } = this.state.options;
+    const { top, right, bottom, left } = margin;
 
     this.state.innerWidth = width - left - right;
     this.state.innerHeight = height - top - bottom;
@@ -167,38 +165,38 @@ class Skeleton {
   }
 
   hasData() {
-    const {data} = this.state;
+    const { data } = this.state;
     return data !== null && data !== undefined;
   }
 
   hasNonZeroArea() {
-    const {innerWidth, innerHeight} = this.state;
+    const { innerWidth, innerHeight } = this.state;
     return (innerWidth > 0 && innerHeight > 0);
   }
 
   fit(fitOptions) {
-    if(fitOptions) {
+    if (fitOptions) {
       this.state.fitOptions = fitOptions;
     }
 
     const fitter = new Fitter(fitOptions);
-    const {changed, dimension} = fitter.fit(
+    const { changed, dimension } = fitter.fit(
       this.svg.node(),
       this.container.node()
     );
 
-    if(changed) {
+    if (changed) {
       this.dimension([dimension.width, dimension.height]);
     }
     return this;
   }
 
   autoFit(enable, fitOptions, watchOptions) {
-    if(fitOptions) {
+    if (fitOptions) {
       this.state.fitOptions = fitOptions;
     }
-    if(enable) {
-      if(this.fitWatcher) {
+    if (enable) {
+      if (this.fitWatcher) {
         this.fitWatcher.destroy();
       }
       this.fitWatcher = new FitWatcher(
@@ -227,7 +225,7 @@ class Skeleton {
   }
 
   dispatchResize() {
-    const {width, height, innerWidth, innerHeight} = this.state;
+    const { width, height, innerWidth, innerHeight } = this.state;
     this.dispatcher.call('resize', this, [width, height, innerWidth, innerHeight]);
     return this;
   }
@@ -247,7 +245,7 @@ class Skeleton {
       this.off(name);
     });
 
-    if(this.fitWatcher) {
+    if (this.fitWatcher) {
       this.fitWatcher.destroy();
       this.fitWatcher = null;
     }
@@ -261,7 +259,7 @@ Skeleton.DEFAULT_OPTIONS = {
     top: 30,
     right: 30,
     bottom: 30,
-    left: 30
+    left: 30,
   },
   offset: {
     x: 0.5,

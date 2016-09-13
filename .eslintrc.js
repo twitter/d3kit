@@ -1,7 +1,6 @@
 module.exports = {
   "extends": "airbnb",
   "plugins": [
-    "react",
     "mocha"
   ],
   "rules": {
