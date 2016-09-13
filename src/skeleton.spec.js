@@ -6,7 +6,7 @@ describe('Skeleton', () => {
 
   beforeEach(() => {
     element = document.body.appendChild(document.createElement('div'));
-    skeleton = new Skeleton(element, null, ['custom1', 'custom2']);
+    skeleton = new Skeleton(element, null);
     $element = select(element);
     $svg = $element.select('svg');
   });
@@ -33,7 +33,16 @@ describe('Skeleton', () => {
 
   describe('.getCustomEventNames()', () => {
     it('should return custom event names', () => {
-      expect(skeleton.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
+      expect(skeleton.getCustomEventNames()).to.deep.equal([]);
+    });
+    it('should return custom event names', () => {
+      class Chart extends Skeleton {
+        static getCustomEventNames() {
+          return ['custom1', 'custom2'];
+        }
+      }
+      const chart = new Chart();
+      expect(chart.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
     });
   });
 

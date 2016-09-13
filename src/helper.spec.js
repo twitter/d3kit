@@ -66,7 +66,7 @@ describe('helper', function () {
     });
   });
 
-  describe('#extend(target, src1, src2, ...)', function () {
+  describe('.extend(target, src1, src2, ...)', function () {
     it('should copy fields from sources into target', function () {
       expect(helper.extend({}, {
         a: 1,

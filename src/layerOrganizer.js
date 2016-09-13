@@ -18,51 +18,55 @@ import kebabCase from 'lodash/kebabCase.js';
 // layers.get('label')
 //
 
-export default function (mainContainer, tag) {
+export default function (mainContainer) {
   const layers = {};
-  tag = tag || 'g';
 
-  function createLayerFromName(container, layerName, prefix) {
-    const id = prefix ? prefix + '.' + layerName : layerName;
-    if (layers.hasOwnProperty(id)) {
-      throw 'invalid or duplicate layer id: ' + id;
+  function createLayerFromName(container, layerName, prefix = '') {
+    const chunks = layerName.split('.');
+    let name, tag;
+    if (chunks.length > 1) {
+      tag = chunks[0].length > 0 ? chunks[0] : 'g';
+      name = chunks[1];
+    } else {
+      tag = 'g';
+      name = chunks[0];
     }
 
+    const id = `${prefix}${name}`;
+    if (layers.hasOwnProperty(id)) {
+      throw new Error(`invalid or duplicate layer id: ${id}`);
+    }
+    const className = `${kebabCase(name)}-layer`;
     const layer = container.append(tag)
-      .classed(kebabCase(layerName) + '-layer', true);
+      .classed(className, true);
 
     layers[id] = layer;
     return layer;
   }
 
-  function createLayerFromInfo(container, layerInfo, prefix) {
-    if (Array.isArray(layerInfo)) {
-      return layerInfo.map(function (info) {
-        createLayerFromInfo(container, info, prefix);
-      });
+  function createLayerFromConfig(container, config, prefix = '') {
+    if (Array.isArray(config)) {
+      return config
+        .map(info => createLayerFromConfig(container, info, prefix));
     }
-    else if (isObject(layerInfo)) {
-      const parentKey = Object.keys(layerInfo)[0];
+    else if (isObject(config)) {
+      const [parentKey] = Object.keys(config);
       const parentLayer = createLayerFromName(container, parentKey, prefix);
-      createLayerFromInfo(parentLayer, layerInfo[parentKey], prefix ? prefix + '.' + parentKey : parentKey);
+      createLayerFromConfig(parentLayer, config[parentKey], `${prefix}${parentKey}.`);
       return parentLayer;
     }
-    else {
-      return createLayerFromName(container, layerInfo, prefix);
-    }
+
+    return createLayerFromName(container, config, prefix);
   }
 
-  function createLayer(layerInfo) {
-    return createLayerFromInfo(mainContainer, layerInfo);
+  function createLayer(config) {
+    return createLayerFromConfig(mainContainer, config);
   }
 
   function create(layerNames) {
-    if (Array.isArray(layerNames)) {
-      return layerNames.map(createLayer);
-    }
-    else {
-      return createLayer(layerNames);
-    }
+    return Array.isArray(layerNames)
+      ? layerNames.map(createLayer)
+      : createLayer(layerNames);
   }
 
   function get(layerName) {

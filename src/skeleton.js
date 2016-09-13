@@ -7,7 +7,11 @@ import LayerOrganizer from './layerOrganizer.js';
 import { deepExtend, extend } from './helper.js';
 
 class Skeleton {
-  constructor(selector, options, customEvents) {
+  static getCustomEventNames() {
+    return [];
+  }
+
+  constructor(selector, options) {
     const mergedOptions = deepExtend(
       {},
       Skeleton.DEFAULT_OPTIONS,
@@ -24,12 +28,12 @@ class Skeleton {
       data: null,
     };
 
-    this.customEvents = customEvents;
     this.container = select(selector);
     this.svg = this.container.append('svg');
     this.rootG = this.svg.append('g');
     this.layers = new LayerOrganizer(this.rootG);
 
+    const customEvents = this.constructor.getCustomEventNames();
     this.setupDispatcher(customEvents);
 
     this.updateDimension = debounce(this.updateDimension.bind(this), 1);
@@ -40,13 +44,14 @@ class Skeleton {
     this.updateDimensionNow();
   }
 
-  setupDispatcher(eventNames) {
-    this.eventNames = Skeleton.DEFAULT_EVENTS.concat(eventNames);
+  setupDispatcher(customEventNames = []) {
+    this.customEventNames = customEventNames;
+    this.eventNames = Skeleton.DEFAULT_EVENTS.concat(customEventNames);
     this.dispatcher = dispatch.apply(this, this.eventNames);
   }
 
   getCustomEventNames() {
-    return this.customEvents;
+    return this.customEventNames;
   }
 
   getInnerWidth() {
