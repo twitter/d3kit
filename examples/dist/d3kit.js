@@ -59,6 +59,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.helper = exports.LayerOrganizer = exports.Chartlet = exports.Skeleton = undefined;
 
 	var _Skeleton = __webpack_require__(1);
 
@@ -69,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var _chartlet = __webpack_require__(20);
+	var _chartlet = __webpack_require__(34);
 
 	Object.defineProperty(exports, 'Chartlet', {
 	  enumerable: true,
@@ -87,16 +88,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var _helper = __webpack_require__(19);
+	var _helper2 = __webpack_require__(32);
 
-	Object.defineProperty(exports, 'helper', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_helper).default;
-	  }
-	});
+	var _helper = _interopRequireWildcard(_helper2);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var helper = exports.helper = _helper;
 
 /***/ },
 /* 1 */
@@ -134,9 +134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _layerOrganizer2 = _interopRequireDefault(_layerOrganizer);
 
-	var _helper = __webpack_require__(19);
-
-	var _helper2 = _interopRequireDefault(_helper);
+	var _helper = __webpack_require__(32);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -146,14 +144,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function Skeleton(selector, options, customEvents) {
 	    _classCallCheck(this, Skeleton);
 
-	    var mergedOptions = _helper2.default.deepExtend({}, Skeleton.DEFAULT_OPTIONS, options);
+	    var mergedOptions = (0, _helper.deepExtend)({}, Skeleton.DEFAULT_OPTIONS, options);
 
 	    this.state = {
 	      width: mergedOptions.initialWidth,
 	      height: mergedOptions.initialHeight,
 	      innerWidth: 0,
 	      innerHeight: 0,
-	      autoFit: false,
 	      fitOptions: null,
 	      options: mergedOptions,
 	      data: null
@@ -172,7 +169,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.dispatchOptions = (0, _debounce2.default)(this.dispatchOptions.bind(this), 1);
 	    this.dispatchResize = (0, _debounce2.default)(this.dispatchResize.bind(this), 1);
 
-	    this.updateDimension();
+	    this.updateDimensionNow();
 	  }
 
 	  _createClass(Skeleton, [{
@@ -256,7 +253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function margin() {
 	      if (arguments.length === 0) return this.state.options.margin;
 	      var oldMargin = this.state.options.margin;
-	      var newMargin = _extends({}, this.state.options.margin, arguments.length <= 0 ? undefined : arguments[0]);
+	      var newMargin = (0, _helper.extend)({}, this.state.options.margin, arguments.length <= 0 ? undefined : arguments[0]);
 	      var changed = Object.keys(oldMargin).some(function (field) {
 	        return oldMargin[field] !== newMargin[field];
 	      });
@@ -299,7 +296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (newOptions.offset) {
 	        this.offset(newOptions.offset);
 	      }
-	      this.state.options = _helper2.default.deepExtend(this.state.options, newOptions);
+	      this.state.options = (0, _helper.deepExtend)(this.state.options, newOptions);
 	      this.dispatchOptions();
 	      return this;
 	    }
@@ -323,22 +320,32 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.svg.attr('width', width).attr('height', height);
 
-	      var x = left + offset.x;
-	      var y = top + offset.y;
+	      this.rootG.attr('transform', 'translate(' + (left + offset.x) + ',' + (top + offset.y) + ')');
 
-	      this.rootG.attr('transform', 'translate(' + x + ',' + y + ')');
-
+	      return this;
+	    }
+	  }, {
+	    key: 'updateDimensionNow',
+	    value: function updateDimensionNow() {
+	      this.updateDimension();
+	      this.updateDimension.flush();
 	      return this;
 	    }
 	  }, {
 	    key: 'hasData',
 	    value: function hasData() {
-	      return this.state.data !== null && this.state.data !== undefined;
+	      var data = this.state.data;
+
+	      return data !== null && data !== undefined;
 	    }
 	  }, {
 	    key: 'hasNonZeroArea',
 	    value: function hasNonZeroArea() {
-	      return this.state.innerWidth > 0 && this.state.innerHeight > 0;
+	      var _state2 = this.state;
+	      var innerWidth = _state2.innerWidth;
+	      var innerHeight = _state2.innerHeight;
+
+	      return innerWidth > 0 && innerHeight > 0;
 	    }
 	  }, {
 	    key: 'fit',
@@ -365,7 +372,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function autoFit(enable, fitOptions, watchOptions) {
 	      var _this = this;
 
-	      this.state.autoFit = enable;
 	      if (fitOptions) {
 	        this.state.fitOptions = fitOptions;
 	      }
@@ -397,11 +403,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'dispatchResize',
 	    value: function dispatchResize() {
-	      var _state2 = this.state;
-	      var width = _state2.width;
-	      var height = _state2.height;
-	      var innerWidth = _state2.innerWidth;
-	      var innerHeight = _state2.innerHeight;
+	      var _state3 = this.state;
+	      var width = _state3.width;
+	      var height = _state3.height;
+	      var innerWidth = _state3.innerWidth;
+	      var innerHeight = _state3.innerHeight;
 
 	      this.dispatcher.call('resize', this, [width, height, innerWidth, innerHeight]);
 	      return this;
@@ -417,6 +423,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function off(name) {
 	      this.dispatcher.on(name, null);
 	      return this;
+	    }
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      var _this2 = this;
+
+	      this.eventNames.forEach(function (name) {
+	        _this2.off(name);
+	      });
+
+	      if (this.fitWatcher) {
+	        this.fitWatcher.destroy();
+	        this.fitWatcher = null;
+	      }
 	    }
 	  }]);
 
@@ -1464,7 +1484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      throw 'invalid or duplicate layer id: ' + id;
 	    }
 
-	    var layer = container.append(tag).classed(_helper2.default.dasherize(layerName) + '-layer', true);
+	    var layer = container.append(tag).classed((0, _kebabCase2.default)(layerName) + '-layer', true);
 
 	    layers[id] = layer;
 	    return layer;
@@ -1475,7 +1495,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return layerInfo.map(function (info) {
 	        createLayerFromInfo(container, info, prefix);
 	      });
-	    } else if (_helper2.default.isObject(layerInfo)) {
+	    } else if ((0, _isObject2.default)(layerInfo)) {
 	      var parentKey = Object.keys(layerInfo)[0];
 	      var parentLayer = createLayerFromName(container, parentKey, prefix);
 	      createLayerFromInfo(parentLayer, layerInfo[parentKey], prefix ? prefix + '.' + parentKey : parentKey);
@@ -1512,70 +1532,522 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 
-	var _helper = __webpack_require__(19);
+	var _isObject = __webpack_require__(5);
 
-	var _helper2 = _interopRequireDefault(_helper);
+	var _isObject2 = _interopRequireDefault(_isObject);
+
+	var _kebabCase = __webpack_require__(19);
+
+	var _kebabCase2 = _interopRequireDefault(_kebabCase);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
 /* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var createCompounder = __webpack_require__(20);
+
+	/**
+	 * Converts `string` to
+	 * [kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to convert.
+	 * @returns {string} Returns the kebab cased string.
+	 * @example
+	 *
+	 * _.kebabCase('Foo Bar');
+	 * // => 'foo-bar'
+	 *
+	 * _.kebabCase('fooBar');
+	 * // => 'foo-bar'
+	 *
+	 * _.kebabCase('__FOO_BAR__');
+	 * // => 'foo-bar'
+	 */
+	var kebabCase = createCompounder(function (result, word, index) {
+	  return result + (index ? '-' : '') + word.toLowerCase();
+	});
+
+	module.exports = kebabCase;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var arrayReduce = __webpack_require__(21),
+	    deburr = __webpack_require__(22),
+	    words = __webpack_require__(28);
+
+	/** Used to compose unicode capture groups. */
+	var rsApos = '[\'’]';
+
+	/** Used to match apostrophes. */
+	var reApos = RegExp(rsApos, 'g');
+
+	/**
+	 * Creates a function like `_.camelCase`.
+	 *
+	 * @private
+	 * @param {Function} callback The function to combine each word.
+	 * @returns {Function} Returns the new compounder function.
+	 */
+	function createCompounder(callback) {
+	  return function (string) {
+	    return arrayReduce(words(deburr(string).replace(reApos, '')), callback, '');
+	  };
+	}
+
+	module.exports = createCompounder;
+
+/***/ },
+/* 21 */
 /***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * A specialized version of `_.reduce` for arrays without support for
+	 * iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @param {boolean} [initAccum] Specify using the first element of `array` as
+	 *  the initial value.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	function arrayReduce(array, iteratee, accumulator, initAccum) {
+	  var index = -1,
+	      length = array ? array.length : 0;
+
+	  if (initAccum && length) {
+	    accumulator = array[++index];
+	  }
+	  while (++index < length) {
+	    accumulator = iteratee(accumulator, array[index], index, array);
+	  }
+	  return accumulator;
+	}
+
+	module.exports = arrayReduce;
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var deburrLetter = __webpack_require__(23),
+	    toString = __webpack_require__(25);
+
+	/** Used to match Latin Unicode letters (excluding mathematical operators). */
+	var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
+
+	/** Used to compose unicode character classes. */
+	var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
+	    rsComboSymbolsRange = '\\u20d0-\\u20f0';
+
+	/** Used to compose unicode capture groups. */
+	var rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']';
+
+	/**
+	 * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
+	 * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
+	 */
+	var reComboMark = RegExp(rsCombo, 'g');
+
+	/**
+	 * Deburrs `string` by converting
+	 * [Latin-1 Supplement](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
+	 * and [Latin Extended-A](https://en.wikipedia.org/wiki/Latin_Extended-A)
+	 * letters to basic Latin letters and removing
+	 * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to deburr.
+	 * @returns {string} Returns the deburred string.
+	 * @example
+	 *
+	 * _.deburr('déjà vu');
+	 * // => 'deja vu'
+	 */
+	function deburr(string) {
+	  string = toString(string);
+	  return string && string.replace(reLatin, deburrLetter).replace(reComboMark, '');
+	}
+
+	module.exports = deburr;
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var basePropertyOf = __webpack_require__(24);
+
+	/** Used to map Latin Unicode letters to basic Latin letters. */
+	var deburredLetters = {
+	  // Latin-1 Supplement block.
+	  '\xc0': 'A', '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
+	  '\xe0': 'a', '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
+	  '\xc7': 'C', '\xe7': 'c',
+	  '\xd0': 'D', '\xf0': 'd',
+	  '\xc8': 'E', '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
+	  '\xe8': 'e', '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
+	  '\xcc': 'I', '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
+	  '\xec': 'i', '\xed': 'i', '\xee': 'i', '\xef': 'i',
+	  '\xd1': 'N', '\xf1': 'n',
+	  '\xd2': 'O', '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
+	  '\xf2': 'o', '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
+	  '\xd9': 'U', '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
+	  '\xf9': 'u', '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
+	  '\xdd': 'Y', '\xfd': 'y', '\xff': 'y',
+	  '\xc6': 'Ae', '\xe6': 'ae',
+	  '\xde': 'Th', '\xfe': 'th',
+	  '\xdf': 'ss',
+	  // Latin Extended-A block.
+	  'Ā': 'A', 'Ă': 'A', 'Ą': 'A',
+	  'ā': 'a', 'ă': 'a', 'ą': 'a',
+	  'Ć': 'C', 'Ĉ': 'C', 'Ċ': 'C', 'Č': 'C',
+	  'ć': 'c', 'ĉ': 'c', 'ċ': 'c', 'č': 'c',
+	  'Ď': 'D', 'Đ': 'D', 'ď': 'd', 'đ': 'd',
+	  'Ē': 'E', 'Ĕ': 'E', 'Ė': 'E', 'Ę': 'E', 'Ě': 'E',
+	  'ē': 'e', 'ĕ': 'e', 'ė': 'e', 'ę': 'e', 'ě': 'e',
+	  'Ĝ': 'G', 'Ğ': 'G', 'Ġ': 'G', 'Ģ': 'G',
+	  'ĝ': 'g', 'ğ': 'g', 'ġ': 'g', 'ģ': 'g',
+	  'Ĥ': 'H', 'Ħ': 'H', 'ĥ': 'h', 'ħ': 'h',
+	  'Ĩ': 'I', 'Ī': 'I', 'Ĭ': 'I', 'Į': 'I', 'İ': 'I',
+	  'ĩ': 'i', 'ī': 'i', 'ĭ': 'i', 'į': 'i', 'ı': 'i',
+	  'Ĵ': 'J', 'ĵ': 'j',
+	  'Ķ': 'K', 'ķ': 'k', 'ĸ': 'k',
+	  'Ĺ': 'L', 'Ļ': 'L', 'Ľ': 'L', 'Ŀ': 'L', 'Ł': 'L',
+	  'ĺ': 'l', 'ļ': 'l', 'ľ': 'l', 'ŀ': 'l', 'ł': 'l',
+	  'Ń': 'N', 'Ņ': 'N', 'Ň': 'N', 'Ŋ': 'N',
+	  'ń': 'n', 'ņ': 'n', 'ň': 'n', 'ŋ': 'n',
+	  'Ō': 'O', 'Ŏ': 'O', 'Ő': 'O',
+	  'ō': 'o', 'ŏ': 'o', 'ő': 'o',
+	  'Ŕ': 'R', 'Ŗ': 'R', 'Ř': 'R',
+	  'ŕ': 'r', 'ŗ': 'r', 'ř': 'r',
+	  'Ś': 'S', 'Ŝ': 'S', 'Ş': 'S', 'Š': 'S',
+	  'ś': 's', 'ŝ': 's', 'ş': 's', 'š': 's',
+	  'Ţ': 'T', 'Ť': 'T', 'Ŧ': 'T',
+	  'ţ': 't', 'ť': 't', 'ŧ': 't',
+	  'Ũ': 'U', 'Ū': 'U', 'Ŭ': 'U', 'Ů': 'U', 'Ű': 'U', 'Ų': 'U',
+	  'ũ': 'u', 'ū': 'u', 'ŭ': 'u', 'ů': 'u', 'ű': 'u', 'ų': 'u',
+	  'Ŵ': 'W', 'ŵ': 'w',
+	  'Ŷ': 'Y', 'ŷ': 'y', 'Ÿ': 'Y',
+	  'Ź': 'Z', 'Ż': 'Z', 'Ž': 'Z',
+	  'ź': 'z', 'ż': 'z', 'ž': 'z',
+	  'Ĳ': 'IJ', 'ĳ': 'ij',
+	  'Œ': 'Oe', 'œ': 'oe',
+	  'ŉ': "'n", 'ſ': 'ss'
+	};
+
+	/**
+	 * Used by `_.deburr` to convert Latin-1 Supplement and Latin Extended-A
+	 * letters to basic Latin letters.
+	 *
+	 * @private
+	 * @param {string} letter The matched letter to deburr.
+	 * @returns {string} Returns the deburred letter.
+	 */
+	var deburrLetter = basePropertyOf(deburredLetters);
+
+	module.exports = deburrLetter;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/**
+	 * The base implementation of `_.propertyOf` without support for deep paths.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Function} Returns the new accessor function.
+	 */
+	function basePropertyOf(object) {
+	  return function (key) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	module.exports = basePropertyOf;
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var baseToString = __webpack_require__(26);
+
+	/**
+	 * Converts `value` to a string. An empty string is returned for `null`
+	 * and `undefined` values. The sign of `-0` is preserved.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 * @example
+	 *
+	 * _.toString(null);
+	 * // => ''
+	 *
+	 * _.toString(-0);
+	 * // => '-0'
+	 *
+	 * _.toString([1, 2, 3]);
+	 * // => '1,2,3'
+	 */
+	function toString(value) {
+	  return value == null ? '' : baseToString(value);
+	}
+
+	module.exports = toString;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _Symbol = __webpack_require__(27),
+	    isSymbol = __webpack_require__(10);
+
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0;
+
+	/** Used to convert symbols to primitives and strings. */
+	var symbolProto = _Symbol ? _Symbol.prototype : undefined,
+	    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+	/**
+	 * The base implementation of `_.toString` which doesn't convert nullish
+	 * values to empty strings.
+	 *
+	 * @private
+	 * @param {*} value The value to process.
+	 * @returns {string} Returns the string.
+	 */
+	function baseToString(value) {
+	  // Exit early for strings to avoid a performance hit in some environments.
+	  if (typeof value == 'string') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return symbolToString ? symbolToString.call(value) : '';
+	  }
+	  var result = value + '';
+	  return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+	}
+
+	module.exports = baseToString;
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var root = __webpack_require__(7);
+
+	/** Built-in value references. */
+	var _Symbol = root.Symbol;
+
+	module.exports = _Symbol;
+
+/***/ },
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var asciiWords = __webpack_require__(29),
+	    hasUnicodeWord = __webpack_require__(30),
+	    toString = __webpack_require__(25),
+	    unicodeWords = __webpack_require__(31);
+
+	/**
+	 * Splits `string` into an array of its words.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category String
+	 * @param {string} [string=''] The string to inspect.
+	 * @param {RegExp|string} [pattern] The pattern to match words.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+	 * @returns {Array} Returns the words of `string`.
+	 * @example
+	 *
+	 * _.words('fred, barney, & pebbles');
+	 * // => ['fred', 'barney', 'pebbles']
+	 *
+	 * _.words('fred, barney, & pebbles', /[^, ]+/g);
+	 * // => ['fred', 'barney', '&', 'pebbles']
+	 */
+	function words(string, pattern, guard) {
+	  string = toString(string);
+	  pattern = guard ? undefined : pattern;
+
+	  if (pattern === undefined) {
+	    return hasUnicodeWord(string) ? unicodeWords(string) : asciiWords(string);
+	  }
+	  return string.match(pattern) || [];
+	}
+
+	module.exports = words;
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/** Used to match words composed of alphanumeric characters. */
+	var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
+
+	/**
+	 * Splits an ASCII `string` into an array of its words.
+	 *
+	 * @private
+	 * @param {string} The string to inspect.
+	 * @returns {Array} Returns the words of `string`.
+	 */
+	function asciiWords(string) {
+	  return string.match(reAsciiWord) || [];
+	}
+
+	module.exports = asciiWords;
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	/** Used to detect strings that need a more robust regexp to match words. */
+	var reHasUnicodeWord = /[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
+
+	/**
+	 * Checks if `string` contains a word composed of Unicode symbols.
+	 *
+	 * @private
+	 * @param {string} string The string to inspect.
+	 * @returns {boolean} Returns `true` if a word is found, else `false`.
+	 */
+	function hasUnicodeWord(string) {
+	  return reHasUnicodeWord.test(string);
+	}
+
+	module.exports = hasUnicodeWord;
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/** Used to compose unicode character classes. */
+	var rsAstralRange = '\\ud800-\\udfff',
+	    rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
+	    rsComboSymbolsRange = '\\u20d0-\\u20f0',
+	    rsDingbatRange = '\\u2700-\\u27bf',
+	    rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff',
+	    rsMathOpRange = '\\xac\\xb1\\xd7\\xf7',
+	    rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf',
+	    rsPunctuationRange = '\\u2000-\\u206f',
+	    rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000',
+	    rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde',
+	    rsVarRange = '\\ufe0e\\ufe0f',
+	    rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
+
+	/** Used to compose unicode capture groups. */
+	var rsApos = '[\'’]',
+	    rsBreak = '[' + rsBreakRange + ']',
+	    rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']',
+	    rsDigits = '\\d+',
+	    rsDingbat = '[' + rsDingbatRange + ']',
+	    rsLower = '[' + rsLowerRange + ']',
+	    rsMisc = '[^' + rsAstralRange + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']',
+	    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+	    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+	    rsNonAstral = '[^' + rsAstralRange + ']',
+	    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+	    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+	    rsUpper = '[' + rsUpperRange + ']',
+	    rsZWJ = '\\u200d';
+
+	/** Used to compose unicode regexes. */
+	var rsLowerMisc = '(?:' + rsLower + '|' + rsMisc + ')',
+	    rsUpperMisc = '(?:' + rsUpper + '|' + rsMisc + ')',
+	    rsOptLowerContr = '(?:' + rsApos + '(?:d|ll|m|re|s|t|ve))?',
+	    rsOptUpperContr = '(?:' + rsApos + '(?:D|LL|M|RE|S|T|VE))?',
+	    reOptMod = rsModifier + '?',
+	    rsOptVar = '[' + rsVarRange + ']?',
+	    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+	    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+	    rsEmoji = '(?:' + [rsDingbat, rsRegional, rsSurrPair].join('|') + ')' + rsSeq;
+
+	/** Used to match complex or compound words. */
+	var reUnicodeWord = RegExp([rsUpper + '?' + rsLower + '+' + rsOptLowerContr + '(?=' + [rsBreak, rsUpper, '$'].join('|') + ')', rsUpperMisc + '+' + rsOptUpperContr + '(?=' + [rsBreak, rsUpper + rsLowerMisc, '$'].join('|') + ')', rsUpper + '?' + rsLowerMisc + '+' + rsOptLowerContr, rsUpper + '+' + rsOptUpperContr, rsDigits, rsEmoji].join('|'), 'g');
+
+	/**
+	 * Splits a Unicode `string` into an array of its words.
+	 *
+	 * @private
+	 * @param {string} The string to inspect.
+	 * @returns {Array} Returns the words of `string`.
+	 */
+	function unicodeWords(string) {
+	    return string.match(reUnicodeWord) || [];
+	}
+
+	module.exports = unicodeWords;
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.deepExtend = deepExtend;
+	exports.extend = extend;
+	exports.rebind = rebind;
+	exports.functor = functor;
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+	var _isObject = __webpack_require__(5);
 
-	/**
-	 * Example usage:
-	 * selection.call(d3Kit.helper.bindMouseEventsToDispatcher, dispatch, 'bar')
-	 *
-	 * @param  {[type]} dispatch [description]
-	 * @param  {[type]} prefix   [description]
-	 * @return {[type]}          [description]
-	 */
-	function bindMouseEventsToDispatcher(selection, dispatch, prefix) {
-	  return selection.on('click', function (d, i) {
-	    dispatch.call(prefix + 'Click', this, d, i);
-	  }).on('mouseover', function (d, i) {
-	    dispatch.call(prefix + 'MouseOver', this, d, i);
-	  }).on('mousemove', function (d, i) {
-	    dispatch.call(prefix + 'MouseMove', this, d, i);
-	  }).on('mouseout', function (d, i) {
-	    dispatch.call(prefix + 'MouseOut', this, d, i);
-	  });
-	}
+	var _isObject2 = _interopRequireDefault(_isObject);
 
-	function removeAllChildren(selection, noTransition) {
-	  if (noTransition) {
-	    return selection.selectAll('*').remove();
-	  } else {
-	    return selection.selectAll('*').transition().style('opacity', 0).remove();
-	  }
-	}
+	var _isFunction = __webpack_require__(33);
 
-	// Returns true if it is a DOM element
-	// From http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
-	function isElement(o) {
-	  return (typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? o instanceof HTMLElement : // DOM2
-	  o && (typeof o === 'undefined' ? 'undefined' : _typeof(o)) === 'object' && o !== null && o.nodeType === 1 && typeof o.nodeName === 'string';
-	}
+	var _isFunction2 = _interopRequireDefault(_isFunction);
 
-	var isNaN = Number.isNaN ? Number.isNaN : window.isNaN;
-
-	// Check whether s is element if not then do the querySelector
-	function $(s) {
-	  return isElement(s) ? s : document.querySelector(s);
-	}
-
-	// To get a proper array from a NodeList that matches the CSS selector
-	function $$(s) {
-	  return Array.isArray(s) ? s : [].slice.call(document.querySelectorAll(s));
-	}
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	//---------------------------------------------------
 	// From http://youmightnotneedjquery.com/
@@ -1592,7 +2064,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var key in obj) {
 	      if (obj.hasOwnProperty(key)) {
 	        var value = obj[key];
-	        if (isObject(value) && !Array.isArray(value) && !isFunction(value)) {
+	        if ((0, _isObject2.default)(value) && !Array.isArray(value) && !(0, _isFunction2.default)(value)) {
 	          out[key] = deepExtend(out[key], value);
 	        } else out[key] = value;
 	      }
@@ -1616,148 +2088,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return out;
 	}
 
-	function on(element, type, listener) {
-	  if (element.addEventListener) {
-	    element.addEventListener(type, listener, false);
-	  } else if (element.attachEvent) {
-	    element.attachEvent('on' + type, listener);
-	  }
-	}
-
-	function off(element, type, listener) {
-	  element.removeEventListener(type, listener, false);
-	}
-
-	//---------------------------------------------------
-	// Modified from lodash
-	//---------------------------------------------------
-
-	/**
-	 * Returns a function, that, as long as it continues to be invoked,
-	 * will not be triggered.
-	 * The function will be called after it stops being called for
-	 * "wait" milliseconds.
-	 * The output function can be called with .now() to execute immediately
-	 * For example:
-	 * doSomething(params); // will debounce
-	 * doSomething.now(params); // will execute immediately
-	 *
-	 * @param  Function func      function to be debounced
-	 * @param  Number   wait      wait time until it will be executed
-	 * @param  Boolean  immediate If "immediate" is passed, trigger the function on the
-	 * leading edge, instead of the trailing.
-	 * @return Function           debounced function
-	 */
-	function debounce(func, wait, immediate) {
-	  var timeout = void 0;
-
-	  var outputFn = function outputFn() {
-	    var context = this,
-	        args = arguments;
-	    var later = function later() {
-	      timeout = null;
-	      if (!immediate) func.apply(context, args);
-	    };
-	    var callNow = immediate && !timeout;
-	    clearTimeout(timeout);
-	    timeout = setTimeout(later, wait);
-	    if (callNow) func.apply(context, args);
-
-	    // return caller for chaining
-	    return context;
+	// Method is assumed to be a standard D3 getter-setter:
+	// If passed with no arguments, gets the value.
+	// If passed with arguments, sets the value and returns the target.
+	function d3_rebind(target, source, method) {
+	  return function () {
+	    var value = method.apply(source, arguments);
+	    return value === source ? target : value;
 	  };
-
-	  // so we know this function is debounced
-	  outputFn.isDebounced = true;
-	  // and provide a way to call the original function immediately
-	  outputFn.now = function () {
-	    clearTimeout(timeout);
-	    return func.apply(this, arguments);
-	  };
-
-	  return outputFn;
-	}
-
-	//---------------------------------------------------
-	// From lodash
-	//---------------------------------------------------
-
-	/** Used to determine if values are of the language type Object */
-	var objectTypes = {
-	  'boolean': false,
-	  'function': true,
-	  'object': true,
-	  'number': false,
-	  'string': false,
-	  'undefined': false
-	};
-
-	function isObject(value) {
-	  // check if the value is the ECMAScript language type of Object
-	  // http://es5.github.io/#x8
-	  // and avoid a V8 bug
-	  // http://code.google.com/p/v8/issues/detail?id=2291
-	  return !!(value && objectTypes[typeof value === 'undefined' ? 'undefined' : _typeof(value)]);
-	}
-
-	/** `Object#toString` result shortcuts */
-	var numberClass = '[object Number]';
-
-	/** Used for native method references */
-	var objectProto = Object.prototype;
-
-	/** Used to resolve the internal [[Class]] of values */
-	var toString = objectProto.toString;
-
-	/**
-	 * Checks if `value` is a number.
-	 *
-	 * Note: `NaN` is considered a number. See http://es5.github.io/#x8.5.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @category Objects
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if the `value` is a number, else `false`.
-	 * @example
-	 *
-	 * _.isNumber(8.4 * 5);
-	 * // => true
-	 */
-	function isNumber(value) {
-	  return typeof value == 'number' || value && (typeof value === 'undefined' ? 'undefined' : _typeof(value)) == 'object' && toString.call(value) == numberClass || false;
-	}
-
-	function isFunction(functionToCheck) {
-	  var getType = {};
-	  return !!functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	//---------------------------------------------------
-	// From underscore.string
-	//---------------------------------------------------
-	/* jshint ignore:start */
-
-	var nativeTrim = String.prototype.trim;
-
-	function escapeRegExp(str) {
-	  if (str == null) return '';
-	  return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-	}
-
-	var defaultToWhiteSpace = function defaultToWhiteSpace(characters) {
-	  if (characters == null) return '\\s';else if (characters.source) return characters.source;else return '[' + escapeRegExp(characters) + ']';
-	};
-
-	function trim(str, characters) {
-	  if (str == null) return '';
-	  if (!characters && nativeTrim) return nativeTrim.call(str);
-	  characters = defaultToWhiteSpace(characters);
-	  return String(str).replace(new RegExp('\^' + characters + '+|' + characters + '+$', 'g'), '');
-	}
-
-	function dasherize(str) {
-	  return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 	}
 
 	// Copies a variable number of methods from source to target.
@@ -1770,52 +2108,62 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }return target;
 	}
 
-	// Method is assumed to be a standard D3 getter-setter:
-	// If passed with no arguments, gets the value.
-	// If passed with arguments, sets the value and returns the target.
-	function d3_rebind(target, source, method) {
-	  return function () {
-	    var value = method.apply(source, arguments);
-	    return value === source ? target : value;
-	  };
-	}
-
 	function functor(v) {
 	  return typeof v === 'function' ? v : function () {
 	    return v;
 	  };
 	}
 
-	/* jshint ignore:end */
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
 
-	exports.default = {
-	  $: $,
-	  $$: $$,
+	'use strict';
 
-	  dasherize: dasherize,
-	  debounce: debounce,
+	var isObject = __webpack_require__(5);
 
-	  deepExtend: deepExtend,
-	  extend: extend,
+	/** `Object#toString` result references. */
+	var funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
 
-	  isElement: isElement,
-	  isFunction: isFunction,
-	  isNaN: isNaN,
-	  isNumber: isNumber,
-	  isObject: isObject,
-	  on: on,
-	  off: off,
-	  trim: trim,
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
 
-	  rebind: rebind,
-	  functor: functor,
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
 
-	  removeAllChildren: removeAllChildren,
-	  bindMouseEventsToDispatcher: bindMouseEventsToDispatcher
-	};
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	module.exports = isFunction;
 
 /***/ },
-/* 20 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1826,9 +2174,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _d3Dispatch = __webpack_require__(3);
 
-	var _helper = __webpack_require__(19);
+	var _debounce = __webpack_require__(4);
 
-	var _helper2 = _interopRequireDefault(_helper);
+	var _debounce2 = _interopRequireDefault(_debounce);
+
+	var _helper = __webpack_require__(32);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1848,12 +2198,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function property(name, value) {
 	    // if functioning as a setter, set property in cache
 	    if (arguments.length > 1) {
-	      _propertyCache[name] = _helper2.default.functor(value);
+	      _propertyCache[name] = (0, _helper.functor)(value);
 	      return this;
 	    }
 
 	    // functioning as a getter, return property accessor
-	    return _helper2.default.functor(_propertyCache[name]);
+	    return (0, _helper.functor)(_propertyCache[name]);
 	  }
 
 	  function getPropertyValue(name, d, i) {
@@ -1862,7 +2212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  function _wrapAction(action, doneHookName) {
 	    return function (selection) {
-	      action(selection, _helper2.default.debounce(function (d, i) {
+	      action(selection, (0, _debounce2.default)(function (d, i) {
 	        _dispatch.call(doneHookName, this, selection);
 	      }), 5);
 	    };
@@ -1916,7 +2266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  // bind events to exports
-	  _helper2.default.rebind(exports, _dispatch, 'on');
+	  (0, _helper.rebind)(exports, _dispatch, 'on');
 
 	  // return exports
 	  return exports;

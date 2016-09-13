@@ -1,5 +1,6 @@
 import { dispatch } from 'd3-dispatch';
-import helper from './helper.js';
+import debounce from 'lodash/debounce.js';
+import { functor, rebind } from './helper.js';
 
 function NOOP(selection, done) { done(); }
 
@@ -15,12 +16,12 @@ function Chartlet(enter, update, exit, customEvents) {
   function property(name, value) {
     // if functioning as a setter, set property in cache
     if (arguments.length > 1) {
-      _propertyCache[name] = helper.functor(value);
+      _propertyCache[name] = functor(value);
       return this;
     }
 
     // functioning as a getter, return property accessor
-    return helper.functor(_propertyCache[name]);
+    return functor(_propertyCache[name]);
   }
 
   function getPropertyValue(name, d, i) {
@@ -29,7 +30,7 @@ function Chartlet(enter, update, exit, customEvents) {
 
   function _wrapAction(action, doneHookName) {
     return function (selection) {
-      action(selection, helper.debounce(function (d, i) {
+      action(selection, debounce(function (d, i) {
         _dispatch.call(doneHookName, this, selection);
       }), 5);
     };
@@ -78,7 +79,7 @@ function Chartlet(enter, update, exit, customEvents) {
   };
 
   // bind events to exports
-  helper.rebind(exports, _dispatch, 'on');
+  rebind(exports, _dispatch, 'on');
 
   // return exports
   return exports;

@@ -1,4 +1,5 @@
-import helper from './helper.js';
+import isObject from 'lodash/isObject.js';
+import kebabCase from 'lodash/kebabCase.js';
 
 // EXAMPLE USAGE:
 //
@@ -28,7 +29,7 @@ export default function (mainContainer, tag) {
     }
 
     const layer = container.append(tag)
-      .classed(helper.dasherize(layerName) + '-layer', true);
+      .classed(kebabCase(layerName) + '-layer', true);
 
     layers[id] = layer;
     return layer;
@@ -40,7 +41,7 @@ export default function (mainContainer, tag) {
         createLayerFromInfo(container, info, prefix);
       });
     }
-    else if (helper.isObject(layerInfo)) {
+    else if (isObject(layerInfo)) {
       const parentKey = Object.keys(layerInfo)[0];
       const parentLayer = createLayerFromName(container, parentKey, prefix);
       createLayerFromInfo(parentLayer, layerInfo[parentKey], prefix ? prefix + '.' + parentKey : parentKey);
