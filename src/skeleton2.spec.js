@@ -1,5 +1,5 @@
 import { select } from 'd3-selection';
-import Skeleton from './Skeleton.js';
+import Skeleton from './skeleton.js';
 
 describe('Skeleton', () => {
   let element, $element, $svg, skeleton;
