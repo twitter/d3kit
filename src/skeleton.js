@@ -200,6 +200,9 @@ class Skeleton {
     if (fitOptions) {
       this.state.fitOptions = fitOptions;
     }
+    if (watchOptions) {
+      this.state.watchOptions = watchOptions;
+    }
     if (enable) {
       if (this.fitWatcher) {
         this.fitWatcher.destroy();
@@ -208,7 +211,7 @@ class Skeleton {
         this.svg.node(),
         this.container.node(),
         this.state.fitOptions,
-        watchOptions
+        this.state.watchOptions
       )
         .on('change', dim => this.dimension([dim.width, dim.height]))
         .start();
