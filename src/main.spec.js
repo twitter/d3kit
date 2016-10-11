@@ -9,9 +9,9 @@ describe('d3Kit', () => {
     expect(d3Kit.Skeleton).to.exist;
   });
 
-  it('should have Chartlet', () => {
-    expect(d3Kit.Chartlet).to.exist;
-  });
+  // it('should have Chartlet', () => {
+  //   expect(d3Kit.Chartlet).to.exist;
+  // });
 
   it('should have helper', () => {
     expect(d3Kit.helper).to.exist;

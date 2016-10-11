@@ -1,10 +1,9 @@
 import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
-import debounce from 'lodash/debounce.js';
 import FitWatcher from 'slimfit/src/FitWatcher.js';
 import Fitter from 'slimfit/src/Fitter.js';
 import LayerOrganizer from './layerOrganizer.js';
-import { deepExtend, extend } from './helper.js';
+import { debounce, deepExtend, extend } from './helper.js';
 
 class Skeleton {
   static getCustomEventNames() {
@@ -165,7 +164,7 @@ class Skeleton {
 
   updateDimensionNow() {
     this.updateDimension();
-    this.updateDimension.flush();
+    this.updateDimension.now();
     return this;
   }
 

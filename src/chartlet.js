@@ -1,3 +1,5 @@
+// This module has not been revised yet.
+
 import { dispatch } from 'd3-dispatch';
 import debounce from 'lodash/debounce.js';
 import { functor, rebind } from './helper.js';

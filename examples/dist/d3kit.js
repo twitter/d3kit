@@ -59,23 +59,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.helper = exports.LayerOrganizer = exports.Chartlet = exports.Skeleton = undefined;
+	exports.helper = exports.LayerOrganizer = exports.Skeleton = undefined;
 
-	var _Skeleton = __webpack_require__(1);
+	var _skeleton = __webpack_require__(1);
 
 	Object.defineProperty(exports, 'Skeleton', {
 	  enumerable: true,
 	  get: function get() {
-	    return _interopRequireDefault(_Skeleton).default;
-	  }
-	});
-
-	var _chartlet = __webpack_require__(34);
-
-	Object.defineProperty(exports, 'Chartlet', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_chartlet).default;
+	    return _interopRequireDefault(_skeleton).default;
 	  }
 	});
 
@@ -88,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var _helper2 = __webpack_require__(32);
+	var _helper2 = __webpack_require__(19);
 
 	var _helper = _interopRequireWildcard(_helper2);
 
@@ -118,15 +109,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _d3Dispatch = __webpack_require__(3);
 
-	var _debounce = __webpack_require__(4);
-
-	var _debounce2 = _interopRequireDefault(_debounce);
-
-	var _FitWatcher = __webpack_require__(12);
+	var _FitWatcher = __webpack_require__(4);
 
 	var _FitWatcher2 = _interopRequireDefault(_FitWatcher);
 
-	var _Fitter = __webpack_require__(13);
+	var _Fitter = __webpack_require__(5);
 
 	var _Fitter2 = _interopRequireDefault(_Fitter);
 
@@ -134,7 +121,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _layerOrganizer2 = _interopRequireDefault(_layerOrganizer);
 
-	var _helper = __webpack_require__(32);
+	var _helper = __webpack_require__(19);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -171,10 +158,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var customEvents = this.constructor.getCustomEventNames();
 	    this.setupDispatcher(customEvents);
 
-	    this.updateDimension = (0, _debounce2.default)(this.updateDimension.bind(this), 1);
-	    this.dispatchData = (0, _debounce2.default)(this.dispatchData.bind(this), 1);
-	    this.dispatchOptions = (0, _debounce2.default)(this.dispatchOptions.bind(this), 1);
-	    this.dispatchResize = (0, _debounce2.default)(this.dispatchResize.bind(this), 1);
+	    this.updateDimension = (0, _helper.debounce)(this.updateDimension.bind(this), 1);
+	    this.dispatchData = (0, _helper.debounce)(this.dispatchData.bind(this), 1);
+	    this.dispatchOptions = (0, _helper.debounce)(this.dispatchOptions.bind(this), 1);
+	    this.dispatchResize = (0, _helper.debounce)(this.dispatchResize.bind(this), 1);
 
 	    this.updateDimensionNow();
 	  }
@@ -338,7 +325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'updateDimensionNow',
 	    value: function updateDimensionNow() {
 	      this.updateDimension();
-	      this.updateDimension.flush();
+	      this.updateDimension.now();
 	      return this;
 	    }
 	  }, {
@@ -385,11 +372,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (fitOptions) {
 	        this.state.fitOptions = fitOptions;
 	      }
+	      if (watchOptions) {
+	        this.state.watchOptions = watchOptions;
+	      }
 	      if (enable) {
 	        if (this.fitWatcher) {
 	          this.fitWatcher.destroy();
 	        }
-	        this.fitWatcher = new _FitWatcher2.default(this.svg.node(), this.container.node(), this.state.fitOptions, watchOptions).on('change', function (dim) {
+	        this.fitWatcher = new _FitWatcher2.default(this.svg.node(), this.container.node(), this.state.fitOptions, this.state.watchOptions).on('change', function (dim) {
 	          return _this.dimension([dim.width, dim.height]);
 	        }).start();
 	      } else if (this.fitWatcher) {
@@ -490,9 +480,548 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var isObject = __webpack_require__(5),
-	    now = __webpack_require__(6),
-	    toNumber = __webpack_require__(9);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Fitter = __webpack_require__(5);
+
+	var _Fitter2 = _interopRequireDefault(_Fitter);
+
+	var _Watcher2 = __webpack_require__(8);
+
+	var _Watcher3 = _interopRequireDefault(_Watcher2);
+
+	var _Helper = __webpack_require__(7);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FitWatcher = function (_Watcher) {
+	  _inherits(FitWatcher, _Watcher);
+
+	  function FitWatcher() {
+	    var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
+	    var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
+	    var fitterOptions = arguments[2];
+	    var watcherOptions = arguments[3];
+
+	    _classCallCheck(this, FitWatcher);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FitWatcher).call(this, watcherOptions));
+
+	    var fitter = new _Fitter2.default(fitterOptions);
+	    _this.fit = function () {
+	      return fitter.fit(box, container);
+	    };
+	    return _this;
+	  }
+
+	  _createClass(FitWatcher, [{
+	    key: 'check',
+	    value: function check() {
+	      if (this.hasTargetChanged()) {
+	        var fitResult = this.fit();
+	        if (this.fitResult.changed) {
+	          this.dispatcher.call('change', this, fitResult.dimension);
+	        }
+	      }
+	      return this;
+	    }
+	  }]);
+
+	  return FitWatcher;
+	}(_Watcher3.default);
+
+	exports.default = FitWatcher;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Dimension = __webpack_require__(6);
+
+	var _Dimension2 = _interopRequireDefault(_Dimension);
+
+	var _Helper = __webpack_require__(7);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Fitter = function () {
+	  function Fitter() {
+	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	    _classCallCheck(this, Fitter);
+
+	    var _options$mode = options.mode;
+	    var mode = _options$mode === undefined ? Fitter.MODE_BASIC : _options$mode;
+	    var _options$width = options.width;
+	    var width = _options$width === undefined ? '100%' : _options$width;
+	    var _options$height = options.height;
+	    var height = _options$height === undefined ? null : _options$height;
+	    var _options$ratio = options.ratio;
+	    var ratio = _options$ratio === undefined ? 1 : _options$ratio;
+	    var _options$maxWidth = options.maxWidth;
+	    var maxWidth = _options$maxWidth === undefined ? null : _options$maxWidth;
+	    var _options$maxHeight = options.maxHeight;
+	    var maxHeight = _options$maxHeight === undefined ? null : _options$maxHeight;
+
+
+	    if (mode === Fitter.MODE_ASPECT_RATIO) {
+	      this.wFn = (0, _Helper.parseModifier)(maxWidth);
+	      this.hFn = (0, _Helper.parseModifier)(maxHeight);
+	      this.options = {
+	        mode: mode,
+	        ratio: ratio,
+	        maxWidth: maxWidth,
+	        maxHeight: maxHeight
+	      };
+	    } else {
+	      this.wFn = (0, _Helper.parseModifier)(width);
+	      this.hFn = (0, _Helper.parseModifier)(height);
+	      this.options = {
+	        mode: mode,
+	        width: width,
+	        height: height
+	      };
+	    }
+	  }
+
+	  _createClass(Fitter, [{
+	    key: 'fit',
+	    value: function fit() {
+	      var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
+	      var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
+
+	      var boxDim = new _Dimension2.default(box);
+	      var w = boxDim.width;
+	      var h = boxDim.height;
+	      var containerDim = new _Dimension2.default(container);
+	      var cw = containerDim.width;
+	      var ch = containerDim.height;
+
+	      var dim = void 0;
+	      if (this.options.mode === Fitter.MODE_ASPECT_RATIO) {
+	        var ratio = this.options.ratio;
+	        var maxW = this.wFn(cw, cw);
+	        var maxH = this.hFn(ch, ch);
+	        var newWFromHeight = Math.floor(ratio * maxH);
+	        if (newWFromHeight <= maxW) {
+	          dim = new _Dimension2.default(newWFromHeight, maxH);
+	        } else {
+	          dim = new _Dimension2.default(maxW, Math.floor(maxW / ratio));
+	        }
+	      } else {
+	        dim = new _Dimension2.default(this.wFn(w, cw), this.hFn(h, ch));
+	      }
+
+	      return {
+	        dimension: dim,
+	        changed: !dim.isEqual(boxDim)
+	      };
+	    }
+	  }]);
+
+	  return Fitter;
+	}();
+
+	Fitter.MODE_BASIC = 'basic';
+	Fitter.MODE_ASPECT_RATIO = 'aspectRatio';
+
+	exports.default = Fitter;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Helper = __webpack_require__(7);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Dimension = function () {
+	  function Dimension() {
+	    _classCallCheck(this, Dimension);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    if (args.length === 1) {
+	      var inputOrGetter = args[0];
+	      var input = (0, _Helper.isFunction)(inputOrGetter) ? inputOrGetter() : inputOrGetter;
+
+	      if (input instanceof Dimension) {
+	        this.width = input.width;
+	        this.height = input.height;
+	      } else if ((0, _Helper.isElement)(input)) {
+	        this.width = input.clientWidth;
+	        this.height = input.clientHeight;
+	      } else if (Array.isArray(input)) {
+	        this.width = input[0];
+	        this.height = input[1];
+	      } else if ((0, _Helper.isDefined)(input) && (0, _Helper.isDefined)(input.width) && (0, _Helper.isDefined)(input.height)) {
+	        this.width = input.width;
+	        this.height = input.height;
+	      } else {
+	        var err = new Error('Unsupported input. Must be either\n  DOMNode, Array or Object with field width and height,\n  or a function that returns any of the above.');
+	        err.value = inputOrGetter;
+	        throw err;
+	      }
+	    } else {
+	      var width = args[0];
+	      var height = args[1];
+
+	      this.width = width;
+	      this.height = height;
+	    }
+	  }
+
+	  _createClass(Dimension, [{
+	    key: 'isEqual',
+	    value: function isEqual(x) {
+	      if (x instanceof Dimension) {
+	        return this.width === x.width && this.height === x.height;
+	      }
+	      var dim2 = new Dimension(x);
+	      return this.width === dim2.width && this.height === dim2.height;
+	    }
+	  }, {
+	    key: 'toArray',
+	    value: function toArray() {
+	      return [this.width, this.height];
+	    }
+	  }, {
+	    key: 'toObject',
+	    value: function toObject() {
+	      return {
+	        width: this.width,
+	        height: this.height
+	      };
+	    }
+	  }]);
+
+	  return Dimension;
+	}();
+
+	exports.default = Dimension;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	exports.isRequired = isRequired;
+	exports.isDefined = isDefined;
+	exports.isNotDefined = isNotDefined;
+	exports.isElement = isElement;
+	exports.parseModifier = parseModifier;
+	function isRequired(name) {
+	  throw new Error('Missing parameter ' + name);
+	}
+
+	function isDefined(x) {
+	  return x !== null && x !== undefined;
+	}
+
+	function isNotDefined(x) {
+	  return x === null || x === undefined;
+	}
+
+	var isFunction = exports.isFunction = function () {
+	  if (typeof /./ !== 'function' && (typeof Int8Array === 'undefined' ? 'undefined' : _typeof(Int8Array)) !== 'object') {
+	    return function (obj) {
+	      return typeof obj === 'function' || false;
+	    };
+	  }
+	  return function (fn) {
+	    var getType = {};
+	    return fn && getType.toString.call(fn) === '[object Function]';
+	  };
+	}();
+
+	function isElement(obj) {
+	  return !!(obj && obj.nodeType === 1);
+	}
+
+	function parseModifier(value) {
+	  // Return current value
+	  if (isNotDefined(value)) {
+	    return function (x, cx) {
+	      return Math.min(x, cx);
+	    };
+	  }
+	  // Return percent of container
+	  var str = ('' + value).trim().toLowerCase();
+	  if (str.indexOf('%') > -1) {
+	    var _ret = function () {
+	      var percent = +str.replace('%', '') / 100;
+	      return {
+	        v: function v(x, cx) {
+	          return cx * percent;
+	        }
+	      };
+	    }();
+
+	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	  }
+	  // Return fixed value
+	  return function () {
+	    return +str.replace('px', '');
+	  };
+	}
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Dimension = __webpack_require__(6);
+
+	var _Dimension2 = _interopRequireDefault(_Dimension);
+
+	var _d3Dispatch = __webpack_require__(3);
+
+	var _Helper = __webpack_require__(7);
+
+	var _throttle = __webpack_require__(9);
+
+	var _throttle2 = _interopRequireDefault(_throttle);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Watcher = function () {
+	  function Watcher() {
+	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	    var _ref$type = _ref.type;
+	    var type = _ref$type === undefined ? Watcher.TYPE_WINDOW : _ref$type;
+	    var _ref$target = _ref.target;
+	    var target = _ref$target === undefined ? null : _ref$target;
+	    var _ref$interval = _ref.interval;
+	    var interval = _ref$interval === undefined ? 500 : _ref$interval;
+
+	    _classCallCheck(this, Watcher);
+
+	    if (type === Watcher.TYPE_POLLING && !target) {
+	      (0, _Helper.isRequired)('options.target');
+	    }
+
+	    this.type = type;
+	    this.target = target;
+	    this.interval = interval;
+
+	    this.dispatcher = (0, _d3Dispatch.dispatch)('change');
+	    this.check = this.check.bind(this);
+	    this.throttledCheck = (0, _throttle2.default)(this.check, this.interval);
+	    this.isWatching = false;
+	  }
+
+	  _createClass(Watcher, [{
+	    key: 'hasTargetChanged',
+	    value: function hasTargetChanged() {
+	      if (!this.target) {
+	        return true;
+	      }
+	      var newDim = new _Dimension2.default(this.target);
+	      if (!this.currentDim || !newDim.isEqual(this.currentDim)) {
+	        this.currentDim = newDim;
+	        return true;
+	      }
+	      return false;
+	    }
+	  }, {
+	    key: 'check',
+	    value: function check() {
+	      if (this.hasTargetChanged()) {
+	        this.dispatcher.call('change', this, this.currentDim);
+	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'on',
+	    value: function on(name, listener) {
+	      this.dispatcher.on(name, listener);
+	      return this;
+	    }
+	  }, {
+	    key: 'off',
+	    value: function off(name) {
+	      this.dispatcher.on(name, null);
+	      return this;
+	    }
+	  }, {
+	    key: 'start',
+	    value: function start() {
+	      if (!this.isWatching) {
+	        if (this.target) {
+	          this.currentDim = new _Dimension2.default(this.target);
+	        }
+	        if (this.type === Watcher.TYPE_WINDOW) {
+	          window.addEventListener('resize', this.throttledCheck);
+	        } else if (this.type === Watcher.TYPE_POLLING) {
+	          this.intervalId = window.setInterval(this.check, this.interval);
+	        }
+	        this.isWatching = true;
+	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      if (this.isWatching) {
+	        if (this.type === Watcher.TYPE_WINDOW) {
+	          window.removeEventListener('resize', this.throttledCheck);
+	        } else if (this.type === Watcher.TYPE_POLLING && this.intervalId) {
+	          window.clearInterval(this.intervalId);
+	          this.intervalId = null;
+	        }
+	        this.isWatching = false;
+	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      this.stop();
+	      this.off('change');
+	      return this;
+	    }
+	  }]);
+
+	  return Watcher;
+	}();
+
+	Watcher.TYPE_WINDOW = 'window';
+	Watcher.TYPE_POLLING = 'polling';
+
+	exports.default = Watcher;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var debounce = __webpack_require__(10),
+	    isObject = __webpack_require__(11);
+
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/**
+	 * Creates a throttled function that only invokes `func` at most once per
+	 * every `wait` milliseconds. The throttled function comes with a `cancel`
+	 * method to cancel delayed `func` invocations and a `flush` method to
+	 * immediately invoke them. Provide `options` to indicate whether `func`
+	 * should be invoked on the leading and/or trailing edge of the `wait`
+	 * timeout. The `func` is invoked with the last arguments provided to the
+	 * throttled function. Subsequent calls to the throttled function return the
+	 * result of the last `func` invocation.
+	 *
+	 * **Note:** If `leading` and `trailing` options are `true`, `func` is
+	 * invoked on the trailing edge of the timeout only if the throttled function
+	 * is invoked more than once during the `wait` timeout.
+	 *
+	 * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+	 * until to the next tick, similar to `setTimeout` with a timeout of `0`.
+	 *
+	 * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+	 * for details over the differences between `_.throttle` and `_.debounce`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Function
+	 * @param {Function} func The function to throttle.
+	 * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
+	 * @param {Object} [options={}] The options object.
+	 * @param {boolean} [options.leading=true]
+	 *  Specify invoking on the leading edge of the timeout.
+	 * @param {boolean} [options.trailing=true]
+	 *  Specify invoking on the trailing edge of the timeout.
+	 * @returns {Function} Returns the new throttled function.
+	 * @example
+	 *
+	 * // Avoid excessively updating the position while scrolling.
+	 * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
+	 *
+	 * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
+	 * var throttled = _.throttle(renewToken, 300000, { 'trailing': false });
+	 * jQuery(element).on('click', throttled);
+	 *
+	 * // Cancel the trailing throttled invocation.
+	 * jQuery(window).on('popstate', throttled.cancel);
+	 */
+	function throttle(func, wait, options) {
+	  var leading = true,
+	      trailing = true;
+
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  if (isObject(options)) {
+	    leading = 'leading' in options ? !!options.leading : leading;
+	    trailing = 'trailing' in options ? !!options.trailing : trailing;
+	  }
+	  return debounce(func, wait, {
+	    'leading': leading,
+	    'maxWait': wait,
+	    'trailing': trailing
+	  });
+	}
+
+	module.exports = throttle;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var isObject = __webpack_require__(11),
+	    now = __webpack_require__(12),
+	    toNumber = __webpack_require__(15);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -679,7 +1208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = debounce;
 
 /***/ },
-/* 5 */
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -719,12 +1248,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObject;
 
 /***/ },
-/* 6 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var root = __webpack_require__(7);
+	var root = __webpack_require__(13);
 
 	/**
 	 * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -749,14 +1278,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = now;
 
 /***/ },
-/* 7 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var freeGlobal = __webpack_require__(8);
+	var freeGlobal = __webpack_require__(14);
 
 	/** Detect free variable `self`. */
 	var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
@@ -767,7 +1296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = root;
 
 /***/ },
-/* 8 */
+/* 14 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -781,13 +1310,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 9 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(5),
-	    isSymbol = __webpack_require__(10);
+	var isObject = __webpack_require__(11),
+	    isSymbol = __webpack_require__(16);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -852,14 +1381,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toNumber;
 
 /***/ },
-/* 10 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var isObjectLike = __webpack_require__(11);
+	var isObjectLike = __webpack_require__(17);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -898,7 +1427,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isSymbol;
 
 /***/ },
-/* 11 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -936,545 +1465,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObjectLike;
 
 /***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Fitter = __webpack_require__(13);
-
-	var _Fitter2 = _interopRequireDefault(_Fitter);
-
-	var _Watcher2 = __webpack_require__(16);
-
-	var _Watcher3 = _interopRequireDefault(_Watcher2);
-
-	var _Helper = __webpack_require__(15);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var FitWatcher = function (_Watcher) {
-	  _inherits(FitWatcher, _Watcher);
-
-	  function FitWatcher() {
-	    var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
-	    var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
-	    var fitterOptions = arguments[2];
-	    var watcherOptions = arguments[3];
-
-	    _classCallCheck(this, FitWatcher);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FitWatcher).call(this, watcherOptions));
-
-	    var fitter = new _Fitter2.default(fitterOptions);
-	    _this.fit = function () {
-	      return fitter.fit(box, container);
-	    };
-	    return _this;
-	  }
-
-	  _createClass(FitWatcher, [{
-	    key: 'check',
-	    value: function check() {
-	      if (this.hasTargetChanged()) {
-	        var fitResult = this.fit();
-	        if (this.fitResult.changed) {
-	          this.dispatcher.call('change', this, fitResult.dimension);
-	        }
-	      }
-	      return this;
-	    }
-	  }]);
-
-	  return FitWatcher;
-	}(_Watcher3.default);
-
-	exports.default = FitWatcher;
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Dimension = __webpack_require__(14);
-
-	var _Dimension2 = _interopRequireDefault(_Dimension);
-
-	var _Helper = __webpack_require__(15);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Fitter = function () {
-	  function Fitter() {
-	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	    _classCallCheck(this, Fitter);
-
-	    var _options$mode = options.mode;
-	    var mode = _options$mode === undefined ? Fitter.MODE_BASIC : _options$mode;
-	    var _options$width = options.width;
-	    var width = _options$width === undefined ? '100%' : _options$width;
-	    var _options$height = options.height;
-	    var height = _options$height === undefined ? null : _options$height;
-	    var _options$ratio = options.ratio;
-	    var ratio = _options$ratio === undefined ? 1 : _options$ratio;
-	    var _options$maxWidth = options.maxWidth;
-	    var maxWidth = _options$maxWidth === undefined ? null : _options$maxWidth;
-	    var _options$maxHeight = options.maxHeight;
-	    var maxHeight = _options$maxHeight === undefined ? null : _options$maxHeight;
-
-
-	    if (mode === Fitter.MODE_ASPECT_RATIO) {
-	      this.wFn = (0, _Helper.parseModifier)(maxWidth);
-	      this.hFn = (0, _Helper.parseModifier)(maxHeight);
-	      this.options = {
-	        mode: mode,
-	        ratio: ratio,
-	        maxWidth: maxWidth,
-	        maxHeight: maxHeight
-	      };
-	    } else {
-	      this.wFn = (0, _Helper.parseModifier)(width);
-	      this.hFn = (0, _Helper.parseModifier)(height);
-	      this.options = {
-	        mode: mode,
-	        width: width,
-	        height: height
-	      };
-	    }
-	  }
-
-	  _createClass(Fitter, [{
-	    key: 'fit',
-	    value: function fit() {
-	      var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
-	      var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
-
-	      var boxDim = new _Dimension2.default(box);
-	      var w = boxDim.width;
-	      var h = boxDim.height;
-	      var containerDim = new _Dimension2.default(container);
-	      var cw = containerDim.width;
-	      var ch = containerDim.height;
-
-	      var dim = void 0;
-	      if (this.options.mode === Fitter.MODE_ASPECT_RATIO) {
-	        var ratio = this.options.ratio;
-	        var maxW = this.wFn(cw, cw);
-	        var maxH = this.hFn(ch, ch);
-	        var newWFromHeight = Math.floor(ratio * maxH);
-	        if (newWFromHeight <= maxW) {
-	          dim = new _Dimension2.default(newWFromHeight, maxH);
-	        } else {
-	          dim = new _Dimension2.default(maxW, Math.floor(maxW / ratio));
-	        }
-	      } else {
-	        dim = new _Dimension2.default(this.wFn(w, cw), this.hFn(h, ch));
-	      }
-
-	      return {
-	        dimension: dim,
-	        changed: !dim.isEqual(boxDim)
-	      };
-	    }
-	  }]);
-
-	  return Fitter;
-	}();
-
-	Fitter.MODE_BASIC = 'basic';
-	Fitter.MODE_ASPECT_RATIO = 'aspectRatio';
-
-	exports.default = Fitter;
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Helper = __webpack_require__(15);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Dimension = function () {
-	  function Dimension() {
-	    _classCallCheck(this, Dimension);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    if (args.length === 1) {
-	      var inputOrGetter = args[0];
-	      var input = (0, _Helper.isFunction)(inputOrGetter) ? inputOrGetter() : inputOrGetter;
-
-	      if (input instanceof Dimension) {
-	        this.width = input.width;
-	        this.height = input.height;
-	      } else if ((0, _Helper.isElement)(input)) {
-	        this.width = input.clientWidth;
-	        this.height = input.clientHeight;
-	      } else if (Array.isArray(input)) {
-	        this.width = input[0];
-	        this.height = input[1];
-	      } else if ((0, _Helper.isDefined)(input) && (0, _Helper.isDefined)(input.width) && (0, _Helper.isDefined)(input.height)) {
-	        this.width = input.width;
-	        this.height = input.height;
-	      } else {
-	        var err = new Error('Unsupported input. Must be either\n  DOMNode, Array or Object with field width and height,\n  or a function that returns any of the above.');
-	        err.value = inputOrGetter;
-	        throw err;
-	      }
-	    } else {
-	      var width = args[0];
-	      var height = args[1];
-
-	      this.width = width;
-	      this.height = height;
-	    }
-	  }
-
-	  _createClass(Dimension, [{
-	    key: 'isEqual',
-	    value: function isEqual(x) {
-	      if (x instanceof Dimension) {
-	        return this.width === x.width && this.height === x.height;
-	      }
-	      var dim2 = new Dimension(x);
-	      return this.width === dim2.width && this.height === dim2.height;
-	    }
-	  }, {
-	    key: 'toArray',
-	    value: function toArray() {
-	      return [this.width, this.height];
-	    }
-	  }, {
-	    key: 'toObject',
-	    value: function toObject() {
-	      return {
-	        width: this.width,
-	        height: this.height
-	      };
-	    }
-	  }]);
-
-	  return Dimension;
-	}();
-
-	exports.default = Dimension;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	exports.isRequired = isRequired;
-	exports.isDefined = isDefined;
-	exports.isNotDefined = isNotDefined;
-	exports.isElement = isElement;
-	exports.parseModifier = parseModifier;
-	function isRequired(name) {
-	  throw new Error('Missing parameter ' + name);
-	}
-
-	function isDefined(x) {
-	  return x !== null && x !== undefined;
-	}
-
-	function isNotDefined(x) {
-	  return x === null || x === undefined;
-	}
-
-	var isFunction = exports.isFunction = function () {
-	  if (typeof /./ !== 'function' && (typeof Int8Array === 'undefined' ? 'undefined' : _typeof(Int8Array)) !== 'object') {
-	    return function (obj) {
-	      return typeof obj === 'function' || false;
-	    };
-	  }
-	  return function (fn) {
-	    var getType = {};
-	    return fn && getType.toString.call(fn) === '[object Function]';
-	  };
-	}();
-
-	function isElement(obj) {
-	  return !!(obj && obj.nodeType === 1);
-	}
-
-	function parseModifier(value) {
-	  // Return current value
-	  if (isNotDefined(value)) {
-	    return function (x, cx) {
-	      return Math.min(x, cx);
-	    };
-	  }
-	  // Return percent of container
-	  var str = ('' + value).trim().toLowerCase();
-	  if (str.indexOf('%') > -1) {
-	    var _ret = function () {
-	      var percent = +str.replace('%', '') / 100;
-	      return {
-	        v: function v(x, cx) {
-	          return cx * percent;
-	        }
-	      };
-	    }();
-
-	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-	  }
-	  // Return fixed value
-	  return function () {
-	    return +str.replace('px', '');
-	  };
-	}
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Dimension = __webpack_require__(14);
-
-	var _Dimension2 = _interopRequireDefault(_Dimension);
-
-	var _d3Dispatch = __webpack_require__(3);
-
-	var _Helper = __webpack_require__(15);
-
-	var _throttle = __webpack_require__(17);
-
-	var _throttle2 = _interopRequireDefault(_throttle);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Watcher = function () {
-	  function Watcher() {
-	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	    var _ref$type = _ref.type;
-	    var type = _ref$type === undefined ? Watcher.TYPE_WINDOW : _ref$type;
-	    var _ref$target = _ref.target;
-	    var target = _ref$target === undefined ? null : _ref$target;
-	    var _ref$interval = _ref.interval;
-	    var interval = _ref$interval === undefined ? 500 : _ref$interval;
-
-	    _classCallCheck(this, Watcher);
-
-	    if (type === Watcher.TYPE_POLLING && !target) {
-	      (0, _Helper.isRequired)('options.target');
-	    }
-
-	    this.type = type;
-	    this.target = target;
-	    this.interval = interval;
-
-	    this.dispatcher = (0, _d3Dispatch.dispatch)('change');
-	    this.check = this.check.bind(this);
-	    this.throttledCheck = (0, _throttle2.default)(this.check, this.interval);
-	    this.isWatching = false;
-	  }
-
-	  _createClass(Watcher, [{
-	    key: 'hasTargetChanged',
-	    value: function hasTargetChanged() {
-	      if (!this.target) {
-	        return true;
-	      }
-	      var newDim = new _Dimension2.default(this.target);
-	      if (!this.currentDim || !newDim.isEqual(this.currentDim)) {
-	        this.currentDim = newDim;
-	        return true;
-	      }
-	      return false;
-	    }
-	  }, {
-	    key: 'check',
-	    value: function check() {
-	      if (this.hasTargetChanged()) {
-	        this.dispatcher.call('change', this, this.currentDim);
-	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'on',
-	    value: function on(name, listener) {
-	      this.dispatcher.on(name, listener);
-	      return this;
-	    }
-	  }, {
-	    key: 'off',
-	    value: function off(name) {
-	      this.dispatcher.on(name, null);
-	      return this;
-	    }
-	  }, {
-	    key: 'start',
-	    value: function start() {
-	      if (!this.isWatching) {
-	        if (this.target) {
-	          this.currentDim = new _Dimension2.default(this.target);
-	        }
-	        if (this.type === Watcher.TYPE_WINDOW) {
-	          window.addEventListener('resize', this.throttledCheck);
-	        } else if (this.type === Watcher.TYPE_POLLING) {
-	          this.intervalId = window.setInterval(this.check, this.interval);
-	        }
-	        this.isWatching = true;
-	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop() {
-	      if (this.isWatching) {
-	        if (this.type === Watcher.TYPE_WINDOW) {
-	          window.removeEventListener('resize', this.throttledCheck);
-	        } else if (this.type === Watcher.TYPE_POLLING && this.intervalId) {
-	          window.clearInterval(this.intervalId);
-	          this.intervalId = null;
-	        }
-	        this.isWatching = false;
-	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'destroy',
-	    value: function destroy() {
-	      this.stop();
-	      this.off('change');
-	      return this;
-	    }
-	  }]);
-
-	  return Watcher;
-	}();
-
-	Watcher.TYPE_WINDOW = 'window';
-	Watcher.TYPE_POLLING = 'polling';
-
-	exports.default = Watcher;
-
-/***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var debounce = __webpack_require__(4),
-	    isObject = __webpack_require__(5);
-
-	/** Used as the `TypeError` message for "Functions" methods. */
-	var FUNC_ERROR_TEXT = 'Expected a function';
-
-	/**
-	 * Creates a throttled function that only invokes `func` at most once per
-	 * every `wait` milliseconds. The throttled function comes with a `cancel`
-	 * method to cancel delayed `func` invocations and a `flush` method to
-	 * immediately invoke them. Provide `options` to indicate whether `func`
-	 * should be invoked on the leading and/or trailing edge of the `wait`
-	 * timeout. The `func` is invoked with the last arguments provided to the
-	 * throttled function. Subsequent calls to the throttled function return the
-	 * result of the last `func` invocation.
-	 *
-	 * **Note:** If `leading` and `trailing` options are `true`, `func` is
-	 * invoked on the trailing edge of the timeout only if the throttled function
-	 * is invoked more than once during the `wait` timeout.
-	 *
-	 * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
-	 * until to the next tick, similar to `setTimeout` with a timeout of `0`.
-	 *
-	 * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
-	 * for details over the differences between `_.throttle` and `_.debounce`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Function
-	 * @param {Function} func The function to throttle.
-	 * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
-	 * @param {Object} [options={}] The options object.
-	 * @param {boolean} [options.leading=true]
-	 *  Specify invoking on the leading edge of the timeout.
-	 * @param {boolean} [options.trailing=true]
-	 *  Specify invoking on the trailing edge of the timeout.
-	 * @returns {Function} Returns the new throttled function.
-	 * @example
-	 *
-	 * // Avoid excessively updating the position while scrolling.
-	 * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
-	 *
-	 * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
-	 * var throttled = _.throttle(renewToken, 300000, { 'trailing': false });
-	 * jQuery(element).on('click', throttled);
-	 *
-	 * // Cancel the trailing throttled invocation.
-	 * jQuery(window).on('popstate', throttled.cancel);
-	 */
-	function throttle(func, wait, options) {
-	  var leading = true,
-	      trailing = true;
-
-	  if (typeof func != 'function') {
-	    throw new TypeError(FUNC_ERROR_TEXT);
-	  }
-	  if (isObject(options)) {
-	    leading = 'leading' in options ? !!options.leading : leading;
-	    trailing = 'trailing' in options ? !!options.trailing : trailing;
-	  }
-	  return debounce(func, wait, {
-	    'leading': leading,
-	    'maxWait': wait,
-	    'trailing': trailing
-	  });
-	}
-
-	module.exports = throttle;
-
-/***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1510,8 +1500,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
 
 	    var chunks = layerName.split('.');
-	    var name = void 0,
-	        tag = void 0;
+	    var name = void 0;
+	    var tag = void 0;
 	    if (chunks.length > 1) {
 	      tag = chunks[0].length > 0 ? chunks[0] : 'g';
 	      name = chunks[1];
@@ -1524,7 +1514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (layers.hasOwnProperty(id)) {
 	      throw new Error('invalid or duplicate layer id: ' + id);
 	    }
-	    var className = (0, _kebabCase2.default)(name) + '-layer';
+	    var className = (0, _helper.kebabCase)(name) + '-layer';
 	    var layer = container.append(tag).classed(className, true);
 
 	    layers[id] = layer;
@@ -1538,7 +1528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return config.map(function (info) {
 	        return createLayerFromConfig(container, info, prefix);
 	      });
-	    } else if ((0, _isObject2.default)(config)) {
+	    } else if ((0, _helper.isObject)(config)) {
 	      var _Object$keys = Object.keys(config);
 
 	      var _Object$keys2 = _slicedToArray(_Object$keys, 1);
@@ -1576,522 +1566,145 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 
-	var _isObject = __webpack_require__(5);
-
-	var _isObject2 = _interopRequireDefault(_isObject);
-
-	var _kebabCase = __webpack_require__(19);
-
-	var _kebabCase2 = _interopRequireDefault(_kebabCase);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _helper = __webpack_require__(19);
 
 /***/ },
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var createCompounder = __webpack_require__(20);
-
-	/**
-	 * Converts `string` to
-	 * [kebab case](https://en.wikipedia.org/wiki/Letter_case#Special_case_styles).
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 3.0.0
-	 * @category String
-	 * @param {string} [string=''] The string to convert.
-	 * @returns {string} Returns the kebab cased string.
-	 * @example
-	 *
-	 * _.kebabCase('Foo Bar');
-	 * // => 'foo-bar'
-	 *
-	 * _.kebabCase('fooBar');
-	 * // => 'foo-bar'
-	 *
-	 * _.kebabCase('__FOO_BAR__');
-	 * // => 'foo-bar'
-	 */
-	var kebabCase = createCompounder(function (result, word, index) {
-	  return result + (index ? '-' : '') + word.toLowerCase();
-	});
-
-	module.exports = kebabCase;
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var arrayReduce = __webpack_require__(21),
-	    deburr = __webpack_require__(22),
-	    words = __webpack_require__(28);
-
-	/** Used to compose unicode capture groups. */
-	var rsApos = '[\'’]';
-
-	/** Used to match apostrophes. */
-	var reApos = RegExp(rsApos, 'g');
-
-	/**
-	 * Creates a function like `_.camelCase`.
-	 *
-	 * @private
-	 * @param {Function} callback The function to combine each word.
-	 * @returns {Function} Returns the new compounder function.
-	 */
-	function createCompounder(callback) {
-	  return function (string) {
-	    return arrayReduce(words(deburr(string).replace(reApos, '')), callback, '');
-	  };
-	}
-
-	module.exports = createCompounder;
-
-/***/ },
-/* 21 */
 /***/ function(module, exports) {
-
-	"use strict";
-
-	/**
-	 * A specialized version of `_.reduce` for arrays without support for
-	 * iteratee shorthands.
-	 *
-	 * @private
-	 * @param {Array} [array] The array to iterate over.
-	 * @param {Function} iteratee The function invoked per iteration.
-	 * @param {*} [accumulator] The initial value.
-	 * @param {boolean} [initAccum] Specify using the first element of `array` as
-	 *  the initial value.
-	 * @returns {*} Returns the accumulated value.
-	 */
-	function arrayReduce(array, iteratee, accumulator, initAccum) {
-	  var index = -1,
-	      length = array ? array.length : 0;
-
-	  if (initAccum && length) {
-	    accumulator = array[++index];
-	  }
-	  while (++index < length) {
-	    accumulator = iteratee(accumulator, array[index], index, array);
-	  }
-	  return accumulator;
-	}
-
-	module.exports = arrayReduce;
-
-/***/ },
-/* 22 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var deburrLetter = __webpack_require__(23),
-	    toString = __webpack_require__(25);
-
-	/** Used to match Latin Unicode letters (excluding mathematical operators). */
-	var reLatin = /[\xc0-\xd6\xd8-\xf6\xf8-\xff\u0100-\u017f]/g;
-
-	/** Used to compose unicode character classes. */
-	var rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
-	    rsComboSymbolsRange = '\\u20d0-\\u20f0';
-
-	/** Used to compose unicode capture groups. */
-	var rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']';
-
-	/**
-	 * Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks) and
-	 * [combining diacritical marks for symbols](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks_for_Symbols).
-	 */
-	var reComboMark = RegExp(rsCombo, 'g');
-
-	/**
-	 * Deburrs `string` by converting
-	 * [Latin-1 Supplement](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
-	 * and [Latin Extended-A](https://en.wikipedia.org/wiki/Latin_Extended-A)
-	 * letters to basic Latin letters and removing
-	 * [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks).
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 3.0.0
-	 * @category String
-	 * @param {string} [string=''] The string to deburr.
-	 * @returns {string} Returns the deburred string.
-	 * @example
-	 *
-	 * _.deburr('déjà vu');
-	 * // => 'deja vu'
-	 */
-	function deburr(string) {
-	  string = toString(string);
-	  return string && string.replace(reLatin, deburrLetter).replace(reComboMark, '');
-	}
-
-	module.exports = deburr;
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var basePropertyOf = __webpack_require__(24);
-
-	/** Used to map Latin Unicode letters to basic Latin letters. */
-	var deburredLetters = {
-	  // Latin-1 Supplement block.
-	  '\xc0': 'A', '\xc1': 'A', '\xc2': 'A', '\xc3': 'A', '\xc4': 'A', '\xc5': 'A',
-	  '\xe0': 'a', '\xe1': 'a', '\xe2': 'a', '\xe3': 'a', '\xe4': 'a', '\xe5': 'a',
-	  '\xc7': 'C', '\xe7': 'c',
-	  '\xd0': 'D', '\xf0': 'd',
-	  '\xc8': 'E', '\xc9': 'E', '\xca': 'E', '\xcb': 'E',
-	  '\xe8': 'e', '\xe9': 'e', '\xea': 'e', '\xeb': 'e',
-	  '\xcc': 'I', '\xcd': 'I', '\xce': 'I', '\xcf': 'I',
-	  '\xec': 'i', '\xed': 'i', '\xee': 'i', '\xef': 'i',
-	  '\xd1': 'N', '\xf1': 'n',
-	  '\xd2': 'O', '\xd3': 'O', '\xd4': 'O', '\xd5': 'O', '\xd6': 'O', '\xd8': 'O',
-	  '\xf2': 'o', '\xf3': 'o', '\xf4': 'o', '\xf5': 'o', '\xf6': 'o', '\xf8': 'o',
-	  '\xd9': 'U', '\xda': 'U', '\xdb': 'U', '\xdc': 'U',
-	  '\xf9': 'u', '\xfa': 'u', '\xfb': 'u', '\xfc': 'u',
-	  '\xdd': 'Y', '\xfd': 'y', '\xff': 'y',
-	  '\xc6': 'Ae', '\xe6': 'ae',
-	  '\xde': 'Th', '\xfe': 'th',
-	  '\xdf': 'ss',
-	  // Latin Extended-A block.
-	  'Ā': 'A', 'Ă': 'A', 'Ą': 'A',
-	  'ā': 'a', 'ă': 'a', 'ą': 'a',
-	  'Ć': 'C', 'Ĉ': 'C', 'Ċ': 'C', 'Č': 'C',
-	  'ć': 'c', 'ĉ': 'c', 'ċ': 'c', 'č': 'c',
-	  'Ď': 'D', 'Đ': 'D', 'ď': 'd', 'đ': 'd',
-	  'Ē': 'E', 'Ĕ': 'E', 'Ė': 'E', 'Ę': 'E', 'Ě': 'E',
-	  'ē': 'e', 'ĕ': 'e', 'ė': 'e', 'ę': 'e', 'ě': 'e',
-	  'Ĝ': 'G', 'Ğ': 'G', 'Ġ': 'G', 'Ģ': 'G',
-	  'ĝ': 'g', 'ğ': 'g', 'ġ': 'g', 'ģ': 'g',
-	  'Ĥ': 'H', 'Ħ': 'H', 'ĥ': 'h', 'ħ': 'h',
-	  'Ĩ': 'I', 'Ī': 'I', 'Ĭ': 'I', 'Į': 'I', 'İ': 'I',
-	  'ĩ': 'i', 'ī': 'i', 'ĭ': 'i', 'į': 'i', 'ı': 'i',
-	  'Ĵ': 'J', 'ĵ': 'j',
-	  'Ķ': 'K', 'ķ': 'k', 'ĸ': 'k',
-	  'Ĺ': 'L', 'Ļ': 'L', 'Ľ': 'L', 'Ŀ': 'L', 'Ł': 'L',
-	  'ĺ': 'l', 'ļ': 'l', 'ľ': 'l', 'ŀ': 'l', 'ł': 'l',
-	  'Ń': 'N', 'Ņ': 'N', 'Ň': 'N', 'Ŋ': 'N',
-	  'ń': 'n', 'ņ': 'n', 'ň': 'n', 'ŋ': 'n',
-	  'Ō': 'O', 'Ŏ': 'O', 'Ő': 'O',
-	  'ō': 'o', 'ŏ': 'o', 'ő': 'o',
-	  'Ŕ': 'R', 'Ŗ': 'R', 'Ř': 'R',
-	  'ŕ': 'r', 'ŗ': 'r', 'ř': 'r',
-	  'Ś': 'S', 'Ŝ': 'S', 'Ş': 'S', 'Š': 'S',
-	  'ś': 's', 'ŝ': 's', 'ş': 's', 'š': 's',
-	  'Ţ': 'T', 'Ť': 'T', 'Ŧ': 'T',
-	  'ţ': 't', 'ť': 't', 'ŧ': 't',
-	  'Ũ': 'U', 'Ū': 'U', 'Ŭ': 'U', 'Ů': 'U', 'Ű': 'U', 'Ų': 'U',
-	  'ũ': 'u', 'ū': 'u', 'ŭ': 'u', 'ů': 'u', 'ű': 'u', 'ų': 'u',
-	  'Ŵ': 'W', 'ŵ': 'w',
-	  'Ŷ': 'Y', 'ŷ': 'y', 'Ÿ': 'Y',
-	  'Ź': 'Z', 'Ż': 'Z', 'Ž': 'Z',
-	  'ź': 'z', 'ż': 'z', 'ž': 'z',
-	  'Ĳ': 'IJ', 'ĳ': 'ij',
-	  'Œ': 'Oe', 'œ': 'oe',
-	  'ŉ': "'n", 'ſ': 'ss'
-	};
-
-	/**
-	 * Used by `_.deburr` to convert Latin-1 Supplement and Latin Extended-A
-	 * letters to basic Latin letters.
-	 *
-	 * @private
-	 * @param {string} letter The matched letter to deburr.
-	 * @returns {string} Returns the deburred letter.
-	 */
-	var deburrLetter = basePropertyOf(deburredLetters);
-
-	module.exports = deburrLetter;
-
-/***/ },
-/* 24 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	/**
-	 * The base implementation of `_.propertyOf` without support for deep paths.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {Function} Returns the new accessor function.
-	 */
-	function basePropertyOf(object) {
-	  return function (key) {
-	    return object == null ? undefined : object[key];
-	  };
-	}
-
-	module.exports = basePropertyOf;
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var baseToString = __webpack_require__(26);
-
-	/**
-	 * Converts `value` to a string. An empty string is returned for `null`
-	 * and `undefined` values. The sign of `-0` is preserved.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 4.0.0
-	 * @category Lang
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 * @example
-	 *
-	 * _.toString(null);
-	 * // => ''
-	 *
-	 * _.toString(-0);
-	 * // => '-0'
-	 *
-	 * _.toString([1, 2, 3]);
-	 * // => '1,2,3'
-	 */
-	function toString(value) {
-	  return value == null ? '' : baseToString(value);
-	}
-
-	module.exports = toString;
-
-/***/ },
-/* 26 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _Symbol = __webpack_require__(27),
-	    isSymbol = __webpack_require__(10);
-
-	/** Used as references for various `Number` constants. */
-	var INFINITY = 1 / 0;
-
-	/** Used to convert symbols to primitives and strings. */
-	var symbolProto = _Symbol ? _Symbol.prototype : undefined,
-	    symbolToString = symbolProto ? symbolProto.toString : undefined;
-
-	/**
-	 * The base implementation of `_.toString` which doesn't convert nullish
-	 * values to empty strings.
-	 *
-	 * @private
-	 * @param {*} value The value to process.
-	 * @returns {string} Returns the string.
-	 */
-	function baseToString(value) {
-	  // Exit early for strings to avoid a performance hit in some environments.
-	  if (typeof value == 'string') {
-	    return value;
-	  }
-	  if (isSymbol(value)) {
-	    return symbolToString ? symbolToString.call(value) : '';
-	  }
-	  var result = value + '';
-	  return result == '0' && 1 / value == -INFINITY ? '-0' : result;
-	}
-
-	module.exports = baseToString;
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var root = __webpack_require__(7);
-
-	/** Built-in value references. */
-	var _Symbol = root.Symbol;
-
-	module.exports = _Symbol;
-
-/***/ },
-/* 28 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var asciiWords = __webpack_require__(29),
-	    hasUnicodeWord = __webpack_require__(30),
-	    toString = __webpack_require__(25),
-	    unicodeWords = __webpack_require__(31);
-
-	/**
-	 * Splits `string` into an array of its words.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 3.0.0
-	 * @category String
-	 * @param {string} [string=''] The string to inspect.
-	 * @param {RegExp|string} [pattern] The pattern to match words.
-	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
-	 * @returns {Array} Returns the words of `string`.
-	 * @example
-	 *
-	 * _.words('fred, barney, & pebbles');
-	 * // => ['fred', 'barney', 'pebbles']
-	 *
-	 * _.words('fred, barney, & pebbles', /[^, ]+/g);
-	 * // => ['fred', 'barney', '&', 'pebbles']
-	 */
-	function words(string, pattern, guard) {
-	  string = toString(string);
-	  pattern = guard ? undefined : pattern;
-
-	  if (pattern === undefined) {
-	    return hasUnicodeWord(string) ? unicodeWords(string) : asciiWords(string);
-	  }
-	  return string.match(pattern) || [];
-	}
-
-	module.exports = words;
-
-/***/ },
-/* 29 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	/** Used to match words composed of alphanumeric characters. */
-	var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
-
-	/**
-	 * Splits an ASCII `string` into an array of its words.
-	 *
-	 * @private
-	 * @param {string} The string to inspect.
-	 * @returns {Array} Returns the words of `string`.
-	 */
-	function asciiWords(string) {
-	  return string.match(reAsciiWord) || [];
-	}
-
-	module.exports = asciiWords;
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	/** Used to detect strings that need a more robust regexp to match words. */
-	var reHasUnicodeWord = /[a-z][A-Z]|[A-Z]{2,}[a-z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]/;
-
-	/**
-	 * Checks if `string` contains a word composed of Unicode symbols.
-	 *
-	 * @private
-	 * @param {string} string The string to inspect.
-	 * @returns {boolean} Returns `true` if a word is found, else `false`.
-	 */
-	function hasUnicodeWord(string) {
-	  return reHasUnicodeWord.test(string);
-	}
-
-	module.exports = hasUnicodeWord;
-
-/***/ },
-/* 31 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/** Used to compose unicode character classes. */
-	var rsAstralRange = '\\ud800-\\udfff',
-	    rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
-	    rsComboSymbolsRange = '\\u20d0-\\u20f0',
-	    rsDingbatRange = '\\u2700-\\u27bf',
-	    rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff',
-	    rsMathOpRange = '\\xac\\xb1\\xd7\\xf7',
-	    rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf',
-	    rsPunctuationRange = '\\u2000-\\u206f',
-	    rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000',
-	    rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde',
-	    rsVarRange = '\\ufe0e\\ufe0f',
-	    rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
-
-	/** Used to compose unicode capture groups. */
-	var rsApos = '[\'’]',
-	    rsBreak = '[' + rsBreakRange + ']',
-	    rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']',
-	    rsDigits = '\\d+',
-	    rsDingbat = '[' + rsDingbatRange + ']',
-	    rsLower = '[' + rsLowerRange + ']',
-	    rsMisc = '[^' + rsAstralRange + rsBreakRange + rsDigits + rsDingbatRange + rsLowerRange + rsUpperRange + ']',
-	    rsFitz = '\\ud83c[\\udffb-\\udfff]',
-	    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
-	    rsNonAstral = '[^' + rsAstralRange + ']',
-	    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
-	    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
-	    rsUpper = '[' + rsUpperRange + ']',
-	    rsZWJ = '\\u200d';
-
-	/** Used to compose unicode regexes. */
-	var rsLowerMisc = '(?:' + rsLower + '|' + rsMisc + ')',
-	    rsUpperMisc = '(?:' + rsUpper + '|' + rsMisc + ')',
-	    rsOptLowerContr = '(?:' + rsApos + '(?:d|ll|m|re|s|t|ve))?',
-	    rsOptUpperContr = '(?:' + rsApos + '(?:D|LL|M|RE|S|T|VE))?',
-	    reOptMod = rsModifier + '?',
-	    rsOptVar = '[' + rsVarRange + ']?',
-	    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
-	    rsSeq = rsOptVar + reOptMod + rsOptJoin,
-	    rsEmoji = '(?:' + [rsDingbat, rsRegional, rsSurrPair].join('|') + ')' + rsSeq;
-
-	/** Used to match complex or compound words. */
-	var reUnicodeWord = RegExp([rsUpper + '?' + rsLower + '+' + rsOptLowerContr + '(?=' + [rsBreak, rsUpper, '$'].join('|') + ')', rsUpperMisc + '+' + rsOptUpperContr + '(?=' + [rsBreak, rsUpper + rsLowerMisc, '$'].join('|') + ')', rsUpper + '?' + rsLowerMisc + '+' + rsOptLowerContr, rsUpper + '+' + rsOptUpperContr, rsDigits, rsEmoji].join('|'), 'g');
-
-	/**
-	 * Splits a Unicode `string` into an array of its words.
-	 *
-	 * @private
-	 * @param {string} The string to inspect.
-	 * @returns {Array} Returns the words of `string`.
-	 */
-	function unicodeWords(string) {
-	    return string.match(reUnicodeWord) || [];
-	}
-
-	module.exports = unicodeWords;
-
-/***/ },
-/* 32 */
-/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	exports.isObject = isObject;
+	exports.isFunction = isFunction;
+	exports.debounce = debounce;
+	exports.kebabCase = kebabCase;
 	exports.deepExtend = deepExtend;
 	exports.extend = extend;
 	exports.rebind = rebind;
 	exports.functor = functor;
+	//---------------------------------------------------
+	// From lodash
+	//---------------------------------------------------
 
-	var _isObject = __webpack_require__(5);
+	/** Used to determine if values are of the language type Object */
+	var objectTypes = {
+	  'boolean': false,
+	  'function': true,
+	  'object': true,
+	  'number': false,
+	  'string': false,
+	  'undefined': false
+	};
 
-	var _isObject2 = _interopRequireDefault(_isObject);
+	function isObject(value) {
+	  // check if the value is the ECMAScript language type of Object
+	  // http://es5.github.io/#x8
+	  // and avoid a V8 bug
+	  // http://code.google.com/p/v8/issues/detail?id=2291
+	  return !!(value && objectTypes[typeof value === 'undefined' ? 'undefined' : _typeof(value)]);
+	}
 
-	var _isFunction = __webpack_require__(33);
+	function isFunction(functionToCheck) {
+	  var getType = {};
+	  return !!functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	}
 
-	var _isFunction2 = _interopRequireDefault(_isFunction);
+	//---------------------------------------------------
+	// Modified from lodash
+	//---------------------------------------------------
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	/**
+	 * Returns a function, that, as long as it continues to be invoked,
+	 * will not be triggered.
+	 * The function will be called after it stops being called for
+	 * "wait" milliseconds.
+	 * The output function can be called with .now() to execute immediately
+	 * For example:
+	 * doSomething(params); // will debounce
+	 * doSomething.now(params); // will execute immediately
+	 *
+	 * @param  Function func      function to be debounced
+	 * @param  Number   wait      wait time until it will be executed
+	 * @param  Boolean  immediate If "immediate" is passed, trigger the function on the
+	 * leading edge, instead of the trailing.
+	 * @return Function           debounced function
+	 */
+	function debounce(func, wait, immediate) {
+	  var timeout = void 0;
+
+	  function outputFn() {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var context = this;
+	    function later() {
+	      timeout = null;
+	      if (!immediate) func.apply(context, args);
+	    }
+	    var callNow = immediate && !timeout;
+	    clearTimeout(timeout);
+	    timeout = setTimeout(later, wait);
+	    if (callNow) func.apply(context, args);
+
+	    // return caller for chaining
+	    return context;
+	  }
+
+	  // so we know this function is debounced
+	  outputFn.isDebounced = true;
+	  // and provide a way to call the original function immediately
+	  outputFn.now = function () {
+	    clearTimeout(timeout);
+
+	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	      args[_key2] = arguments[_key2];
+	    }
+
+	    return func.apply(this, args);
+	  };
+
+	  return outputFn;
+	}
+
+	//---------------------------------------------------
+	// From underscore.string
+	//---------------------------------------------------
+	/* jshint ignore:start */
+
+	var nativeTrim = String.prototype.trim;
+
+	function escapeRegExp(str) {
+	  if (str == null) return '';
+	  return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+	}
+
+	function defaultToWhiteSpace(characters) {
+	  if (characters == null) {
+	    return '\\s';
+	  } else if (characters.source) {
+	    return characters.source;
+	  }
+	  return '[' + escapeRegExp(characters) + ']';
+	}
+
+	function trim(str, characters) {
+	  if (str == null) return '';
+	  if (!characters && nativeTrim) return nativeTrim.call(str);
+	  var chars = defaultToWhiteSpace(characters);
+	  var pattern = new RegExp('^' + chars + '+|' + chars + '+$', 'g');
+	  return String(str).replace(pattern, '');
+	}
+
+	function kebabCase(str) {
+	  return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
+	}
 
 	//---------------------------------------------------
 	// From http://youmightnotneedjquery.com/
@@ -2108,7 +1721,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var key in obj) {
 	      if (obj.hasOwnProperty(key)) {
 	        var value = obj[key];
-	        if ((0, _isObject2.default)(value) && !Array.isArray(value) && !(0, _isFunction2.default)(value)) {
+	        if (isObject(value) && !Array.isArray(value) && !isFunction(value)) {
 	          out[key] = deepExtend(out[key], value);
 	        } else out[key] = value;
 	      }
@@ -2139,7 +1752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// Method is assumed to be a standard D3 getter-setter:
 	// If passed with no arguments, gets the value.
 	// If passed with arguments, sets the value and returns the target.
-	function d3_rebind(target, source, method) {
+	function d3Rebind(target, source, method) {
 	  return function () {
 	    var value = method.apply(source, arguments);
 	    return value === source ? target : value;
@@ -2152,175 +1765,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      n = arguments.length,
 	      method = void 0;
 	  while (++i < n) {
-	    target[method = arguments[i]] = d3_rebind(target, source, source[method]);
+	    target[method = arguments[i]] = d3Rebind(target, source, source[method]);
 	  }return target;
 	}
 
 	function functor(v) {
-	  return typeof v === 'function' ? v : function () {
+	  return isFunction(v) ? v : function () {
 	    return v;
 	  };
 	}
-
-/***/ },
-/* 33 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isObject = __webpack_require__(5);
-
-	/** `Object#toString` result references. */
-	var funcTag = '[object Function]',
-	    genTag = '[object GeneratorFunction]';
-
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-
-	/**
-	 * Used to resolve the
-	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-	 * of values.
-	 */
-	var objectToString = objectProto.toString;
-
-	/**
-	 * Checks if `value` is classified as a `Function` object.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Lang
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
-	 * @example
-	 *
-	 * _.isFunction(_);
-	 * // => true
-	 *
-	 * _.isFunction(/abc/);
-	 * // => false
-	 */
-	function isFunction(value) {
-	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
-	  var tag = isObject(value) ? objectToString.call(value) : '';
-	  return tag == funcTag || tag == genTag;
-	}
-
-	module.exports = isFunction;
-
-/***/ },
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _d3Dispatch = __webpack_require__(3);
-
-	var _debounce = __webpack_require__(4);
-
-	var _debounce2 = _interopRequireDefault(_debounce);
-
-	var _helper = __webpack_require__(32);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function NOOP(selection, done) {
-	  done();
-	}
-
-	function Chartlet(enter, update, exit, customEvents) {
-	  update = update || NOOP;
-	  exit = exit || NOOP;
-	  customEvents = customEvents || [];
-	  var _propertyCache = {};
-	  var _dispatch = _d3Dispatch.dispatch.apply(this, ['enterDone', 'updateDone', 'exitDone'].concat(customEvents));
-
-	  // getter and setter of chartlet properties
-
-	  function property(name, value) {
-	    // if functioning as a setter, set property in cache
-	    if (arguments.length > 1) {
-	      _propertyCache[name] = (0, _helper.functor)(value);
-	      return this;
-	    }
-
-	    // functioning as a getter, return property accessor
-	    return (0, _helper.functor)(_propertyCache[name]);
-	  }
-
-	  function getPropertyValue(name, d, i) {
-	    return property(name)(d, i);
-	  }
-
-	  function _wrapAction(action, doneHookName) {
-	    return function (selection) {
-	      action(selection, (0, _debounce2.default)(function (d, i) {
-	        _dispatch.call(doneHookName, this, selection);
-	      }), 5);
-	    };
-	  }
-
-	  function inheritPropertyFrom(chartlet, from, to) {
-	    _propertyCache[to || from] = function (d, i) {
-	      return chartlet.property(from)(d, i);
-	    };
-	    return this;
-	  }
-
-	  function inheritPropertiesFrom(chartlet, froms, tos) {
-	    froms.forEach(function (from, i) {
-	      inheritPropertyFrom(chartlet, from, tos && i < tos.length ? tos[i] : undefined);
-	    });
-	    return this;
-	  }
-
-	  function publishEventsTo(foreignDispatcher) {
-	    customEvents.forEach(function (event) {
-	      _dispatch.on(event, function () {
-	        var args = Array.prototype.slice.call(arguments);
-	        foreignDispatcher.apply(event, this, args);
-	      });
-	    });
-	    return this;
-	  }
-
-	  function getCustomEventNames() {
-	    return customEvents;
-	  }
-
-	  // exports
-	  var exports = {
-	    // for use by child chartlet
-	    getDispatcher: function getDispatcher() {
-	      return _dispatch;
-	    },
-
-	    getPropertyValue: getPropertyValue,
-	    inheritPropertyFrom: inheritPropertyFrom,
-	    inheritPropertiesFrom: inheritPropertiesFrom,
-	    publishEventsTo: publishEventsTo,
-	    getCustomEventNames: getCustomEventNames,
-
-	    property: property,
-	    enter: _wrapAction(enter, 'enterDone'),
-	    update: _wrapAction(update, 'updateDone'),
-	    exit: _wrapAction(exit, 'exitDone')
-	  };
-
-	  // bind events to exports
-	  (0, _helper.rebind)(exports, _dispatch, 'on');
-
-	  // return exports
-	  return exports;
-	}
-
-	exports.default = Chartlet;
 
 /***/ }
 /******/ ])

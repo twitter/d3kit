@@ -130,4 +130,28 @@ describe('helper', function () {
       });
     });
   });
+
+  describe('#isFunction(function)', function () {
+    it('should return true if the value is a function', function () {
+      const fn1 = function (d) { return d + 1; };
+      function fn2(d) { return d + 2; }
+
+      expect(helper.isFunction(fn1)).to.be.true;
+      expect(helper.isFunction(fn2)).to.be.true;
+    });
+    it('should return false if the value is not a function', function () {
+      expect(helper.isFunction(0)).to.be.false;
+      expect(helper.isFunction(1)).to.be.false;
+      expect(helper.isFunction(true)).to.be.false;
+      expect(helper.isFunction('what')).to.be.false;
+      expect(helper.isFunction(null)).to.be.false;
+      expect(helper.isFunction(undefined)).to.be.false;
+    });
+  });
+
+  describe('#kebabCase(str)', function () {
+    it('should convert input to dash-case', function () {
+      expect(helper.kebabCase('camelCase')).to.equal('camel-case');
+    });
+  });
 });

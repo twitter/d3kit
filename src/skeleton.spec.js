@@ -258,8 +258,8 @@ describe('Skeleton', () => {
     });
   });
 
-  describe('fit(fitOptions)', ()=>{
-    it('should fit the skeleton to container as instructed', ()=>{
+  describe('fit(fitOptions)', () => {
+    it('should fit the skeleton to container as instructed', () => {
       $element
         .style('width', '500px')
         .style('height', '500px');
@@ -270,7 +270,7 @@ describe('Skeleton', () => {
         })
         .updateDimensionNow();
 
-      expect(skeleton.dimension()).to.deep.equal([500,500]);
+      expect(skeleton.dimension()).to.deep.equal([500, 500]);
 
       skeleton
         .fit({
@@ -279,7 +279,7 @@ describe('Skeleton', () => {
         })
         .updateDimensionNow();
 
-      expect(skeleton.dimension()).to.deep.equal([250,400]);
+      expect(skeleton.dimension()).to.deep.equal([250, 400]);
     });
   });
 

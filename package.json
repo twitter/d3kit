@@ -23,8 +23,8 @@
     "dist/*.*"
   ],
   "peerDependencies": {
-    "d3-dispatch": "~1.0.1",
-    "d3-selection": "~1.0.2"
+    "d3-dispatch": "^1.0.1",
+    "d3-selection": "^1.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.3.21",
@@ -79,8 +79,5 @@
     "version": "npm run build && git add -A dist",
     "postversion": "git push ; git push --tags; pkgfiles",
     "prepublish": "pkgfiles"
-  },
-  "engines": {
-    "node": "~6.3"
   }
 }

@@ -1,5 +1,4 @@
-import isObject from 'lodash/isObject.js';
-import kebabCase from 'lodash/kebabCase.js';
+import { isObject, kebabCase } from './helper.js';
 
 // EXAMPLE USAGE:
 //
@@ -23,7 +22,8 @@ export default function (mainContainer) {
 
   function createLayerFromName(container, layerName, prefix = '') {
     const chunks = layerName.split('.');
-    let name, tag;
+    let name;
+    let tag;
     if (chunks.length > 1) {
       tag = chunks[0].length > 0 ? chunks[0] : 'g';
       name = chunks[1];
