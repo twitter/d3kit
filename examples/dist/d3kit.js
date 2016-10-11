@@ -109,11 +109,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _d3Dispatch = __webpack_require__(3);
 
-	var _FitWatcher = __webpack_require__(4);
+	var _debounce = __webpack_require__(4);
+
+	var _debounce2 = _interopRequireDefault(_debounce);
+
+	var _FitWatcher = __webpack_require__(12);
 
 	var _FitWatcher2 = _interopRequireDefault(_FitWatcher);
 
-	var _Fitter = __webpack_require__(5);
+	var _Fitter = __webpack_require__(13);
 
 	var _Fitter2 = _interopRequireDefault(_Fitter);
 
@@ -158,10 +162,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var customEvents = this.constructor.getCustomEventNames();
 	    this.setupDispatcher(customEvents);
 
-	    this.updateDimension = (0, _helper.debounce)(this.updateDimension.bind(this), 1);
-	    this.dispatchData = (0, _helper.debounce)(this.dispatchData.bind(this), 1);
-	    this.dispatchOptions = (0, _helper.debounce)(this.dispatchOptions.bind(this), 1);
-	    this.dispatchResize = (0, _helper.debounce)(this.dispatchResize.bind(this), 1);
+	    this.updateDimension = (0, _debounce2.default)(this.updateDimension.bind(this), 1);
+	    this.dispatchData = (0, _debounce2.default)(this.dispatchData.bind(this), 1);
+	    this.dispatchOptions = (0, _debounce2.default)(this.dispatchOptions.bind(this), 1);
+	    this.dispatchResize = (0, _debounce2.default)(this.dispatchResize.bind(this), 1);
 
 	    this.updateDimensionNow();
 	  }
@@ -325,7 +329,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'updateDimensionNow',
 	    value: function updateDimensionNow() {
 	      this.updateDimension();
-	      this.updateDimension.now();
+	      this.updateDimension.flush();
 	      return this;
 	    }
 	  }, {
@@ -480,548 +484,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Fitter = __webpack_require__(5);
-
-	var _Fitter2 = _interopRequireDefault(_Fitter);
-
-	var _Watcher2 = __webpack_require__(8);
-
-	var _Watcher3 = _interopRequireDefault(_Watcher2);
-
-	var _Helper = __webpack_require__(7);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var FitWatcher = function (_Watcher) {
-	  _inherits(FitWatcher, _Watcher);
-
-	  function FitWatcher() {
-	    var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
-	    var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
-	    var fitterOptions = arguments[2];
-	    var watcherOptions = arguments[3];
-
-	    _classCallCheck(this, FitWatcher);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FitWatcher).call(this, watcherOptions));
-
-	    var fitter = new _Fitter2.default(fitterOptions);
-	    _this.fit = function () {
-	      return fitter.fit(box, container);
-	    };
-	    return _this;
-	  }
-
-	  _createClass(FitWatcher, [{
-	    key: 'check',
-	    value: function check() {
-	      if (this.hasTargetChanged()) {
-	        var fitResult = this.fit();
-	        if (this.fitResult.changed) {
-	          this.dispatcher.call('change', this, fitResult.dimension);
-	        }
-	      }
-	      return this;
-	    }
-	  }]);
-
-	  return FitWatcher;
-	}(_Watcher3.default);
-
-	exports.default = FitWatcher;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Dimension = __webpack_require__(6);
-
-	var _Dimension2 = _interopRequireDefault(_Dimension);
-
-	var _Helper = __webpack_require__(7);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Fitter = function () {
-	  function Fitter() {
-	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	    _classCallCheck(this, Fitter);
-
-	    var _options$mode = options.mode;
-	    var mode = _options$mode === undefined ? Fitter.MODE_BASIC : _options$mode;
-	    var _options$width = options.width;
-	    var width = _options$width === undefined ? '100%' : _options$width;
-	    var _options$height = options.height;
-	    var height = _options$height === undefined ? null : _options$height;
-	    var _options$ratio = options.ratio;
-	    var ratio = _options$ratio === undefined ? 1 : _options$ratio;
-	    var _options$maxWidth = options.maxWidth;
-	    var maxWidth = _options$maxWidth === undefined ? null : _options$maxWidth;
-	    var _options$maxHeight = options.maxHeight;
-	    var maxHeight = _options$maxHeight === undefined ? null : _options$maxHeight;
-
-
-	    if (mode === Fitter.MODE_ASPECT_RATIO) {
-	      this.wFn = (0, _Helper.parseModifier)(maxWidth);
-	      this.hFn = (0, _Helper.parseModifier)(maxHeight);
-	      this.options = {
-	        mode: mode,
-	        ratio: ratio,
-	        maxWidth: maxWidth,
-	        maxHeight: maxHeight
-	      };
-	    } else {
-	      this.wFn = (0, _Helper.parseModifier)(width);
-	      this.hFn = (0, _Helper.parseModifier)(height);
-	      this.options = {
-	        mode: mode,
-	        width: width,
-	        height: height
-	      };
-	    }
-	  }
-
-	  _createClass(Fitter, [{
-	    key: 'fit',
-	    value: function fit() {
-	      var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
-	      var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
-
-	      var boxDim = new _Dimension2.default(box);
-	      var w = boxDim.width;
-	      var h = boxDim.height;
-	      var containerDim = new _Dimension2.default(container);
-	      var cw = containerDim.width;
-	      var ch = containerDim.height;
-
-	      var dim = void 0;
-	      if (this.options.mode === Fitter.MODE_ASPECT_RATIO) {
-	        var ratio = this.options.ratio;
-	        var maxW = this.wFn(cw, cw);
-	        var maxH = this.hFn(ch, ch);
-	        var newWFromHeight = Math.floor(ratio * maxH);
-	        if (newWFromHeight <= maxW) {
-	          dim = new _Dimension2.default(newWFromHeight, maxH);
-	        } else {
-	          dim = new _Dimension2.default(maxW, Math.floor(maxW / ratio));
-	        }
-	      } else {
-	        dim = new _Dimension2.default(this.wFn(w, cw), this.hFn(h, ch));
-	      }
-
-	      return {
-	        dimension: dim,
-	        changed: !dim.isEqual(boxDim)
-	      };
-	    }
-	  }]);
-
-	  return Fitter;
-	}();
-
-	Fitter.MODE_BASIC = 'basic';
-	Fitter.MODE_ASPECT_RATIO = 'aspectRatio';
-
-	exports.default = Fitter;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Helper = __webpack_require__(7);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Dimension = function () {
-	  function Dimension() {
-	    _classCallCheck(this, Dimension);
-
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    if (args.length === 1) {
-	      var inputOrGetter = args[0];
-	      var input = (0, _Helper.isFunction)(inputOrGetter) ? inputOrGetter() : inputOrGetter;
-
-	      if (input instanceof Dimension) {
-	        this.width = input.width;
-	        this.height = input.height;
-	      } else if ((0, _Helper.isElement)(input)) {
-	        this.width = input.clientWidth;
-	        this.height = input.clientHeight;
-	      } else if (Array.isArray(input)) {
-	        this.width = input[0];
-	        this.height = input[1];
-	      } else if ((0, _Helper.isDefined)(input) && (0, _Helper.isDefined)(input.width) && (0, _Helper.isDefined)(input.height)) {
-	        this.width = input.width;
-	        this.height = input.height;
-	      } else {
-	        var err = new Error('Unsupported input. Must be either\n  DOMNode, Array or Object with field width and height,\n  or a function that returns any of the above.');
-	        err.value = inputOrGetter;
-	        throw err;
-	      }
-	    } else {
-	      var width = args[0];
-	      var height = args[1];
-
-	      this.width = width;
-	      this.height = height;
-	    }
-	  }
-
-	  _createClass(Dimension, [{
-	    key: 'isEqual',
-	    value: function isEqual(x) {
-	      if (x instanceof Dimension) {
-	        return this.width === x.width && this.height === x.height;
-	      }
-	      var dim2 = new Dimension(x);
-	      return this.width === dim2.width && this.height === dim2.height;
-	    }
-	  }, {
-	    key: 'toArray',
-	    value: function toArray() {
-	      return [this.width, this.height];
-	    }
-	  }, {
-	    key: 'toObject',
-	    value: function toObject() {
-	      return {
-	        width: this.width,
-	        height: this.height
-	      };
-	    }
-	  }]);
-
-	  return Dimension;
-	}();
-
-	exports.default = Dimension;
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-	exports.isRequired = isRequired;
-	exports.isDefined = isDefined;
-	exports.isNotDefined = isNotDefined;
-	exports.isElement = isElement;
-	exports.parseModifier = parseModifier;
-	function isRequired(name) {
-	  throw new Error('Missing parameter ' + name);
-	}
-
-	function isDefined(x) {
-	  return x !== null && x !== undefined;
-	}
-
-	function isNotDefined(x) {
-	  return x === null || x === undefined;
-	}
-
-	var isFunction = exports.isFunction = function () {
-	  if (typeof /./ !== 'function' && (typeof Int8Array === 'undefined' ? 'undefined' : _typeof(Int8Array)) !== 'object') {
-	    return function (obj) {
-	      return typeof obj === 'function' || false;
-	    };
-	  }
-	  return function (fn) {
-	    var getType = {};
-	    return fn && getType.toString.call(fn) === '[object Function]';
-	  };
-	}();
-
-	function isElement(obj) {
-	  return !!(obj && obj.nodeType === 1);
-	}
-
-	function parseModifier(value) {
-	  // Return current value
-	  if (isNotDefined(value)) {
-	    return function (x, cx) {
-	      return Math.min(x, cx);
-	    };
-	  }
-	  // Return percent of container
-	  var str = ('' + value).trim().toLowerCase();
-	  if (str.indexOf('%') > -1) {
-	    var _ret = function () {
-	      var percent = +str.replace('%', '') / 100;
-	      return {
-	        v: function v(x, cx) {
-	          return cx * percent;
-	        }
-	      };
-	    }();
-
-	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
-	  }
-	  // Return fixed value
-	  return function () {
-	    return +str.replace('px', '');
-	  };
-	}
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Dimension = __webpack_require__(6);
-
-	var _Dimension2 = _interopRequireDefault(_Dimension);
-
-	var _d3Dispatch = __webpack_require__(3);
-
-	var _Helper = __webpack_require__(7);
-
-	var _throttle = __webpack_require__(9);
-
-	var _throttle2 = _interopRequireDefault(_throttle);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Watcher = function () {
-	  function Watcher() {
-	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-	    var _ref$type = _ref.type;
-	    var type = _ref$type === undefined ? Watcher.TYPE_WINDOW : _ref$type;
-	    var _ref$target = _ref.target;
-	    var target = _ref$target === undefined ? null : _ref$target;
-	    var _ref$interval = _ref.interval;
-	    var interval = _ref$interval === undefined ? 500 : _ref$interval;
-
-	    _classCallCheck(this, Watcher);
-
-	    if (type === Watcher.TYPE_POLLING && !target) {
-	      (0, _Helper.isRequired)('options.target');
-	    }
-
-	    this.type = type;
-	    this.target = target;
-	    this.interval = interval;
-
-	    this.dispatcher = (0, _d3Dispatch.dispatch)('change');
-	    this.check = this.check.bind(this);
-	    this.throttledCheck = (0, _throttle2.default)(this.check, this.interval);
-	    this.isWatching = false;
-	  }
-
-	  _createClass(Watcher, [{
-	    key: 'hasTargetChanged',
-	    value: function hasTargetChanged() {
-	      if (!this.target) {
-	        return true;
-	      }
-	      var newDim = new _Dimension2.default(this.target);
-	      if (!this.currentDim || !newDim.isEqual(this.currentDim)) {
-	        this.currentDim = newDim;
-	        return true;
-	      }
-	      return false;
-	    }
-	  }, {
-	    key: 'check',
-	    value: function check() {
-	      if (this.hasTargetChanged()) {
-	        this.dispatcher.call('change', this, this.currentDim);
-	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'on',
-	    value: function on(name, listener) {
-	      this.dispatcher.on(name, listener);
-	      return this;
-	    }
-	  }, {
-	    key: 'off',
-	    value: function off(name) {
-	      this.dispatcher.on(name, null);
-	      return this;
-	    }
-	  }, {
-	    key: 'start',
-	    value: function start() {
-	      if (!this.isWatching) {
-	        if (this.target) {
-	          this.currentDim = new _Dimension2.default(this.target);
-	        }
-	        if (this.type === Watcher.TYPE_WINDOW) {
-	          window.addEventListener('resize', this.throttledCheck);
-	        } else if (this.type === Watcher.TYPE_POLLING) {
-	          this.intervalId = window.setInterval(this.check, this.interval);
-	        }
-	        this.isWatching = true;
-	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'stop',
-	    value: function stop() {
-	      if (this.isWatching) {
-	        if (this.type === Watcher.TYPE_WINDOW) {
-	          window.removeEventListener('resize', this.throttledCheck);
-	        } else if (this.type === Watcher.TYPE_POLLING && this.intervalId) {
-	          window.clearInterval(this.intervalId);
-	          this.intervalId = null;
-	        }
-	        this.isWatching = false;
-	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'destroy',
-	    value: function destroy() {
-	      this.stop();
-	      this.off('change');
-	      return this;
-	    }
-	  }]);
-
-	  return Watcher;
-	}();
-
-	Watcher.TYPE_WINDOW = 'window';
-	Watcher.TYPE_POLLING = 'polling';
-
-	exports.default = Watcher;
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var debounce = __webpack_require__(10),
-	    isObject = __webpack_require__(11);
-
-	/** Used as the `TypeError` message for "Functions" methods. */
-	var FUNC_ERROR_TEXT = 'Expected a function';
-
-	/**
-	 * Creates a throttled function that only invokes `func` at most once per
-	 * every `wait` milliseconds. The throttled function comes with a `cancel`
-	 * method to cancel delayed `func` invocations and a `flush` method to
-	 * immediately invoke them. Provide `options` to indicate whether `func`
-	 * should be invoked on the leading and/or trailing edge of the `wait`
-	 * timeout. The `func` is invoked with the last arguments provided to the
-	 * throttled function. Subsequent calls to the throttled function return the
-	 * result of the last `func` invocation.
-	 *
-	 * **Note:** If `leading` and `trailing` options are `true`, `func` is
-	 * invoked on the trailing edge of the timeout only if the throttled function
-	 * is invoked more than once during the `wait` timeout.
-	 *
-	 * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
-	 * until to the next tick, similar to `setTimeout` with a timeout of `0`.
-	 *
-	 * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
-	 * for details over the differences between `_.throttle` and `_.debounce`.
-	 *
-	 * @static
-	 * @memberOf _
-	 * @since 0.1.0
-	 * @category Function
-	 * @param {Function} func The function to throttle.
-	 * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
-	 * @param {Object} [options={}] The options object.
-	 * @param {boolean} [options.leading=true]
-	 *  Specify invoking on the leading edge of the timeout.
-	 * @param {boolean} [options.trailing=true]
-	 *  Specify invoking on the trailing edge of the timeout.
-	 * @returns {Function} Returns the new throttled function.
-	 * @example
-	 *
-	 * // Avoid excessively updating the position while scrolling.
-	 * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
-	 *
-	 * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
-	 * var throttled = _.throttle(renewToken, 300000, { 'trailing': false });
-	 * jQuery(element).on('click', throttled);
-	 *
-	 * // Cancel the trailing throttled invocation.
-	 * jQuery(window).on('popstate', throttled.cancel);
-	 */
-	function throttle(func, wait, options) {
-	  var leading = true,
-	      trailing = true;
-
-	  if (typeof func != 'function') {
-	    throw new TypeError(FUNC_ERROR_TEXT);
-	  }
-	  if (isObject(options)) {
-	    leading = 'leading' in options ? !!options.leading : leading;
-	    trailing = 'trailing' in options ? !!options.trailing : trailing;
-	  }
-	  return debounce(func, wait, {
-	    'leading': leading,
-	    'maxWait': wait,
-	    'trailing': trailing
-	  });
-	}
-
-	module.exports = throttle;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isObject = __webpack_require__(11),
-	    now = __webpack_require__(12),
-	    toNumber = __webpack_require__(15);
+	var isObject = __webpack_require__(5),
+	    now = __webpack_require__(6),
+	    toNumber = __webpack_require__(9);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -1208,7 +673,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = debounce;
 
 /***/ },
-/* 11 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1248,12 +713,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObject;
 
 /***/ },
-/* 12 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var root = __webpack_require__(13);
+	var root = __webpack_require__(7);
 
 	/**
 	 * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -1278,14 +743,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = now;
 
 /***/ },
-/* 13 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var freeGlobal = __webpack_require__(14);
+	var freeGlobal = __webpack_require__(8);
 
 	/** Detect free variable `self`. */
 	var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
@@ -1296,7 +761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = root;
 
 /***/ },
-/* 14 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -1310,13 +775,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 15 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(11),
-	    isSymbol = __webpack_require__(16);
+	var isObject = __webpack_require__(5),
+	    isSymbol = __webpack_require__(10);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -1381,14 +846,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toNumber;
 
 /***/ },
-/* 16 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var isObjectLike = __webpack_require__(17);
+	var isObjectLike = __webpack_require__(11);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -1427,7 +892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isSymbol;
 
 /***/ },
-/* 17 */
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1463,6 +928,545 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = isObjectLike;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Fitter = __webpack_require__(13);
+
+	var _Fitter2 = _interopRequireDefault(_Fitter);
+
+	var _Watcher2 = __webpack_require__(16);
+
+	var _Watcher3 = _interopRequireDefault(_Watcher2);
+
+	var _Helper = __webpack_require__(15);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var FitWatcher = function (_Watcher) {
+	  _inherits(FitWatcher, _Watcher);
+
+	  function FitWatcher() {
+	    var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
+	    var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
+	    var fitterOptions = arguments[2];
+	    var watcherOptions = arguments[3];
+
+	    _classCallCheck(this, FitWatcher);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FitWatcher).call(this, watcherOptions));
+
+	    var fitter = new _Fitter2.default(fitterOptions);
+	    _this.fit = function () {
+	      return fitter.fit(box, container);
+	    };
+	    return _this;
+	  }
+
+	  _createClass(FitWatcher, [{
+	    key: 'check',
+	    value: function check() {
+	      if (this.hasTargetChanged()) {
+	        var fitResult = this.fit();
+	        if (this.fitResult.changed) {
+	          this.dispatcher.call('change', this, fitResult.dimension);
+	        }
+	      }
+	      return this;
+	    }
+	  }]);
+
+	  return FitWatcher;
+	}(_Watcher3.default);
+
+	exports.default = FitWatcher;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Dimension = __webpack_require__(14);
+
+	var _Dimension2 = _interopRequireDefault(_Dimension);
+
+	var _Helper = __webpack_require__(15);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Fitter = function () {
+	  function Fitter() {
+	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	    _classCallCheck(this, Fitter);
+
+	    var _options$mode = options.mode;
+	    var mode = _options$mode === undefined ? Fitter.MODE_BASIC : _options$mode;
+	    var _options$width = options.width;
+	    var width = _options$width === undefined ? '100%' : _options$width;
+	    var _options$height = options.height;
+	    var height = _options$height === undefined ? null : _options$height;
+	    var _options$ratio = options.ratio;
+	    var ratio = _options$ratio === undefined ? 1 : _options$ratio;
+	    var _options$maxWidth = options.maxWidth;
+	    var maxWidth = _options$maxWidth === undefined ? null : _options$maxWidth;
+	    var _options$maxHeight = options.maxHeight;
+	    var maxHeight = _options$maxHeight === undefined ? null : _options$maxHeight;
+
+
+	    if (mode === Fitter.MODE_ASPECT_RATIO) {
+	      this.wFn = (0, _Helper.parseModifier)(maxWidth);
+	      this.hFn = (0, _Helper.parseModifier)(maxHeight);
+	      this.options = {
+	        mode: mode,
+	        ratio: ratio,
+	        maxWidth: maxWidth,
+	        maxHeight: maxHeight
+	      };
+	    } else {
+	      this.wFn = (0, _Helper.parseModifier)(width);
+	      this.hFn = (0, _Helper.parseModifier)(height);
+	      this.options = {
+	        mode: mode,
+	        width: width,
+	        height: height
+	      };
+	    }
+	  }
+
+	  _createClass(Fitter, [{
+	    key: 'fit',
+	    value: function fit() {
+	      var box = arguments.length <= 0 || arguments[0] === undefined ? (0, _Helper.isRequired)('box') : arguments[0];
+	      var container = arguments.length <= 1 || arguments[1] === undefined ? (0, _Helper.isRequired)('container') : arguments[1];
+
+	      var boxDim = new _Dimension2.default(box);
+	      var w = boxDim.width;
+	      var h = boxDim.height;
+	      var containerDim = new _Dimension2.default(container);
+	      var cw = containerDim.width;
+	      var ch = containerDim.height;
+
+	      var dim = void 0;
+	      if (this.options.mode === Fitter.MODE_ASPECT_RATIO) {
+	        var ratio = this.options.ratio;
+	        var maxW = this.wFn(cw, cw);
+	        var maxH = this.hFn(ch, ch);
+	        var newWFromHeight = Math.floor(ratio * maxH);
+	        if (newWFromHeight <= maxW) {
+	          dim = new _Dimension2.default(newWFromHeight, maxH);
+	        } else {
+	          dim = new _Dimension2.default(maxW, Math.floor(maxW / ratio));
+	        }
+	      } else {
+	        dim = new _Dimension2.default(this.wFn(w, cw), this.hFn(h, ch));
+	      }
+
+	      return {
+	        dimension: dim,
+	        changed: !dim.isEqual(boxDim)
+	      };
+	    }
+	  }]);
+
+	  return Fitter;
+	}();
+
+	Fitter.MODE_BASIC = 'basic';
+	Fitter.MODE_ASPECT_RATIO = 'aspectRatio';
+
+	exports.default = Fitter;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Helper = __webpack_require__(15);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Dimension = function () {
+	  function Dimension() {
+	    _classCallCheck(this, Dimension);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    if (args.length === 1) {
+	      var inputOrGetter = args[0];
+	      var input = (0, _Helper.isFunction)(inputOrGetter) ? inputOrGetter() : inputOrGetter;
+
+	      if (input instanceof Dimension) {
+	        this.width = input.width;
+	        this.height = input.height;
+	      } else if ((0, _Helper.isElement)(input)) {
+	        this.width = input.clientWidth;
+	        this.height = input.clientHeight;
+	      } else if (Array.isArray(input)) {
+	        this.width = input[0];
+	        this.height = input[1];
+	      } else if ((0, _Helper.isDefined)(input) && (0, _Helper.isDefined)(input.width) && (0, _Helper.isDefined)(input.height)) {
+	        this.width = input.width;
+	        this.height = input.height;
+	      } else {
+	        var err = new Error('Unsupported input. Must be either\n  DOMNode, Array or Object with field width and height,\n  or a function that returns any of the above.');
+	        err.value = inputOrGetter;
+	        throw err;
+	      }
+	    } else {
+	      var width = args[0];
+	      var height = args[1];
+
+	      this.width = width;
+	      this.height = height;
+	    }
+	  }
+
+	  _createClass(Dimension, [{
+	    key: 'isEqual',
+	    value: function isEqual(x) {
+	      if (x instanceof Dimension) {
+	        return this.width === x.width && this.height === x.height;
+	      }
+	      var dim2 = new Dimension(x);
+	      return this.width === dim2.width && this.height === dim2.height;
+	    }
+	  }, {
+	    key: 'toArray',
+	    value: function toArray() {
+	      return [this.width, this.height];
+	    }
+	  }, {
+	    key: 'toObject',
+	    value: function toObject() {
+	      return {
+	        width: this.width,
+	        height: this.height
+	      };
+	    }
+	  }]);
+
+	  return Dimension;
+	}();
+
+	exports.default = Dimension;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	exports.isRequired = isRequired;
+	exports.isDefined = isDefined;
+	exports.isNotDefined = isNotDefined;
+	exports.isElement = isElement;
+	exports.parseModifier = parseModifier;
+	function isRequired(name) {
+	  throw new Error('Missing parameter ' + name);
+	}
+
+	function isDefined(x) {
+	  return x !== null && x !== undefined;
+	}
+
+	function isNotDefined(x) {
+	  return x === null || x === undefined;
+	}
+
+	var isFunction = exports.isFunction = function () {
+	  if (typeof /./ !== 'function' && (typeof Int8Array === 'undefined' ? 'undefined' : _typeof(Int8Array)) !== 'object') {
+	    return function (obj) {
+	      return typeof obj === 'function' || false;
+	    };
+	  }
+	  return function (fn) {
+	    var getType = {};
+	    return fn && getType.toString.call(fn) === '[object Function]';
+	  };
+	}();
+
+	function isElement(obj) {
+	  return !!(obj && obj.nodeType === 1);
+	}
+
+	function parseModifier(value) {
+	  // Return current value
+	  if (isNotDefined(value)) {
+	    return function (x, cx) {
+	      return Math.min(x, cx);
+	    };
+	  }
+	  // Return percent of container
+	  var str = ('' + value).trim().toLowerCase();
+	  if (str.indexOf('%') > -1) {
+	    var _ret = function () {
+	      var percent = +str.replace('%', '') / 100;
+	      return {
+	        v: function v(x, cx) {
+	          return cx * percent;
+	        }
+	      };
+	    }();
+
+	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	  }
+	  // Return fixed value
+	  return function () {
+	    return +str.replace('px', '');
+	  };
+	}
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Dimension = __webpack_require__(14);
+
+	var _Dimension2 = _interopRequireDefault(_Dimension);
+
+	var _d3Dispatch = __webpack_require__(3);
+
+	var _Helper = __webpack_require__(15);
+
+	var _throttle = __webpack_require__(17);
+
+	var _throttle2 = _interopRequireDefault(_throttle);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Watcher = function () {
+	  function Watcher() {
+	    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	    var _ref$type = _ref.type;
+	    var type = _ref$type === undefined ? Watcher.TYPE_WINDOW : _ref$type;
+	    var _ref$target = _ref.target;
+	    var target = _ref$target === undefined ? null : _ref$target;
+	    var _ref$interval = _ref.interval;
+	    var interval = _ref$interval === undefined ? 500 : _ref$interval;
+
+	    _classCallCheck(this, Watcher);
+
+	    if (type === Watcher.TYPE_POLLING && !target) {
+	      (0, _Helper.isRequired)('options.target');
+	    }
+
+	    this.type = type;
+	    this.target = target;
+	    this.interval = interval;
+
+	    this.dispatcher = (0, _d3Dispatch.dispatch)('change');
+	    this.check = this.check.bind(this);
+	    this.throttledCheck = (0, _throttle2.default)(this.check, this.interval);
+	    this.isWatching = false;
+	  }
+
+	  _createClass(Watcher, [{
+	    key: 'hasTargetChanged',
+	    value: function hasTargetChanged() {
+	      if (!this.target) {
+	        return true;
+	      }
+	      var newDim = new _Dimension2.default(this.target);
+	      if (!this.currentDim || !newDim.isEqual(this.currentDim)) {
+	        this.currentDim = newDim;
+	        return true;
+	      }
+	      return false;
+	    }
+	  }, {
+	    key: 'check',
+	    value: function check() {
+	      if (this.hasTargetChanged()) {
+	        this.dispatcher.call('change', this, this.currentDim);
+	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'on',
+	    value: function on(name, listener) {
+	      this.dispatcher.on(name, listener);
+	      return this;
+	    }
+	  }, {
+	    key: 'off',
+	    value: function off(name) {
+	      this.dispatcher.on(name, null);
+	      return this;
+	    }
+	  }, {
+	    key: 'start',
+	    value: function start() {
+	      if (!this.isWatching) {
+	        if (this.target) {
+	          this.currentDim = new _Dimension2.default(this.target);
+	        }
+	        if (this.type === Watcher.TYPE_WINDOW) {
+	          window.addEventListener('resize', this.throttledCheck);
+	        } else if (this.type === Watcher.TYPE_POLLING) {
+	          this.intervalId = window.setInterval(this.check, this.interval);
+	        }
+	        this.isWatching = true;
+	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'stop',
+	    value: function stop() {
+	      if (this.isWatching) {
+	        if (this.type === Watcher.TYPE_WINDOW) {
+	          window.removeEventListener('resize', this.throttledCheck);
+	        } else if (this.type === Watcher.TYPE_POLLING && this.intervalId) {
+	          window.clearInterval(this.intervalId);
+	          this.intervalId = null;
+	        }
+	        this.isWatching = false;
+	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'destroy',
+	    value: function destroy() {
+	      this.stop();
+	      this.off('change');
+	      return this;
+	    }
+	  }]);
+
+	  return Watcher;
+	}();
+
+	Watcher.TYPE_WINDOW = 'window';
+	Watcher.TYPE_POLLING = 'polling';
+
+	exports.default = Watcher;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var debounce = __webpack_require__(4),
+	    isObject = __webpack_require__(5);
+
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/**
+	 * Creates a throttled function that only invokes `func` at most once per
+	 * every `wait` milliseconds. The throttled function comes with a `cancel`
+	 * method to cancel delayed `func` invocations and a `flush` method to
+	 * immediately invoke them. Provide `options` to indicate whether `func`
+	 * should be invoked on the leading and/or trailing edge of the `wait`
+	 * timeout. The `func` is invoked with the last arguments provided to the
+	 * throttled function. Subsequent calls to the throttled function return the
+	 * result of the last `func` invocation.
+	 *
+	 * **Note:** If `leading` and `trailing` options are `true`, `func` is
+	 * invoked on the trailing edge of the timeout only if the throttled function
+	 * is invoked more than once during the `wait` timeout.
+	 *
+	 * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
+	 * until to the next tick, similar to `setTimeout` with a timeout of `0`.
+	 *
+	 * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
+	 * for details over the differences between `_.throttle` and `_.debounce`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Function
+	 * @param {Function} func The function to throttle.
+	 * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
+	 * @param {Object} [options={}] The options object.
+	 * @param {boolean} [options.leading=true]
+	 *  Specify invoking on the leading edge of the timeout.
+	 * @param {boolean} [options.trailing=true]
+	 *  Specify invoking on the trailing edge of the timeout.
+	 * @returns {Function} Returns the new throttled function.
+	 * @example
+	 *
+	 * // Avoid excessively updating the position while scrolling.
+	 * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
+	 *
+	 * // Invoke `renewToken` when the click event is fired, but not more than once every 5 minutes.
+	 * var throttled = _.throttle(renewToken, 300000, { 'trailing': false });
+	 * jQuery(element).on('click', throttled);
+	 *
+	 * // Cancel the trailing throttled invocation.
+	 * jQuery(window).on('popstate', throttled.cancel);
+	 */
+	function throttle(func, wait, options) {
+	  var leading = true,
+	      trailing = true;
+
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  if (isObject(options)) {
+	    leading = 'leading' in options ? !!options.leading : leading;
+	    trailing = 'trailing' in options ? !!options.trailing : trailing;
+	  }
+	  return debounce(func, wait, {
+	    'leading': leading,
+	    'maxWait': wait,
+	    'trailing': trailing
+	  });
+	}
+
+	module.exports = throttle;
 
 /***/ },
 /* 18 */
@@ -1582,7 +1586,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.isObject = isObject;
 	exports.isFunction = isFunction;
-	exports.debounce = debounce;
 	exports.kebabCase = kebabCase;
 	exports.deepExtend = deepExtend;
 	exports.extend = extend;
@@ -1613,64 +1616,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function isFunction(functionToCheck) {
 	  var getType = {};
 	  return !!functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
-	}
-
-	//---------------------------------------------------
-	// Modified from lodash
-	//---------------------------------------------------
-
-	/**
-	 * Returns a function, that, as long as it continues to be invoked,
-	 * will not be triggered.
-	 * The function will be called after it stops being called for
-	 * "wait" milliseconds.
-	 * The output function can be called with .now() to execute immediately
-	 * For example:
-	 * doSomething(params); // will debounce
-	 * doSomething.now(params); // will execute immediately
-	 *
-	 * @param  Function func      function to be debounced
-	 * @param  Number   wait      wait time until it will be executed
-	 * @param  Boolean  immediate If "immediate" is passed, trigger the function on the
-	 * leading edge, instead of the trailing.
-	 * @return Function           debounced function
-	 */
-	function debounce(func, wait, immediate) {
-	  var timeout = void 0;
-
-	  function outputFn() {
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-
-	    var context = this;
-	    function later() {
-	      timeout = null;
-	      if (!immediate) func.apply(context, args);
-	    }
-	    var callNow = immediate && !timeout;
-	    clearTimeout(timeout);
-	    timeout = setTimeout(later, wait);
-	    if (callNow) func.apply(context, args);
-
-	    // return caller for chaining
-	    return context;
-	  }
-
-	  // so we know this function is debounced
-	  outputFn.isDebounced = true;
-	  // and provide a way to call the original function immediately
-	  outputFn.now = function () {
-	    clearTimeout(timeout);
-
-	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	      args[_key2] = arguments[_key2];
-	    }
-
-	    return func.apply(this, args);
-	  };
-
-	  return outputFn;
 	}
 
 	//---------------------------------------------------
