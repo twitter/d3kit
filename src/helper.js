@@ -26,55 +26,6 @@ export function isFunction(functionToCheck) {
 }
 
 //---------------------------------------------------
-// Modified from lodash
-//---------------------------------------------------
-
-/**
- * Returns a function, that, as long as it continues to be invoked,
- * will not be triggered.
- * The function will be called after it stops being called for
- * "wait" milliseconds.
- * The output function can be called with .now() to execute immediately
- * For example:
- * doSomething(params); // will debounce
- * doSomething.now(params); // will execute immediately
- *
- * @param  Function func      function to be debounced
- * @param  Number   wait      wait time until it will be executed
- * @param  Boolean  immediate If "immediate" is passed, trigger the function on the
- * leading edge, instead of the trailing.
- * @return Function           debounced function
- */
-export function debounce(func, wait, immediate) {
-  let timeout;
-
-  function outputFn(...args) {
-    const context = this;
-    function later() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    }
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-
-    // return caller for chaining
-    return context;
-  }
-
-  // so we know this function is debounced
-  outputFn.isDebounced = true;
-  // and provide a way to call the original function immediately
-  outputFn.now = function (...args) {
-    clearTimeout(timeout);
-    return func.apply(this, args);
-  };
-
-  return outputFn;
-}
-
-//---------------------------------------------------
 // From underscore.string
 //---------------------------------------------------
 /* jshint ignore:start */

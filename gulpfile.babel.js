@@ -64,7 +64,7 @@ gulp.task('webpack', function() {
     .pipe($.uglify({
       report: 'min',
       mangle: true,
-      compress: true, //true,
+      compress: true,
       preserveComments: false
     }))
     .pipe($.rename({
