@@ -428,11 +428,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, {
 	    key: 'fit',
-	    value: function fit(fitOptions) {
+	    value: function fit(fitOptions, watchOptions) {
+	      var _this = this;
+
 	      if (fitOptions) {
 	        this.state.fitOptions = fitOptions;
 	      }
 
+	      // Fit once
 	      var fitter = new _Fitter2.default(fitOptions);
 
 	      var _fitter$fit = fitter.fit(this.mainElement, this.container.node());
@@ -444,27 +447,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (changed) {
 	        this.dimension([dimension.width, dimension.height]);
 	      }
-	      return this;
-	    }
-	  }, {
-	    key: 'autoFit',
-	    value: function autoFit(enable, fitOptions, watchOptions) {
-	      var _this = this;
 
-	      if (fitOptions) {
-	        this.state.fitOptions = fitOptions;
-	      }
-	      if (watchOptions) {
-	        this.state.watchOptions = watchOptions;
-	      }
+	      // Setup watcher
+	      var enable = !!watchOptions;
 	      if (enable) {
 	        if (this.fitWatcher) {
 	          this.fitWatcher.destroy();
 	        }
-	        this.fitWatcher = new _FitWatcher2.default(this.mainElement, this.container.node(), this.state.fitOptions, this.state.watchOptions).on('change', function (dim) {
+	        this.fitWatcher = new _FitWatcher2.default(this.mainElement, this.container.node(), this.state.fitOptions, (0, _helper.isObject)(watchOptions) ? watchOptions : null).on('change', function (dim) {
 	          return _this.dimension([dim.width, dim.height]);
 	        }).start();
-	      } else if (this.fitWatcher) {
+	      }
+
+	      return this;
+	    }
+	  }, {
+	    key: 'stopFitWatcher',
+	    value: function stopFitWatcher() {
+	      if (this.fitWatcher) {
 	        this.fitWatcher.destroy();
 	        this.fitWatcher = null;
 	      }
@@ -514,11 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.eventNames.forEach(function (name) {
 	        _this2.off(name);
 	      });
-
-	      if (this.fitWatcher) {
-	        this.fitWatcher.destroy();
-	        this.fitWatcher = null;
-	      }
+	      this.stopFitWatcher();
 	    }
 	  }]);
 

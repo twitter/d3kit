@@ -3,7 +3,7 @@ import { dispatch } from 'd3-dispatch';
 import debounce from 'lodash/debounce.js';
 import FitWatcher from 'slimfit/src/FitWatcher.js';
 import Fitter from 'slimfit/src/Fitter.js';
-import { deepExtend, extend } from './helper.js';
+import { deepExtend, extend, isObject } from './helper.js';
 
 class AbstractSkeleton {
   static getCustomEventNames() {
@@ -165,11 +165,12 @@ class AbstractSkeleton {
     return (innerWidth > 0 && innerHeight > 0);
   }
 
-  fit(fitOptions) {
+  fit(fitOptions, watchOptions) {
     if (fitOptions) {
       this.state.fitOptions = fitOptions;
     }
 
+    // Fit once
     const fitter = new Fitter(fitOptions);
     const { changed, dimension } = fitter.fit(
       this.mainElement,
@@ -179,16 +180,9 @@ class AbstractSkeleton {
     if (changed) {
       this.dimension([dimension.width, dimension.height]);
     }
-    return this;
-  }
 
-  autoFit(enable, fitOptions, watchOptions) {
-    if (fitOptions) {
-      this.state.fitOptions = fitOptions;
-    }
-    if (watchOptions) {
-      this.state.watchOptions = watchOptions;
-    }
+    // Setup watcher
+    const enable = !!watchOptions;
     if (enable) {
       if (this.fitWatcher) {
         this.fitWatcher.destroy();
@@ -197,11 +191,17 @@ class AbstractSkeleton {
         this.mainElement,
         this.container.node(),
         this.state.fitOptions,
-        this.state.watchOptions
+        isObject(watchOptions) ? watchOptions : null
       )
         .on('change', dim => this.dimension([dim.width, dim.height]))
         .start();
-    } else if (this.fitWatcher) {
+    }
+
+    return this;
+  }
+
+  stopFitWatcher() {
+    if (this.fitWatcher) {
       this.fitWatcher.destroy();
       this.fitWatcher = null;
     }
@@ -238,11 +238,7 @@ class AbstractSkeleton {
     this.eventNames.forEach(name => {
       this.off(name);
     });
-
-    if (this.fitWatcher) {
-      this.fitWatcher.destroy();
-      this.fitWatcher = null;
-    }
+    this.stopFitWatcher();
   }
 }
 
