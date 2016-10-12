@@ -1,6 +1,6 @@
 {
   "name": "d3kit",
-  "version": "3.0.0-1",
+  "version": "3.0.0-2",
   "description": "A kit of tools to speed D3 related project development.",
   "repository": {
     "type": "git",
