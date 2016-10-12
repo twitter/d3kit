@@ -59,14 +59,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.helper = exports.LayerOrganizer = exports.Skeleton = undefined;
+	exports.helper = exports.LayerOrganizer = exports.SvgSkeleton = undefined;
 
-	var _skeleton = __webpack_require__(1);
+	var _svgSkeleton = __webpack_require__(1);
 
-	Object.defineProperty(exports, 'Skeleton', {
+	Object.defineProperty(exports, 'SvgSkeleton', {
 	  enumerable: true,
 	  get: function get() {
-	    return _interopRequireDefault(_skeleton).default;
+	    return _interopRequireDefault(_svgSkeleton).default;
 	  }
 	});
 
@@ -131,18 +131,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Skeleton = function () {
-	  _createClass(Skeleton, null, [{
+	var SvgSkeleton = function () {
+	  _createClass(SvgSkeleton, null, [{
 	    key: 'getCustomEventNames',
 	    value: function getCustomEventNames() {
 	      return [];
 	    }
 	  }]);
 
-	  function Skeleton(selector, options) {
-	    _classCallCheck(this, Skeleton);
+	  function SvgSkeleton(selector, options, moreOptions) {
+	    _classCallCheck(this, SvgSkeleton);
 
-	    var mergedOptions = (0, _helper.deepExtend)({}, Skeleton.DEFAULT_OPTIONS, options);
+	    var mergedOptions = (0, _helper.deepExtend)({}, SvgSkeleton.DEFAULT_OPTIONS, options, moreOptions);
 
 	    this.state = {
 	      width: mergedOptions.initialWidth,
@@ -170,13 +170,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.updateDimensionNow();
 	  }
 
-	  _createClass(Skeleton, [{
+	  _createClass(SvgSkeleton, [{
 	    key: 'setupDispatcher',
 	    value: function setupDispatcher() {
 	      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
 	      this.customEventNames = customEventNames;
-	      this.eventNames = Skeleton.DEFAULT_EVENTS.concat(customEventNames);
+	      this.eventNames = SvgSkeleton.DEFAULT_EVENTS.concat(customEventNames);
 	      this.dispatcher = _d3Dispatch.dispatch.apply(this, this.eventNames);
 	    }
 	  }, {
@@ -413,7 +413,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var innerWidth = _state3.innerWidth;
 	      var innerHeight = _state3.innerHeight;
 
-	      this.dispatcher.call('resize', this, [width, height, innerWidth, innerHeight]);
+	      this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
 	      return this;
 	    }
 	  }, {
@@ -444,10 +444,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }]);
 
-	  return Skeleton;
+	  return SvgSkeleton;
 	}();
 
-	Skeleton.DEFAULT_OPTIONS = {
+	SvgSkeleton.DEFAULT_OPTIONS = {
 	  initialWidth: 720,
 	  initialHeight: 500,
 	  margin: {
@@ -462,9 +462,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	Skeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
+	SvgSkeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
-	exports.default = Skeleton;
+	exports.default = SvgSkeleton;
 
 /***/ },
 /* 2 */
