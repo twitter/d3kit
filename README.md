@@ -32,7 +32,7 @@ Want to learn more? [See the wiki](https://github.com/twitter/d3kit/wiki) or [AP
 ### Can't wait to try it?
 
 ```
-bower install d3kit --save
+bower install d3 d3kit --save
 ```
 
 or

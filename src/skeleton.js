@@ -11,11 +11,12 @@ class Skeleton {
     return [];
   }
 
-  constructor(selector, options) {
+  constructor(selector, options, moreOptions) {
     const mergedOptions = deepExtend(
       {},
       Skeleton.DEFAULT_OPTIONS,
-      options
+      options,
+      moreOptions
     );
 
     this.state = {
@@ -234,7 +235,7 @@ class Skeleton {
 
   dispatchResize() {
     const { width, height, innerWidth, innerHeight } = this.state;
-    this.dispatcher.call('resize', this, [width, height, innerWidth, innerHeight]);
+    this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
     return this;
   }
 
