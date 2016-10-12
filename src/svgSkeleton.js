@@ -16,6 +16,10 @@ class SvgSkeleton extends AbstractSkeleton {
     this.updateDimensionNow();
   }
 
+  getBoundElement() {
+    return this.svg.node();
+  }
+
   updateDimension() {
     super.updateDimension();
 

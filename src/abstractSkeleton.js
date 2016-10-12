@@ -173,7 +173,7 @@ class AbstractSkeleton {
     // Fit once
     const fitter = new Fitter(fitOptions);
     const { changed, dimension } = fitter.fit(
-      this.mainElement,
+      this.getBoundElement(),
       this.container.node()
     );
 
@@ -188,7 +188,7 @@ class AbstractSkeleton {
         this.fitWatcher.destroy();
       }
       this.fitWatcher = new FitWatcher(
-        this.mainElement,
+        this.getBoundElement(),
         this.container.node(),
         this.state.fitOptions,
         isObject(watchOptions) ? watchOptions : null
