@@ -5,7 +5,7 @@ import FitWatcher from 'slimfit/src/FitWatcher.js';
 import Fitter from 'slimfit/src/Fitter.js';
 import { deepExtend, extend, isObject } from './helper.js';
 
-class AbstractSkeleton {
+class AbstractChart {
   static getCustomEventNames() {
     return [];
   }
@@ -13,7 +13,7 @@ class AbstractSkeleton {
   constructor(selector, ...options) {
     const mergedOptions = deepExtend(
       {},
-      AbstractSkeleton.DEFAULT_OPTIONS,
+      AbstractChart.DEFAULT_OPTIONS,
       ...options
     );
 
@@ -41,7 +41,7 @@ class AbstractSkeleton {
 
   setupDispatcher(customEventNames = []) {
     this.customEventNames = customEventNames;
-    this.eventNames = AbstractSkeleton.DEFAULT_EVENTS.concat(customEventNames);
+    this.eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
     this.dispatcher = dispatch.apply(this, this.eventNames);
   }
 
@@ -242,7 +242,7 @@ class AbstractSkeleton {
   }
 }
 
-AbstractSkeleton.DEFAULT_OPTIONS = {
+AbstractChart.DEFAULT_OPTIONS = {
   initialWidth: 720,
   initialHeight: 500,
   margin: {
@@ -257,6 +257,6 @@ AbstractSkeleton.DEFAULT_OPTIONS = {
   },
 };
 
-AbstractSkeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
+AbstractChart.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
-export default AbstractSkeleton;
+export default AbstractChart;

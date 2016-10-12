@@ -1,18 +1,17 @@
-import AbstractSkeleton from './abstractSkeleton.js';
+import AbstractChart from './AbstractChart.js';
 import LayerOrganizer from './layerOrganizer.js';
 
-class SvgSkeleton extends AbstractSkeleton {
+class SvgChart extends AbstractChart {
   static getCustomEventNames() {
     return [];
   }
 
   constructor(selector, ...options) {
-    super(selector, SvgSkeleton.DEFAULT_OPTIONS, ...options);
+    super(selector, SvgChart.DEFAULT_OPTIONS, ...options);
 
     this.svg = this.container.append('svg');
     this.rootG = this.svg.append('g');
     this.layers = new LayerOrganizer(this.rootG);
-    this.mainElement = this.svg.node();
     this.updateDimensionNow();
   }
 
@@ -40,6 +39,6 @@ class SvgSkeleton extends AbstractSkeleton {
   }
 }
 
-SvgSkeleton.DEFAULT_OPTIONS = {};
+SvgChart.DEFAULT_OPTIONS = {};
 
-export default SvgSkeleton;
+export default SvgChart;

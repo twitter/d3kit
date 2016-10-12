@@ -1,31 +1,31 @@
 import { select } from 'd3-selection';
-import SvgSkeleton from './svgSkeleton.js';
+import SvgChart from './SvgChart.js';
 
-describe('SvgSkeleton', () => {
-  let element, $element, $svg, svgSkeleton;
+describe('SvgChart', () => {
+  let element, $element, $svg, svgChart;
 
   beforeEach(() => {
     element = document.body.appendChild(document.createElement('div'));
-    svgSkeleton = new SvgSkeleton(element, null);
+    svgChart = new SvgChart(element, null);
     $element = select(element);
     $svg = $element.select('svg');
   });
 
-  describe('new SvgSkeleton(element, options)', () => {
+  describe('new SvgChart(element, options)', () => {
     it('should create <svg> inside the element', () => {
       expect($element.select('svg').size()).to.be.equal(1);
     });
-    it('which is accessible from svgSkeleton.svg', () => {
-      expect(svgSkeleton.svg).to.exist;
+    it('which is accessible from svgChart.svg', () => {
+      expect(svgChart.svg).to.exist;
     });
     it('should create <g> inside the <svg> above', () => {
       expect($element.select('svg').select('g').size()).to.be.equal(1);
     });
-    it('which is accessible from svgSkeleton.rootG', () => {
-      expect(svgSkeleton.rootG).to.exist;
+    it('which is accessible from svgChart.rootG', () => {
+      expect(svgChart.rootG).to.exist;
     });
-    it('should create a dispatcher as svgSkeleton.dispatcher', () => {
-      const dispatcher = svgSkeleton.dispatcher;
+    it('should create a dispatcher as svgChart.dispatcher', () => {
+      const dispatcher = svgChart.dispatcher;
       expect(dispatcher).to.be.an('Object');
       expect(dispatcher.call).to.be.a('Function');
     });
@@ -33,10 +33,10 @@ describe('SvgSkeleton', () => {
 
   describe('.getCustomEventNames()', () => {
     it('should return custom event names', () => {
-      expect(svgSkeleton.getCustomEventNames()).to.deep.equal([]);
+      expect(svgChart.getCustomEventNames()).to.deep.equal([]);
     });
     it('should return custom event names', () => {
-      class Chart extends SvgSkeleton {
+      class Chart extends SvgChart {
         static getCustomEventNames() {
           return ['custom1', 'custom2'];
         }
@@ -47,149 +47,149 @@ describe('SvgSkeleton', () => {
   });
 
   describe('.getInnerWidth()', () => {
-    it('should return width of the svgSkeleton excluding margin', () => {
-      svgSkeleton
+    it('should return width of the svgChart excluding margin', () => {
+      svgChart
         .width(100)
         .options({
           margin: { left: 10, right: 10 },
         })
         .updateDimensionNow();
-      expect(svgSkeleton.getInnerWidth()).to.equal(80);
+      expect(svgChart.getInnerWidth()).to.equal(80);
     });
   });
 
   describe('.getInnerHeight()', () => {
-    it('should return height of the svgSkeleton excluding margin', () => {
-      svgSkeleton
+    it('should return height of the svgChart excluding margin', () => {
+      svgChart
         .height(100)
         .options({
           margin: { top: 10, bottom: 20 },
         })
         .updateDimensionNow();
-      expect(svgSkeleton.getInnerHeight()).to.equal(70);
+      expect(svgChart.getInnerHeight()).to.equal(70);
     });
   });
 
   describe('.data(data)', () => {
     it('should return data when called without argument', () => {
-      svgSkeleton.data({ a: 1 });
-      expect(svgSkeleton.data()).to.deep.equal({ a: 1 });
+      svgChart.data({ a: 1 });
+      expect(svgChart.data()).to.deep.equal({ a: 1 });
     });
     it('should set data when called with at least one argument', () => {
-      svgSkeleton.data('test');
-      expect(svgSkeleton.data()).to.equal('test');
+      svgChart.data('test');
+      expect(svgChart.data()).to.equal('test');
     });
     it('after setting, should dispatch "data" event', done => {
-      svgSkeleton.on('data.test', () => {
+      svgChart.on('data.test', () => {
         // This block should be reached to pass the test.
         done();
       });
-      svgSkeleton.data({ a: 1 });
+      svgChart.data({ a: 1 });
     });
   });
 
   describe('.options(options)', () => {
     it('should return options when called without argument', () => {
-      svgSkeleton.options({ a: 2 });
-      expect(svgSkeleton.options()).to.include.key('a');
-      expect(svgSkeleton.options().a).to.equal(2);
+      svgChart.options({ a: 2 });
+      expect(svgChart.options()).to.include.key('a');
+      expect(svgChart.options().a).to.equal(2);
     });
     it('should set options when called with at least one argument', () => {
-      svgSkeleton.options({ a: 1 });
-      expect(svgSkeleton.options()).to.include.key('a');
-      expect(svgSkeleton.options().a).to.equal(1);
+      svgChart.options({ a: 1 });
+      expect(svgChart.options()).to.include.key('a');
+      expect(svgChart.options().a).to.equal(1);
     });
     it('should not overwrite but extend existing options when setting', () => {
-      svgSkeleton.options({ a: 1 });
-      svgSkeleton.options({ b: 2 });
-      expect(svgSkeleton.options()).to.include.keys(['a', 'b']);
-      expect(svgSkeleton.options().a).to.equal(1);
-      expect(svgSkeleton.options().b).to.equal(2);
+      svgChart.options({ a: 1 });
+      svgChart.options({ b: 2 });
+      expect(svgChart.options()).to.include.keys(['a', 'b']);
+      expect(svgChart.options().a).to.equal(1);
+      expect(svgChart.options().b).to.equal(2);
     });
     it('after setting, should dispatch "options" event', done => {
-      svgSkeleton.on('options.test', () => {
+      svgChart.on('options.test', () => {
         // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
-      svgSkeleton.options({ a: 1 });
+      svgChart.options({ a: 1 });
     });
   });
 
   describe('.margin(margin)', () => {
     it('should return margin when called without argument', () => {
       const margin = { left: 10, right: 10, top: 10, bottom: 10 };
-      svgSkeleton.margin(margin);
-      expect(svgSkeleton.margin()).to.deep.equal(margin);
+      svgChart.margin(margin);
+      expect(svgChart.margin()).to.deep.equal(margin);
     });
     it('should set margin when called with at least one argument', () => {
       const margin = { left: 10, right: 10, top: 10, bottom: 10 };
-      svgSkeleton.margin(margin);
-      svgSkeleton.margin({ left: 20 });
-      expect(svgSkeleton.margin().left).to.equal(20);
-      expect(svgSkeleton.margin().right).to.equal(10);
-      svgSkeleton.margin({ right: 20 });
-      expect(svgSkeleton.margin().right).to.equal(20);
-      svgSkeleton.margin({ top: 20 });
-      expect(svgSkeleton.margin().top).to.equal(20);
-      svgSkeleton.margin({ bottom: 20 });
-      expect(svgSkeleton.margin().bottom).to.equal(20);
+      svgChart.margin(margin);
+      svgChart.margin({ left: 20 });
+      expect(svgChart.margin().left).to.equal(20);
+      expect(svgChart.margin().right).to.equal(10);
+      svgChart.margin({ right: 20 });
+      expect(svgChart.margin().right).to.equal(20);
+      svgChart.margin({ top: 20 });
+      expect(svgChart.margin().top).to.equal(20);
+      svgChart.margin({ bottom: 20 });
+      expect(svgChart.margin().bottom).to.equal(20);
     });
     it('should update innerWidth after setting margin', () => {
-      svgSkeleton
+      svgChart
         .width(100)
         .margin({ left: 15, right: 15 })
         .updateDimensionNow();
 
-      expect(svgSkeleton.getInnerWidth()).to.equal(70);
+      expect(svgChart.getInnerWidth()).to.equal(70);
     });
     it('should update innerHeight after setting margin', () => {
-      svgSkeleton
+      svgChart
         .height(100)
         .margin({ top: 10, bottom: 10 })
         .updateDimensionNow();
 
-      expect(svgSkeleton.getInnerHeight()).to.equal(80);
+      expect(svgChart.getInnerHeight()).to.equal(80);
     });
     it('should update the root <g> transform/translate', () => {
-      svgSkeleton
+      svgChart
         .margin({ left: 30, top: 30 })
         .offset({ x: 0.5, y: 0.5 })
         .margin({ left: 10, top: 10 })
         .updateDimensionNow();
 
-      const translate = svgSkeleton.rootG.attr('transform');
+      const translate = svgChart.rootG.attr('transform');
       expect(translate).to.equal('translate(10.5,10.5)');
     });
     it('after setting, should dispatch "resize" event', done => {
-      svgSkeleton.on('resize.test', () => {
+      svgChart.on('resize.test', () => {
         // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
-      svgSkeleton.margin({ left: 33 });
+      svgChart.margin({ left: 33 });
     });
   });
 
   describe('.offset(offset)', () => {
     it('should return offset when called without argument', () => {
       const offset = { x: 1, y: 1 };
-      svgSkeleton.offset(offset);
-      expect(svgSkeleton.offset()).to.deep.equal(offset);
+      svgChart.offset(offset);
+      expect(svgChart.offset()).to.deep.equal(offset);
     });
     it('should set offset when called with at least one argument', () => {
-      svgSkeleton
+      svgChart
         .offset({ x: 1, y: 1 })
         .offset({ x: 2, y: 3 });
-      expect(svgSkeleton.offset()).to.deep.equal({ x: 2, y: 3 });
+      expect(svgChart.offset()).to.deep.equal({ x: 2, y: 3 });
     });
     it('should update the root <g> transform/translate', () => {
-      svgSkeleton
+      svgChart
         .offset({ x: 0.5, y: 0.5 })
         .margin({ left: 10, top: 10 })
         .offset({ x: 2, y: 3 })
         .updateDimensionNow();
-      const translate = svgSkeleton.rootG.attr('transform');
+      const translate = svgChart.rootG.attr('transform');
       expect(translate).to.equal('translate(12,13)');
     });
   });
@@ -197,126 +197,126 @@ describe('SvgSkeleton', () => {
   describe('.width(width)', () => {
     it('should return <svg> width when called without argument', () => {
       const w = $svg.attr('width');
-      expect(svgSkeleton.width()).to.equal(+w);
+      expect(svgChart.width()).to.equal(+w);
     });
     it('should set <svg> width when called with Number as the first argument', () => {
-      svgSkeleton
+      svgChart
         .width(300)
         .updateDimensionNow();
       expect(+$svg.attr('width')).to.equal(300);
     });
     it('after setting, should dispatch "resize" event', done => {
-      svgSkeleton.on('resize.test', () => {
+      svgChart.on('resize.test', () => {
         // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
-      svgSkeleton.width(200);
+      svgChart.width(200);
     });
   });
 
   describe('.height(height)', () => {
     it('should return <svg> height when called without argument', () => {
       const w = $svg.attr('height');
-      expect(svgSkeleton.height()).to.equal(+w);
+      expect(svgChart.height()).to.equal(+w);
     });
     it('should set <svg> height when called with Number as the first argument', () => {
-      svgSkeleton
+      svgChart
         .height(300)
         .updateDimensionNow();
       expect(+$svg.attr('height')).to.equal(300);
     });
     it('after setting, should dispatch "resize" event', done => {
-      svgSkeleton.on('resize.test', () => {
+      svgChart.on('resize.test', () => {
         // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
-      svgSkeleton.height(200);
+      svgChart.height(200);
     });
   });
 
   describe('.dimension(dimension)', () => {
     it('should return an array [width, height] when called without argument', () => {
       const dim = [+$svg.attr('width'), +$svg.attr('height')];
-      expect(svgSkeleton.dimension()).to.deep.equal(dim);
+      expect(svgChart.dimension()).to.deep.equal(dim);
     });
     it('should set width and height of the <svg> when called with an array [width, height] as the first argument', done => {
-      svgSkeleton.dimension([118, 118]);
+      svgChart.dimension([118, 118]);
       setTimeout(() => {
         expect([+$svg.attr('width'), +$svg.attr('height')]).to.deep.equal([118, 118]);
         done();
       }, 0);
     });
     it('after setting, should dispatch "resize" event', done => {
-      svgSkeleton.on('resize.test', () => {
+      svgChart.on('resize.test', () => {
         // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
-      svgSkeleton.dimension([150, 150]);
+      svgChart.dimension([150, 150]);
     });
   });
 
   describe('fit(fitOptions)', () => {
-    it('should fit the svgSkeleton to container as instructed', () => {
+    it('should fit the svgChart to container as instructed', () => {
       $element
         .style('width', '500px')
         .style('height', '500px');
-      svgSkeleton
+      svgChart
         .fit({
           width: '100%',
           height: '100%',
         })
         .updateDimensionNow();
 
-      expect(svgSkeleton.dimension()).to.deep.equal([500, 500]);
+      expect(svgChart.dimension()).to.deep.equal([500, 500]);
 
-      svgSkeleton
+      svgChart
         .fit({
           width: '50%',
           height: '80%',
         })
         .updateDimensionNow();
 
-      expect(svgSkeleton.dimension()).to.deep.equal([250, 400]);
+      expect(svgChart.dimension()).to.deep.equal([250, 400]);
     });
   });
 
   describe('.hasData()', () => {
     it('should return true when data are not null nor undefined', () => {
-      svgSkeleton.data({});
-      expect(svgSkeleton.hasData()).to.be.true;
-      svgSkeleton.data({ test: 1 });
-      expect(svgSkeleton.hasData()).to.be.true;
-      svgSkeleton.data([]);
-      expect(svgSkeleton.hasData()).to.be.true;
-      svgSkeleton.data(['test']);
-      expect(svgSkeleton.hasData()).to.be.true;
+      svgChart.data({});
+      expect(svgChart.hasData()).to.be.true;
+      svgChart.data({ test: 1 });
+      expect(svgChart.hasData()).to.be.true;
+      svgChart.data([]);
+      expect(svgChart.hasData()).to.be.true;
+      svgChart.data(['test']);
+      expect(svgChart.hasData()).to.be.true;
     });
     it('should return false when data are null or undefined', () => {
-      svgSkeleton.data(null);
-      expect(svgSkeleton.hasData()).to.be.false;
-      svgSkeleton.data(undefined);
-      expect(svgSkeleton.hasData()).to.be.false;
+      svgChart.data(null);
+      expect(svgChart.hasData()).to.be.false;
+      svgChart.data(undefined);
+      expect(svgChart.hasData()).to.be.false;
     });
   });
 
   describe('.hasNonZeroArea()', () => {
     it('should return true if innerWidth * innerHeight is more than zero', done => {
-      svgSkeleton
+      svgChart
         .width(80)
         .height(50)
         .options({
           margin: { top: 10, bottom: 20, left: 10, right: 10 },
         });
       setTimeout(() => {
-        expect(svgSkeleton.hasNonZeroArea()).to.be.true;
+        expect(svgChart.hasNonZeroArea()).to.be.true;
         done();
       }, 0);
     });
     it('should return false otherwise', done => {
-      svgSkeleton
+      svgChart
         .width(20)
         .height(30)
         .options({
@@ -324,7 +324,7 @@ describe('SvgSkeleton', () => {
         });
 
       setTimeout(() => {
-        expect(svgSkeleton.hasNonZeroArea()).to.be.false;
+        expect(svgChart.hasNonZeroArea()).to.be.false;
         done();
       }, 0);
     });

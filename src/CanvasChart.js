@@ -1,12 +1,12 @@
-import AbstractSkeleton from './abstractSkeleton.js';
+import AbstractChart from './AbstractChart.js';
 
-class CanvasSkeleton extends AbstractSkeleton {
+class CanvasChart extends AbstractChart {
   static getCustomEventNames() {
     return [];
   }
 
   constructor(selector, ...options) {
-    super(selector, CanvasSkeleton.DEFAULT_OPTIONS, ...options);
+    super(selector, CanvasChart.DEFAULT_OPTIONS, ...options);
 
     this.canvas = this.container.append('canvas');
     this.updateDimensionNow();
@@ -32,8 +32,8 @@ class CanvasSkeleton extends AbstractSkeleton {
   }
 }
 
-CanvasSkeleton.DEFAULT_OPTIONS = {
+CanvasChart.DEFAULT_OPTIONS = {
   pixelRatio: window.devicePixelRatio,
 };
 
-export default CanvasSkeleton;
+export default CanvasChart;

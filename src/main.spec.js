@@ -5,23 +5,16 @@ describe('d3Kit', () => {
     expect(d3Kit).to.exist;
   });
 
-  it('should have CanvasSkeleton', () => {
-    expect(d3Kit.CanvasSkeleton).to.exist;
-  });
+  [
+    'AbstractChart',
+    'CanvasChart',
+    'SvgChart',
+    'helper',
+    'LayerOrganizer',
+  ].forEach(module => {
+    it(`should have ${module}`, () => {
+      expect(d3Kit[module]).to.exist;
+    });
+  })
 
-  it('should have SvgSkeleton', () => {
-    expect(d3Kit.SvgSkeleton).to.exist;
-  });
-
-  // it('should have Chartlet', () => {
-  //   expect(d3Kit.Chartlet).to.exist;
-  // });
-
-  it('should have helper', () => {
-    expect(d3Kit.helper).to.exist;
-  });
-
-  it('should have LayerOrganizer', () => {
-    expect(d3Kit.LayerOrganizer).to.exist;
-  });
 });

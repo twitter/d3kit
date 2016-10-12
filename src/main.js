@@ -1,7 +1,9 @@
 import * as _helper from './helper.js';
 
-export { default as CanvasSkeleton } from './canvasSkeleton.js';
-export { default as SvgSkeleton } from './svgSkeleton.js';
-// export { default as Chartlet } from './chartlet.js';
+export { default as AbstractChart } from './AbstractChart.js';
+export { default as CanvasChart } from './CanvasChart.js';
+export { default as SvgChart } from './SvgChart.js';
 export { default as LayerOrganizer } from './layerOrganizer.js';
+// export { default as Chartlet } from './chartlet.js';
+
 export const helper = _helper;

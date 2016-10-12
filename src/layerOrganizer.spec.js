@@ -84,12 +84,12 @@ describe('LayerOrganizer', () => {
       expect(layers.has('test')).to.be.false;
     });
     it('should be able to check second-level layer', () => {
-      expect(layers.has('l.m')).to.be.true;
-      expect(layers.has('l.x')).to.be.false;
+      expect(layers.has('l/m')).to.be.true;
+      expect(layers.has('l/x')).to.be.false;
     });
     it('should be able to check third-level layer', () => {
-      expect(layers.has('l.n.q')).to.be.true;
-      expect(layers.has('l.n.x')).to.be.false;
+      expect(layers.has('l/n/q')).to.be.true;
+      expect(layers.has('l/n/x')).to.be.false;
     });
   });
 
@@ -99,12 +99,12 @@ describe('LayerOrganizer', () => {
       expect(layers.get('test')).to.be.not.exist;
     });
     it('should be able to get second-level layer', () => {
-      expect(layers.get('l.m')).to.exist;
-      expect(layers.get('l.x')).to.not.exist;
+      expect(layers.get('l/m')).to.exist;
+      expect(layers.get('l/x')).to.not.exist;
     });
     it('should be able to get third-level layer', () => {
-      expect(layers.get('l.n.o')).to.exist;
-      expect(layers.get('l.n.x')).to.not.exist;
+      expect(layers.get('l/n/o')).to.exist;
+      expect(layers.get('l/n/x')).to.not.exist;
     });
   });
 });

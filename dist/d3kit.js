@@ -7,7 +7,7 @@
 		exports["d3Kit"] = factory(require("d3-selection"), require("d3-dispatch"));
 	else
 		root["d3Kit"] = factory(root["d3"], root["d3"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -59,23 +59,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.helper = exports.LayerOrganizer = exports.SvgSkeleton = exports.CanvasSkeleton = undefined;
+	exports.helper = exports.LayerOrganizer = exports.SvgChart = exports.CanvasChart = exports.AbstractChart = undefined;
 
-	var _canvasSkeleton = __webpack_require__(1);
+	var _AbstractChart = __webpack_require__(1);
 
-	Object.defineProperty(exports, 'CanvasSkeleton', {
+	Object.defineProperty(exports, 'AbstractChart', {
 	  enumerable: true,
 	  get: function get() {
-	    return _interopRequireDefault(_canvasSkeleton).default;
+	    return _interopRequireDefault(_AbstractChart).default;
 	  }
 	});
 
-	var _svgSkeleton = __webpack_require__(20);
+	var _CanvasChart = __webpack_require__(19);
 
-	Object.defineProperty(exports, 'SvgSkeleton', {
+	Object.defineProperty(exports, 'CanvasChart', {
 	  enumerable: true,
 	  get: function get() {
-	    return _interopRequireDefault(_svgSkeleton).default;
+	    return _interopRequireDefault(_CanvasChart).default;
+	  }
+	});
+
+	var _SvgChart = __webpack_require__(20);
+
+	Object.defineProperty(exports, 'SvgChart', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_SvgChart).default;
 	  }
 	});
 
@@ -88,7 +97,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var _helper2 = __webpack_require__(19);
+	var _helper2 = __webpack_require__(18);
 
 	var _helper = _interopRequireWildcard(_helper2);
 
@@ -108,129 +117,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _abstractSkeleton = __webpack_require__(2);
-
-	var _abstractSkeleton2 = _interopRequireDefault(_abstractSkeleton);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var CanvasSkeleton = function (_AbstractSkeleton) {
-	  _inherits(CanvasSkeleton, _AbstractSkeleton);
-
-	  _createClass(CanvasSkeleton, null, [{
-	    key: 'getCustomEventNames',
-	    value: function getCustomEventNames() {
-	      return [];
-	    }
-	  }]);
-
-	  function CanvasSkeleton(selector) {
-	    var _Object$getPrototypeO;
-
-	    _classCallCheck(this, CanvasSkeleton);
-
-	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	      options[_key - 1] = arguments[_key];
-	    }
-
-	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasSkeleton)).call.apply(_Object$getPrototypeO, [this, selector, CanvasSkeleton.DEFAULT_OPTIONS].concat(options)));
-
-	    _this.canvas = _this.container.append('canvas');
-	    _this.mainElement = _this.canvas.node();
-	    _this.updateDimensionNow();
-	    return _this;
-	  }
-
-	  _createClass(CanvasSkeleton, [{
-	    key: 'updateDimension',
-	    value: function updateDimension() {
-	      _get(Object.getPrototypeOf(CanvasSkeleton.prototype), 'updateDimension', this).call(this);
-
-	      var _state = this.state;
-	      var width = _state.width;
-	      var height = _state.height;
-	      var pixelRatio = this.state.options.pixelRatio;
-
-
-	      this.canvas.style('width', width).style('height', height).attr('width', width * pixelRatio).attr('height', height * pixelRatio);
-
-	      return this;
-	    }
-	  }]);
-
-	  return CanvasSkeleton;
-	}(_abstractSkeleton2.default);
-
-	CanvasSkeleton.DEFAULT_OPTIONS = {
-	  pixelRatio: window.devicePixelRatio
-	};
-
-	exports.default = CanvasSkeleton;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _d3Selection = __webpack_require__(3);
+	var _d3Selection = __webpack_require__(2);
 
-	var _d3Dispatch = __webpack_require__(4);
+	var _d3Dispatch = __webpack_require__(3);
 
-	var _debounce = __webpack_require__(5);
+	var _debounce = __webpack_require__(4);
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
-	var _FitWatcher = __webpack_require__(13);
+	var _FitWatcher = __webpack_require__(12);
 
 	var _FitWatcher2 = _interopRequireDefault(_FitWatcher);
 
-	var _Fitter = __webpack_require__(14);
+	var _Fitter = __webpack_require__(13);
 
 	var _Fitter2 = _interopRequireDefault(_Fitter);
 
-	var _helper = __webpack_require__(19);
+	var _helper = __webpack_require__(18);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var AbstractSkeleton = function () {
-	  _createClass(AbstractSkeleton, null, [{
+	var AbstractChart = function () {
+	  _createClass(AbstractChart, null, [{
 	    key: 'getCustomEventNames',
 	    value: function getCustomEventNames() {
 	      return [];
 	    }
 	  }]);
 
-	  function AbstractSkeleton(selector) {
-	    _classCallCheck(this, AbstractSkeleton);
+	  function AbstractChart(selector) {
+	    _classCallCheck(this, AbstractChart);
 
 	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 	      options[_key - 1] = arguments[_key];
 	    }
 
-	    var mergedOptions = _helper.deepExtend.apply(undefined, [{}, AbstractSkeleton.DEFAULT_OPTIONS].concat(options));
+	    var mergedOptions = _helper.deepExtend.apply(undefined, [{}, AbstractChart.DEFAULT_OPTIONS].concat(options));
 
 	    this.state = {
 	      width: mergedOptions.initialWidth,
@@ -254,13 +184,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.updateDimension = (0, _debounce2.default)(this.updateDimension.bind(this), 1);
 	  }
 
-	  _createClass(AbstractSkeleton, [{
+	  _createClass(AbstractChart, [{
 	    key: 'setupDispatcher',
 	    value: function setupDispatcher() {
 	      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
 	      this.customEventNames = customEventNames;
-	      this.eventNames = AbstractSkeleton.DEFAULT_EVENTS.concat(customEventNames);
+	      this.eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
 	      this.dispatcher = _d3Dispatch.dispatch.apply(this, this.eventNames);
 	    }
 	  }, {
@@ -438,7 +368,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // Fit once
 	      var fitter = new _Fitter2.default(fitOptions);
 
-	      var _fitter$fit = fitter.fit(this.mainElement, this.container.node());
+	      var _fitter$fit = fitter.fit(this.getBoundElement(), this.container.node());
 
 	      var changed = _fitter$fit.changed;
 	      var dimension = _fitter$fit.dimension;
@@ -454,7 +384,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.fitWatcher) {
 	          this.fitWatcher.destroy();
 	        }
-	        this.fitWatcher = new _FitWatcher2.default(this.mainElement, this.container.node(), this.state.fitOptions, (0, _helper.isObject)(watchOptions) ? watchOptions : null).on('change', function (dim) {
+	        this.fitWatcher = new _FitWatcher2.default(this.getBoundElement(), this.container.node(), this.state.fitOptions, (0, _helper.isObject)(watchOptions) ? watchOptions : null).on('change', function (dim) {
 	          return _this.dimension([dim.width, dim.height]);
 	        }).start();
 	      }
@@ -518,10 +448,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }]);
 
-	  return AbstractSkeleton;
+	  return AbstractChart;
 	}();
 
-	AbstractSkeleton.DEFAULT_OPTIONS = {
+	AbstractChart.DEFAULT_OPTIONS = {
 	  initialWidth: 720,
 	  initialHeight: 500,
 	  margin: {
@@ -536,9 +466,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	AbstractSkeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
+	AbstractChart.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
-	exports.default = AbstractSkeleton;
+	exports.default = AbstractChart;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ },
 /* 3 */
@@ -548,19 +484,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
-
-/***/ },
-/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(6),
-	    now = __webpack_require__(7),
-	    toNumber = __webpack_require__(10);
+	var isObject = __webpack_require__(5),
+	    now = __webpack_require__(6),
+	    toNumber = __webpack_require__(9);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -747,7 +677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = debounce;
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -787,12 +717,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObject;
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var root = __webpack_require__(8);
+	var root = __webpack_require__(7);
 
 	/**
 	 * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -817,14 +747,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = now;
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var freeGlobal = __webpack_require__(9);
+	var freeGlobal = __webpack_require__(8);
 
 	/** Detect free variable `self`. */
 	var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
@@ -835,7 +765,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = root;
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -849,13 +779,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(6),
-	    isSymbol = __webpack_require__(11);
+	var isObject = __webpack_require__(5),
+	    isSymbol = __webpack_require__(10);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -920,14 +850,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toNumber;
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var isObjectLike = __webpack_require__(12);
+	var isObjectLike = __webpack_require__(11);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -966,7 +896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isSymbol;
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1004,7 +934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObjectLike;
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1015,15 +945,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Fitter = __webpack_require__(14);
+	var _Fitter = __webpack_require__(13);
 
 	var _Fitter2 = _interopRequireDefault(_Fitter);
 
-	var _Watcher2 = __webpack_require__(17);
+	var _Watcher2 = __webpack_require__(16);
 
 	var _Watcher3 = _interopRequireDefault(_Watcher2);
 
-	var _Helper = __webpack_require__(16);
+	var _Helper = __webpack_require__(15);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1072,7 +1002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = FitWatcher;
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1083,11 +1013,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Dimension = __webpack_require__(15);
+	var _Dimension = __webpack_require__(14);
 
 	var _Dimension2 = _interopRequireDefault(_Dimension);
 
-	var _Helper = __webpack_require__(16);
+	var _Helper = __webpack_require__(15);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1177,7 +1107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Fitter;
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1188,7 +1118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Helper = __webpack_require__(16);
+	var _Helper = __webpack_require__(15);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1260,7 +1190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Dimension;
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1332,7 +1262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1343,15 +1273,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Dimension = __webpack_require__(15);
+	var _Dimension = __webpack_require__(14);
 
 	var _Dimension2 = _interopRequireDefault(_Dimension);
 
-	var _d3Dispatch = __webpack_require__(4);
+	var _d3Dispatch = __webpack_require__(3);
 
-	var _Helper = __webpack_require__(16);
+	var _Helper = __webpack_require__(15);
 
-	var _throttle = __webpack_require__(18);
+	var _throttle = __webpack_require__(17);
 
 	var _throttle2 = _interopRequireDefault(_throttle);
 
@@ -1467,13 +1397,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Watcher;
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var debounce = __webpack_require__(5),
-	    isObject = __webpack_require__(6);
+	var debounce = __webpack_require__(4),
+	    isObject = __webpack_require__(5);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -1543,7 +1473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = throttle;
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1691,6 +1621,89 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _AbstractChart2 = __webpack_require__(1);
+
+	var _AbstractChart3 = _interopRequireDefault(_AbstractChart2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CanvasChart = function (_AbstractChart) {
+	  _inherits(CanvasChart, _AbstractChart);
+
+	  _createClass(CanvasChart, null, [{
+	    key: 'getCustomEventNames',
+	    value: function getCustomEventNames() {
+	      return [];
+	    }
+	  }]);
+
+	  function CanvasChart(selector) {
+	    var _Object$getPrototypeO;
+
+	    _classCallCheck(this, CanvasChart);
+
+	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      options[_key - 1] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasChart)).call.apply(_Object$getPrototypeO, [this, selector, CanvasChart.DEFAULT_OPTIONS].concat(options)));
+
+	    _this.canvas = _this.container.append('canvas');
+	    _this.updateDimensionNow();
+	    return _this;
+	  }
+
+	  _createClass(CanvasChart, [{
+	    key: 'getBoundElement',
+	    value: function getBoundElement() {
+	      return this.canvas.node();
+	    }
+	  }, {
+	    key: 'updateDimension',
+	    value: function updateDimension() {
+	      _get(Object.getPrototypeOf(CanvasChart.prototype), 'updateDimension', this).call(this);
+
+	      var _state = this.state;
+	      var width = _state.width;
+	      var height = _state.height;
+	      var pixelRatio = this.state.options.pixelRatio;
+
+
+	      this.canvas.style('width', width).style('height', height).attr('width', width * pixelRatio).attr('height', height * pixelRatio);
+
+	      return this;
+	    }
+	  }]);
+
+	  return CanvasChart;
+	}(_AbstractChart3.default);
+
+	CanvasChart.DEFAULT_OPTIONS = {
+	  pixelRatio: window.devicePixelRatio
+	};
+
+	exports.default = CanvasChart;
+
+/***/ },
 /* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1704,9 +1717,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _abstractSkeleton = __webpack_require__(2);
+	var _AbstractChart2 = __webpack_require__(1);
 
-	var _abstractSkeleton2 = _interopRequireDefault(_abstractSkeleton);
+	var _AbstractChart3 = _interopRequireDefault(_AbstractChart2);
 
 	var _layerOrganizer = __webpack_require__(21);
 
@@ -1720,39 +1733,43 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var SvgSkeleton = function (_AbstractSkeleton) {
-	  _inherits(SvgSkeleton, _AbstractSkeleton);
+	var SvgChart = function (_AbstractChart) {
+	  _inherits(SvgChart, _AbstractChart);
 
-	  _createClass(SvgSkeleton, null, [{
+	  _createClass(SvgChart, null, [{
 	    key: 'getCustomEventNames',
 	    value: function getCustomEventNames() {
 	      return [];
 	    }
 	  }]);
 
-	  function SvgSkeleton(selector) {
+	  function SvgChart(selector) {
 	    var _Object$getPrototypeO;
 
-	    _classCallCheck(this, SvgSkeleton);
+	    _classCallCheck(this, SvgChart);
 
 	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
 	      options[_key - 1] = arguments[_key];
 	    }
 
-	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgSkeleton)).call.apply(_Object$getPrototypeO, [this, selector, SvgSkeleton.DEFAULT_OPTIONS].concat(options)));
+	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector, SvgChart.DEFAULT_OPTIONS].concat(options)));
 
 	    _this.svg = _this.container.append('svg');
 	    _this.rootG = _this.svg.append('g');
 	    _this.layers = new _layerOrganizer2.default(_this.rootG);
-	    _this.mainElement = _this.svg.node();
 	    _this.updateDimensionNow();
 	    return _this;
 	  }
 
-	  _createClass(SvgSkeleton, [{
+	  _createClass(SvgChart, [{
+	    key: 'getBoundElement',
+	    value: function getBoundElement() {
+	      return this.svg.node();
+	    }
+	  }, {
 	    key: 'updateDimension',
 	    value: function updateDimension() {
-	      _get(Object.getPrototypeOf(SvgSkeleton.prototype), 'updateDimension', this).call(this);
+	      _get(Object.getPrototypeOf(SvgChart.prototype), 'updateDimension', this).call(this);
 
 	      var _state = this.state;
 	      var width = _state.width;
@@ -1772,12 +1789,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }]);
 
-	  return SvgSkeleton;
-	}(_abstractSkeleton2.default);
+	  return SvgChart;
+	}(_AbstractChart3.default);
 
-	SvgSkeleton.DEFAULT_OPTIONS = {};
+	SvgChart.DEFAULT_OPTIONS = {};
 
-	exports.default = SvgSkeleton;
+	exports.default = SvgChart;
 
 /***/ },
 /* 21 */
@@ -1881,7 +1898,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 
-	var _helper = __webpack_require__(19);
+	var _helper = __webpack_require__(18);
 
 /***/ }
 /******/ ])

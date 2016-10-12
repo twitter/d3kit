@@ -11,13 +11,13 @@ import { isObject, kebabCase } from './helper.js';
 //
 // Then access the layers via
 // layers.get('axis'),
-// layers.get('axis.bar'),
-// layers.get('axis.mark'),
+// layers.get('axis/bar'),
+// layers.get('axis/mark'),
 // layers.get('glass'),
 // layers.get('label')
 //
 
-export default function (mainContainer) {
+export default function (mainContainer, defaultTag = 'g') {
   const layers = {};
 
   function createLayerFromName(container, layerName, prefix = '') {
@@ -25,10 +25,10 @@ export default function (mainContainer) {
     let name;
     let tag;
     if (chunks.length > 1) {
-      tag = chunks[0].length > 0 ? chunks[0] : 'g';
+      tag = chunks[0].length > 0 ? chunks[0] : defaultTag;
       name = chunks[1];
     } else {
-      tag = 'g';
+      tag = defaultTag;
       name = chunks[0];
     }
 
@@ -51,7 +51,7 @@ export default function (mainContainer) {
     } else if (isObject(config)) {
       const [parentKey] = Object.keys(config);
       const parentLayer = createLayerFromName(container, parentKey, prefix);
-      createLayerFromConfig(parentLayer, config[parentKey], `${prefix}${parentKey}.`);
+      createLayerFromConfig(parentLayer, config[parentKey], `${prefix}${parentKey}/`);
       return parentLayer;
     }
 
