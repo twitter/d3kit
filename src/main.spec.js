@@ -5,6 +5,10 @@ describe('d3Kit', () => {
     expect(d3Kit).to.exist;
   });
 
+  it('should have CanvasSkeleton', () => {
+    expect(d3Kit.CanvasSkeleton).to.exist;
+  });
+
   it('should have SvgSkeleton', () => {
     expect(d3Kit.SvgSkeleton).to.exist;
   });
