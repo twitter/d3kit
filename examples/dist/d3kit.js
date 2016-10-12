@@ -1062,7 +1062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function check() {
 	      if (this.hasTargetChanged()) {
 	        var fitResult = this.fit();
-	        if (this.fitResult.changed) {
+	        if (fitResult.changed) {
 	          this.dispatcher.call('change', this, fitResult.dimension);
 	        }
 	      }
