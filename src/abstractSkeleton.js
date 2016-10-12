@@ -172,7 +172,7 @@ class AbstractSkeleton {
 
     const fitter = new Fitter(fitOptions);
     const { changed, dimension } = fitter.fit(
-      this.svg.node(),
+      this.mainElement,
       this.container.node()
     );
 
@@ -194,7 +194,7 @@ class AbstractSkeleton {
         this.fitWatcher.destroy();
       }
       this.fitWatcher = new FitWatcher(
-        this.svg.node(),
+        this.mainElement,
         this.container.node(),
         this.state.fitOptions,
         this.state.watchOptions

@@ -146,7 +146,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasSkeleton)).call.apply(_Object$getPrototypeO, [this, selector, CanvasSkeleton.DEFAULT_OPTIONS].concat(options)));
 
 	    _this.canvas = _this.container.append('canvas');
-
+	    _this.mainElement = _this.canvas.node();
 	    _this.updateDimensionNow();
 	    return _this;
 	  }
@@ -435,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var fitter = new _Fitter2.default(fitOptions);
 
-	      var _fitter$fit = fitter.fit(this.svg.node(), this.container.node());
+	      var _fitter$fit = fitter.fit(this.mainElement, this.container.node());
 
 	      var changed = _fitter$fit.changed;
 	      var dimension = _fitter$fit.dimension;
@@ -461,7 +461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.fitWatcher) {
 	          this.fitWatcher.destroy();
 	        }
-	        this.fitWatcher = new _FitWatcher2.default(this.svg.node(), this.container.node(), this.state.fitOptions, this.state.watchOptions).on('change', function (dim) {
+	        this.fitWatcher = new _FitWatcher2.default(this.mainElement, this.container.node(), this.state.fitOptions, this.state.watchOptions).on('change', function (dim) {
 	          return _this.dimension([dim.width, dim.height]);
 	        }).start();
 	      } else if (this.fitWatcher) {
@@ -1748,7 +1748,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _this.svg = _this.container.append('svg');
 	    _this.rootG = _this.svg.append('g');
 	    _this.layers = new _layerOrganizer2.default(_this.rootG);
-
+	    _this.mainElement = _this.svg.node();
 	    _this.updateDimensionNow();
 	    return _this;
 	  }

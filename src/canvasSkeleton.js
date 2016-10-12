@@ -9,7 +9,7 @@ class CanvasSkeleton extends AbstractSkeleton {
     super(selector, CanvasSkeleton.DEFAULT_OPTIONS, ...options);
 
     this.canvas = this.container.append('canvas');
-
+    this.mainElement = this.canvas.node();
     this.updateDimensionNow();
   }
 

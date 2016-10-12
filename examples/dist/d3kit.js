@@ -7,7 +7,7 @@
 		exports["d3Kit"] = factory(require("d3-selection"), require("d3-dispatch"));
 	else
 		root["d3Kit"] = factory(root["d3"], root["d3"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -59,9 +59,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.helper = exports.LayerOrganizer = exports.SvgSkeleton = undefined;
+	exports.helper = exports.LayerOrganizer = exports.SvgSkeleton = exports.CanvasSkeleton = undefined;
 
-	var _svgSkeleton = __webpack_require__(1);
+	var _canvasSkeleton = __webpack_require__(1);
+
+	Object.defineProperty(exports, 'CanvasSkeleton', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_canvasSkeleton).default;
+	  }
+	});
+
+	var _svgSkeleton = __webpack_require__(20);
 
 	Object.defineProperty(exports, 'SvgSkeleton', {
 	  enumerable: true,
@@ -70,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var _layerOrganizer = __webpack_require__(18);
+	var _layerOrganizer = __webpack_require__(21);
 
 	Object.defineProperty(exports, 'LayerOrganizer', {
 	  enumerable: true,
@@ -99,31 +108,106 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _abstractSkeleton = __webpack_require__(2);
+
+	var _abstractSkeleton2 = _interopRequireDefault(_abstractSkeleton);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CanvasSkeleton = function (_AbstractSkeleton) {
+	  _inherits(CanvasSkeleton, _AbstractSkeleton);
+
+	  _createClass(CanvasSkeleton, null, [{
+	    key: 'getCustomEventNames',
+	    value: function getCustomEventNames() {
+	      return [];
+	    }
+	  }]);
+
+	  function CanvasSkeleton(selector) {
+	    var _Object$getPrototypeO;
+
+	    _classCallCheck(this, CanvasSkeleton);
+
+	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      options[_key - 1] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasSkeleton)).call.apply(_Object$getPrototypeO, [this, selector, CanvasSkeleton.DEFAULT_OPTIONS].concat(options)));
+
+	    _this.canvas = _this.container.append('canvas');
+	    _this.mainElement = _this.canvas.node();
+	    _this.updateDimensionNow();
+	    return _this;
+	  }
+
+	  _createClass(CanvasSkeleton, [{
+	    key: 'updateDimension',
+	    value: function updateDimension() {
+	      _get(Object.getPrototypeOf(CanvasSkeleton.prototype), 'updateDimension', this).call(this);
+
+	      var _state = this.state;
+	      var width = _state.width;
+	      var height = _state.height;
+	      var pixelRatio = this.state.options.pixelRatio;
+
+
+	      this.canvas.style('width', width).style('height', height).attr('width', width * pixelRatio).attr('height', height * pixelRatio);
+
+	      return this;
+	    }
+	  }]);
+
+	  return CanvasSkeleton;
+	}(_abstractSkeleton2.default);
+
+	CanvasSkeleton.DEFAULT_OPTIONS = {
+	  pixelRatio: window.devicePixelRatio
+	};
+
+	exports.default = CanvasSkeleton;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _d3Selection = __webpack_require__(2);
+	var _d3Selection = __webpack_require__(3);
 
-	var _d3Dispatch = __webpack_require__(3);
+	var _d3Dispatch = __webpack_require__(4);
 
-	var _debounce = __webpack_require__(4);
+	var _debounce = __webpack_require__(5);
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
-	var _FitWatcher = __webpack_require__(12);
+	var _FitWatcher = __webpack_require__(13);
 
 	var _FitWatcher2 = _interopRequireDefault(_FitWatcher);
 
-	var _Fitter = __webpack_require__(13);
+	var _Fitter = __webpack_require__(14);
 
 	var _Fitter2 = _interopRequireDefault(_Fitter);
-
-	var _layerOrganizer = __webpack_require__(18);
-
-	var _layerOrganizer2 = _interopRequireDefault(_layerOrganizer);
 
 	var _helper = __webpack_require__(19);
 
@@ -131,18 +215,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var SvgSkeleton = function () {
-	  _createClass(SvgSkeleton, null, [{
+	var AbstractSkeleton = function () {
+	  _createClass(AbstractSkeleton, null, [{
 	    key: 'getCustomEventNames',
 	    value: function getCustomEventNames() {
 	      return [];
 	    }
 	  }]);
 
-	  function SvgSkeleton(selector, options, moreOptions) {
-	    _classCallCheck(this, SvgSkeleton);
+	  function AbstractSkeleton(selector) {
+	    _classCallCheck(this, AbstractSkeleton);
 
-	    var mergedOptions = (0, _helper.deepExtend)({}, SvgSkeleton.DEFAULT_OPTIONS, options, moreOptions);
+	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      options[_key - 1] = arguments[_key];
+	    }
+
+	    var mergedOptions = _helper.deepExtend.apply(undefined, [{}, AbstractSkeleton.DEFAULT_OPTIONS].concat(options));
 
 	    this.state = {
 	      width: mergedOptions.initialWidth,
@@ -155,28 +243,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    this.container = (0, _d3Selection.select)(selector);
-	    this.svg = this.container.append('svg');
-	    this.rootG = this.svg.append('g');
-	    this.layers = new _layerOrganizer2.default(this.rootG);
 
 	    var customEvents = this.constructor.getCustomEventNames();
 	    this.setupDispatcher(customEvents);
 
-	    this.updateDimension = (0, _debounce2.default)(this.updateDimension.bind(this), 1);
 	    this.dispatchData = (0, _debounce2.default)(this.dispatchData.bind(this), 1);
 	    this.dispatchOptions = (0, _debounce2.default)(this.dispatchOptions.bind(this), 1);
 	    this.dispatchResize = (0, _debounce2.default)(this.dispatchResize.bind(this), 1);
 
-	    this.updateDimensionNow();
+	    this.updateDimension = (0, _debounce2.default)(this.updateDimension.bind(this), 1);
 	  }
 
-	  _createClass(SvgSkeleton, [{
+	  _createClass(AbstractSkeleton, [{
 	    key: 'setupDispatcher',
 	    value: function setupDispatcher() {
 	      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
 	      this.customEventNames = customEventNames;
-	      this.eventNames = SvgSkeleton.DEFAULT_EVENTS.concat(customEventNames);
+	      this.eventNames = AbstractSkeleton.DEFAULT_EVENTS.concat(customEventNames);
 	      this.dispatcher = _d3Dispatch.dispatch.apply(this, this.eventNames);
 	    }
 	  }, {
@@ -238,8 +322,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'data',
 	    value: function data() {
-	      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	        args[_key] = arguments[_key];
+	      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	        args[_key2] = arguments[_key2];
 	      }
 
 	      if (args.length === 0) return this.state.data;
@@ -284,8 +368,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'options',
 	    value: function options() {
-	      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	        args[_key2] = arguments[_key2];
+	      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+	        args[_key3] = arguments[_key3];
 	      }
 
 	      if (args.length === 0) return this.state.options;
@@ -307,9 +391,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _state = this.state;
 	      var width = _state.width;
 	      var height = _state.height;
-	      var _state$options = this.state.options;
-	      var offset = _state$options.offset;
-	      var margin = _state$options.margin;
+	      var margin = this.state.options.margin;
 	      var top = margin.top;
 	      var right = margin.right;
 	      var bottom = margin.bottom;
@@ -318,10 +400,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.state.innerWidth = width - left - right;
 	      this.state.innerHeight = height - top - bottom;
-
-	      this.svg.attr('width', width).attr('height', height);
-
-	      this.rootG.attr('transform', 'translate(' + (left + offset.x) + ',' + (top + offset.y) + ')');
 
 	      return this;
 	    }
@@ -357,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var fitter = new _Fitter2.default(fitOptions);
 
-	      var _fitter$fit = fitter.fit(this.svg.node(), this.container.node());
+	      var _fitter$fit = fitter.fit(this.mainElement, this.container.node());
 
 	      var changed = _fitter$fit.changed;
 	      var dimension = _fitter$fit.dimension;
@@ -383,7 +461,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.fitWatcher) {
 	          this.fitWatcher.destroy();
 	        }
-	        this.fitWatcher = new _FitWatcher2.default(this.svg.node(), this.container.node(), this.state.fitOptions, this.state.watchOptions).on('change', function (dim) {
+	        this.fitWatcher = new _FitWatcher2.default(this.mainElement, this.container.node(), this.state.fitOptions, this.state.watchOptions).on('change', function (dim) {
 	          return _this.dimension([dim.width, dim.height]);
 	        }).start();
 	      } else if (this.fitWatcher) {
@@ -444,10 +522,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }]);
 
-	  return SvgSkeleton;
+	  return AbstractSkeleton;
 	}();
 
-	SvgSkeleton.DEFAULT_OPTIONS = {
+	AbstractSkeleton.DEFAULT_OPTIONS = {
 	  initialWidth: 720,
 	  initialHeight: 500,
 	  margin: {
@@ -462,15 +540,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	SvgSkeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
+	AbstractSkeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
-	exports.default = SvgSkeleton;
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+	exports.default = AbstractSkeleton;
 
 /***/ },
 /* 3 */
@@ -480,13 +552,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(5),
-	    now = __webpack_require__(6),
-	    toNumber = __webpack_require__(9);
+	var isObject = __webpack_require__(6),
+	    now = __webpack_require__(7),
+	    toNumber = __webpack_require__(10);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -673,7 +751,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = debounce;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -713,12 +791,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObject;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var root = __webpack_require__(7);
+	var root = __webpack_require__(8);
 
 	/**
 	 * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -743,14 +821,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = now;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var freeGlobal = __webpack_require__(8);
+	var freeGlobal = __webpack_require__(9);
 
 	/** Detect free variable `self`. */
 	var freeSelf = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) == 'object' && self && self.Object === Object && self;
@@ -761,7 +839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = root;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -775,13 +853,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isObject = __webpack_require__(5),
-	    isSymbol = __webpack_require__(10);
+	var isObject = __webpack_require__(6),
+	    isSymbol = __webpack_require__(11);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -846,14 +924,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toNumber;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var isObjectLike = __webpack_require__(11);
+	var isObjectLike = __webpack_require__(12);
 
 	/** `Object#toString` result references. */
 	var symbolTag = '[object Symbol]';
@@ -892,7 +970,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isSymbol;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -930,7 +1008,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = isObjectLike;
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -941,15 +1019,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Fitter = __webpack_require__(13);
+	var _Fitter = __webpack_require__(14);
 
 	var _Fitter2 = _interopRequireDefault(_Fitter);
 
-	var _Watcher2 = __webpack_require__(16);
+	var _Watcher2 = __webpack_require__(17);
 
 	var _Watcher3 = _interopRequireDefault(_Watcher2);
 
-	var _Helper = __webpack_require__(15);
+	var _Helper = __webpack_require__(16);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -998,7 +1076,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = FitWatcher;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1009,11 +1087,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Dimension = __webpack_require__(14);
+	var _Dimension = __webpack_require__(15);
 
 	var _Dimension2 = _interopRequireDefault(_Dimension);
 
-	var _Helper = __webpack_require__(15);
+	var _Helper = __webpack_require__(16);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1103,7 +1181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Fitter;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1114,7 +1192,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Helper = __webpack_require__(15);
+	var _Helper = __webpack_require__(16);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1186,7 +1264,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Dimension;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1258,7 +1336,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1269,15 +1347,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Dimension = __webpack_require__(14);
+	var _Dimension = __webpack_require__(15);
 
 	var _Dimension2 = _interopRequireDefault(_Dimension);
 
-	var _d3Dispatch = __webpack_require__(3);
+	var _d3Dispatch = __webpack_require__(4);
 
-	var _Helper = __webpack_require__(15);
+	var _Helper = __webpack_require__(16);
 
-	var _throttle = __webpack_require__(17);
+	var _throttle = __webpack_require__(18);
 
 	var _throttle2 = _interopRequireDefault(_throttle);
 
@@ -1393,13 +1471,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Watcher;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var debounce = __webpack_require__(4),
-	    isObject = __webpack_require__(5);
+	var debounce = __webpack_require__(5),
+	    isObject = __webpack_require__(6);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -1467,110 +1545,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	module.exports = throttle;
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	// EXAMPLE USAGE:
-	//
-	// var layers = new d3LayerOrganizer(vis);
-	// layers.create([
-	//   {'axis': ['bar', 'mark']},
-	//   'glass',
-	//   'label'
-	// ]);
-	//
-	// Then access the layers via
-	// layers.get('axis'),
-	// layers.get('axis.bar'),
-	// layers.get('axis.mark'),
-	// layers.get('glass'),
-	// layers.get('label')
-	//
-
-	exports.default = function (mainContainer) {
-	  var layers = {};
-
-	  function createLayerFromName(container, layerName) {
-	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
-
-	    var chunks = layerName.split('.');
-	    var name = void 0;
-	    var tag = void 0;
-	    if (chunks.length > 1) {
-	      tag = chunks[0].length > 0 ? chunks[0] : 'g';
-	      name = chunks[1];
-	    } else {
-	      tag = 'g';
-	      name = chunks[0];
-	    }
-
-	    var id = '' + prefix + name;
-	    if (layers.hasOwnProperty(id)) {
-	      throw new Error('invalid or duplicate layer id: ' + id);
-	    }
-	    var className = (0, _helper.kebabCase)(name) + '-layer';
-	    var layer = container.append(tag).classed(className, true);
-
-	    layers[id] = layer;
-	    return layer;
-	  }
-
-	  function createLayerFromConfig(container, config) {
-	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
-
-	    if (Array.isArray(config)) {
-	      return config.map(function (info) {
-	        return createLayerFromConfig(container, info, prefix);
-	      });
-	    } else if ((0, _helper.isObject)(config)) {
-	      var _Object$keys = Object.keys(config);
-
-	      var _Object$keys2 = _slicedToArray(_Object$keys, 1);
-
-	      var parentKey = _Object$keys2[0];
-
-	      var parentLayer = createLayerFromName(container, parentKey, prefix);
-	      createLayerFromConfig(parentLayer, config[parentKey], '' + prefix + parentKey + '.');
-	      return parentLayer;
-	    }
-
-	    return createLayerFromName(container, config, prefix);
-	  }
-
-	  function createLayer(config) {
-	    return createLayerFromConfig(mainContainer, config);
-	  }
-
-	  function create(layerNames) {
-	    return Array.isArray(layerNames) ? layerNames.map(createLayer) : createLayer(layerNames);
-	  }
-
-	  function get(layerName) {
-	    return layers[layerName];
-	  }
-
-	  function has(layerName) {
-	    return !!layers[layerName];
-	  }
-
-	  return {
-	    create: create,
-	    get: get,
-	    has: has
-	  };
-	};
-
-	var _helper = __webpack_require__(19);
 
 /***/ },
 /* 19 */
@@ -1719,6 +1693,199 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return v;
 	  };
 	}
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _abstractSkeleton = __webpack_require__(2);
+
+	var _abstractSkeleton2 = _interopRequireDefault(_abstractSkeleton);
+
+	var _layerOrganizer = __webpack_require__(21);
+
+	var _layerOrganizer2 = _interopRequireDefault(_layerOrganizer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SvgSkeleton = function (_AbstractSkeleton) {
+	  _inherits(SvgSkeleton, _AbstractSkeleton);
+
+	  _createClass(SvgSkeleton, null, [{
+	    key: 'getCustomEventNames',
+	    value: function getCustomEventNames() {
+	      return [];
+	    }
+	  }]);
+
+	  function SvgSkeleton(selector) {
+	    var _Object$getPrototypeO;
+
+	    _classCallCheck(this, SvgSkeleton);
+
+	    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      options[_key - 1] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgSkeleton)).call.apply(_Object$getPrototypeO, [this, selector, SvgSkeleton.DEFAULT_OPTIONS].concat(options)));
+
+	    _this.svg = _this.container.append('svg');
+	    _this.rootG = _this.svg.append('g');
+	    _this.layers = new _layerOrganizer2.default(_this.rootG);
+	    _this.mainElement = _this.svg.node();
+	    _this.updateDimensionNow();
+	    return _this;
+	  }
+
+	  _createClass(SvgSkeleton, [{
+	    key: 'updateDimension',
+	    value: function updateDimension() {
+	      _get(Object.getPrototypeOf(SvgSkeleton.prototype), 'updateDimension', this).call(this);
+
+	      var _state = this.state;
+	      var width = _state.width;
+	      var height = _state.height;
+	      var _state$options = this.state.options;
+	      var offset = _state$options.offset;
+	      var margin = _state$options.margin;
+	      var top = margin.top;
+	      var left = margin.left;
+
+
+	      this.svg.attr('width', width).attr('height', height);
+
+	      this.rootG.attr('transform', 'translate(' + (left + offset.x) + ',' + (top + offset.y) + ')');
+
+	      return this;
+	    }
+	  }]);
+
+	  return SvgSkeleton;
+	}(_abstractSkeleton2.default);
+
+	SvgSkeleton.DEFAULT_OPTIONS = {};
+
+	exports.default = SvgSkeleton;
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	// EXAMPLE USAGE:
+	//
+	// var layers = new d3LayerOrganizer(vis);
+	// layers.create([
+	//   {'axis': ['bar', 'mark']},
+	//   'glass',
+	//   'label'
+	// ]);
+	//
+	// Then access the layers via
+	// layers.get('axis'),
+	// layers.get('axis.bar'),
+	// layers.get('axis.mark'),
+	// layers.get('glass'),
+	// layers.get('label')
+	//
+
+	exports.default = function (mainContainer) {
+	  var layers = {};
+
+	  function createLayerFromName(container, layerName) {
+	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
+
+	    var chunks = layerName.split('.');
+	    var name = void 0;
+	    var tag = void 0;
+	    if (chunks.length > 1) {
+	      tag = chunks[0].length > 0 ? chunks[0] : 'g';
+	      name = chunks[1];
+	    } else {
+	      tag = 'g';
+	      name = chunks[0];
+	    }
+
+	    var id = '' + prefix + name;
+	    if (layers.hasOwnProperty(id)) {
+	      throw new Error('invalid or duplicate layer id: ' + id);
+	    }
+	    var className = (0, _helper.kebabCase)(name) + '-layer';
+	    var layer = container.append(tag).classed(className, true);
+
+	    layers[id] = layer;
+	    return layer;
+	  }
+
+	  function createLayerFromConfig(container, config) {
+	    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
+
+	    if (Array.isArray(config)) {
+	      return config.map(function (info) {
+	        return createLayerFromConfig(container, info, prefix);
+	      });
+	    } else if ((0, _helper.isObject)(config)) {
+	      var _Object$keys = Object.keys(config);
+
+	      var _Object$keys2 = _slicedToArray(_Object$keys, 1);
+
+	      var parentKey = _Object$keys2[0];
+
+	      var parentLayer = createLayerFromName(container, parentKey, prefix);
+	      createLayerFromConfig(parentLayer, config[parentKey], '' + prefix + parentKey + '.');
+	      return parentLayer;
+	    }
+
+	    return createLayerFromName(container, config, prefix);
+	  }
+
+	  function createLayer(config) {
+	    return createLayerFromConfig(mainContainer, config);
+	  }
+
+	  function create(layerNames) {
+	    return Array.isArray(layerNames) ? layerNames.map(createLayer) : createLayer(layerNames);
+	  }
+
+	  function get(layerName) {
+	    return layers[layerName];
+	  }
+
+	  function has(layerName) {
+	    return !!layers[layerName];
+	  }
+
+	  return {
+	    create: create,
+	    get: get,
+	    has: has
+	  };
+	};
+
+	var _helper = __webpack_require__(19);
 
 /***/ }
 /******/ ])

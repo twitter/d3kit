@@ -12,7 +12,7 @@ class SvgSkeleton extends AbstractSkeleton {
     this.svg = this.container.append('svg');
     this.rootG = this.svg.append('g');
     this.layers = new LayerOrganizer(this.rootG);
-
+    this.mainElement = this.svg.node();
     this.updateDimensionNow();
   }
 
