@@ -6,7 +6,7 @@ import Fitter from 'slimfit/src/Fitter.js';
 import LayerOrganizer from './layerOrganizer.js';
 import { deepExtend, extend } from './helper.js';
 
-class Skeleton {
+class SkeletonSvg {
   static getCustomEventNames() {
     return [];
   }
@@ -14,7 +14,7 @@ class Skeleton {
   constructor(selector, options, moreOptions) {
     const mergedOptions = deepExtend(
       {},
-      Skeleton.DEFAULT_OPTIONS,
+      SkeletonSvg.DEFAULT_OPTIONS,
       options,
       moreOptions
     );
@@ -47,7 +47,7 @@ class Skeleton {
 
   setupDispatcher(customEventNames = []) {
     this.customEventNames = customEventNames;
-    this.eventNames = Skeleton.DEFAULT_EVENTS.concat(customEventNames);
+    this.eventNames = SkeletonSvg.DEFAULT_EVENTS.concat(customEventNames);
     this.dispatcher = dispatch.apply(this, this.eventNames);
   }
 
@@ -261,7 +261,7 @@ class Skeleton {
   }
 }
 
-Skeleton.DEFAULT_OPTIONS = {
+SkeletonSvg.DEFAULT_OPTIONS = {
   initialWidth: 720,
   initialHeight: 500,
   margin: {
@@ -276,6 +276,6 @@ Skeleton.DEFAULT_OPTIONS = {
   },
 };
 
-Skeleton.DEFAULT_EVENTS = ['data', 'options', 'resize'];
+SkeletonSvg.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
-export default Skeleton;
+export default SkeletonSvg;

@@ -5,8 +5,8 @@ describe('d3Kit', () => {
     expect(d3Kit).to.exist;
   });
 
-  it('should have Skeleton', () => {
-    expect(d3Kit.Skeleton).to.exist;
+  it('should have SkeletonSvg', () => {
+    expect(d3Kit.SkeletonSvg).to.exist;
   });
 
   // it('should have Chartlet', () => {
