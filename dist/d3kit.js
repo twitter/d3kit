@@ -989,9 +989,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'check',
 	    value: function check() {
 	      if (this.hasTargetChanged()) {
-	        var fitResult = this.fit();
-	        if (fitResult.changed) {
-	          this.dispatcher.call('change', this, fitResult.dimension);
+	        var _fit = this.fit();
+
+	        var changed = _fit.changed;
+	        var dimension = _fit.dimension;
+
+	        if (changed) {
+	          this.dispatch('change', dimension);
 	        }
 	      }
 	      return this;
@@ -1279,8 +1283,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _Dimension2 = _interopRequireDefault(_Dimension);
 
-	var _d3Dispatch = __webpack_require__(3);
-
 	var _Helper = __webpack_require__(15);
 
 	var _throttle = __webpack_require__(17);
@@ -1312,10 +1314,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.target = target;
 	    this.interval = interval;
 
-	    this.dispatcher = (0, _d3Dispatch.dispatch)('change');
 	    this.check = this.check.bind(this);
 	    this.throttledCheck = (0, _throttle2.default)(this.check, this.interval);
 	    this.isWatching = false;
+
+	    this.listeners = { change: [] };
 	  }
 
 	  _createClass(Watcher, [{
@@ -1335,20 +1338,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'check',
 	    value: function check() {
 	      if (this.hasTargetChanged()) {
-	        this.dispatcher.call('change', this, this.currentDim);
+	        this.dispatch('change', this.currentDim);
 	      }
+	      return this;
+	    }
+	  }, {
+	    key: 'dispatch',
+	    value: function dispatch(name) {
+	      var _this = this;
+
+	      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	        args[_key - 1] = arguments[_key];
+	      }
+
+	      this.listeners[name].forEach(function (l) {
+	        return l.apply(_this, args);
+	      });
 	      return this;
 	    }
 	  }, {
 	    key: 'on',
 	    value: function on(name, listener) {
-	      this.dispatcher.on(name, listener);
+	      if (this.listeners[name].indexOf(listener) === -1) {
+	        this.listeners[name].push(listener);
+	      }
 	      return this;
 	    }
 	  }, {
 	    key: 'off',
-	    value: function off(name) {
-	      this.dispatcher.on(name, null);
+	    value: function off(name, listener) {
+	      this.listeners[name] = this.listeners[name].filter(function (l) {
+	        return l !== listener;
+	      });
 	      return this;
 	    }
 	  }, {
@@ -1385,7 +1406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'destroy',
 	    value: function destroy() {
 	      this.stop();
-	      this.off('change');
+	      this.listeners.change = [];
 	      return this;
 	    }
 	  }]);
