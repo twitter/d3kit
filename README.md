@@ -2,8 +2,8 @@
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-**d3Kit** is a set of thin scaffolds and utilities for speeding visualization development with [D3](https://github.com/mbostock/d3).
-It is a lightweight library (~8KB, minified) to relieve you from the same groundwork tasks you found yourself doing again and again. Writing code in d3Kit way also help you create reusable and responsive components easily.
+**d3Kit** provides thin scaffold for creating reusable charts and utilities for speeding visualization development with [D3](https://github.com/mbostock/d3).
+It aims to relieve you from the same groundwork tasks you found yourself doing again and again. Writing code in d3Kit way also help you create reusable and responsive components easily.
 
 <p align="center">
   <a href="https://bl.ocks.org/trebor/554ffd04106ab92cb8014cd9500f428c" style="width:100%;">
@@ -13,9 +13,11 @@ It is a lightweight library (~8KB, minified) to relieve you from the same ground
 
 d3Kit features include, but are not limited to:
 
-* Setup ```<svg>``` according to d3's [margin convention](http://bl.ocks.org/mbostock/3019563), make it support auto-resizing and add other convenient functions. We called it a "Skeleton" for your visualization.
+* Create a scaffold that supports auto-resizing and adds other convenient functions for handle data and options.
 * Help you create reusable component.
-* Help you create reusable subcomponent (a.k.a. Chartlet).
+* Supports both `<canvas>` and `<svg>` charts
+* For `<svg>`, will setup ```<svg>``` according to d3's [margin convention](http://bl.ocks.org/mbostock/3019563).
+* Help you create reusable subcomponent (a.k.a. Chartlet). (coming soon)
 * Help you manage layers within a visualization.
 * and many more...
 

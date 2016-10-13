@@ -15,7 +15,6 @@ import { isObject, kebabCase } from './helper.js';
 // layers.get('axis/mark'),
 // layers.get('glass'),
 // layers.get('label')
-//
 
 export default function (mainContainer, defaultTag = 'g') {
   const layers = {};
