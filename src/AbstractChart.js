@@ -113,7 +113,7 @@ class AbstractChart {
   offset(...args) {
     if (args.length === 0) return this.state.options.offset;
     const oldOffset = this.state.options.offset;
-    const newOffset = Object.assign({}, this.state.offset, args[0]);
+    const newOffset = extend({}, this.state.offset, args[0]);
     const changed = Object.keys(oldOffset)
       .some(field => oldOffset[field] !== newOffset[field]);
     if (changed) {
