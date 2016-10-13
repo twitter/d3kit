@@ -105,6 +105,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	// export { default as Chartlet } from './chartlet.js';
+
 	var helper = exports.helper = _helper;
 
 /***/ },
@@ -1819,13 +1821,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	//
 	// Then access the layers via
 	// layers.get('axis'),
-	// layers.get('axis.bar'),
-	// layers.get('axis.mark'),
+	// layers.get('axis/bar'),
+	// layers.get('axis/mark'),
 	// layers.get('glass'),
 	// layers.get('label')
-	//
 
 	exports.default = function (mainContainer) {
+	  var defaultTag = arguments.length <= 1 || arguments[1] === undefined ? 'g' : arguments[1];
+
 	  var layers = {};
 
 	  function createLayerFromName(container, layerName) {
@@ -1835,10 +1838,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var name = void 0;
 	    var tag = void 0;
 	    if (chunks.length > 1) {
-	      tag = chunks[0].length > 0 ? chunks[0] : 'g';
+	      tag = chunks[0].length > 0 ? chunks[0] : defaultTag;
 	      name = chunks[1];
 	    } else {
-	      tag = 'g';
+	      tag = defaultTag;
 	      name = chunks[0];
 	    }
 
@@ -1868,7 +1871,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var parentKey = _Object$keys2[0];
 
 	      var parentLayer = createLayerFromName(container, parentKey, prefix);
-	      createLayerFromConfig(parentLayer, config[parentKey], '' + prefix + parentKey + '.');
+	      createLayerFromConfig(parentLayer, config[parentKey], '' + prefix + parentKey + '/');
 	      return parentLayer;
 	    }
 
