@@ -1397,6 +1397,34 @@ var CanvasChart = function (_AbstractChart) {
       return this.canvas.node();
     }
   }, {
+    key: 'getContext2d',
+    value: function getContext2d() {
+      var _options = this.options();
+
+      var pixelRatio = _options.pixelRatio;
+      var margin = _options.margin;
+      var offset = _options.offset;
+
+      var ctx = this.canvas.node().getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.translate(margin.left + offset.x, margin.top + offset.y);
+      return ctx;
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      var _options2 = this.options();
+
+      var pixelRatio = _options2.pixelRatio;
+
+      var ctx = this.canvas.node().getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.clearRect(0, 0, this.width(), this.height());
+      return this;
+    }
+  }, {
     key: 'updateDimension',
     value: function updateDimension() {
       get(Object.getPrototypeOf(CanvasChart.prototype), 'updateDimension', this).call(this);
