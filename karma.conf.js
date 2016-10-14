@@ -4,7 +4,6 @@
 const babel = require('rollup-plugin-babel');
 const babelrc = require('babelrc-rollup').default;
 const nodeResolve = require('rollup-plugin-node-resolve');
-const istanbul = require('rollup-plugin-istanbul');
 
 module.exports = function (config) {
   config.set({
@@ -32,10 +31,7 @@ module.exports = function (config) {
       // rollup settings. See Rollup documentation
       plugins: [
         nodeResolve(),
-        babel(babelrc()), // ES2015 compiler by the same author as Rollup
-        istanbul({
-          exclude: ['src/**/*.spec.js', 'node_modules/**/*']
-        })
+        babel(babelrc())
       ],
       // will help to prevent conflicts between different tests entries
       format: 'iife',
@@ -49,7 +45,8 @@ module.exports = function (config) {
 
     coverageReporter: {
       reporters: [
-        { type: 'text' }
+        { type: 'text' },
+        { type: 'html' }
       ]
     },
 
