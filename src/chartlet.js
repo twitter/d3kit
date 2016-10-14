@@ -1,7 +1,7 @@
 // This module has not been revised yet.
 
 import { dispatch } from 'd3-dispatch';
-import debounce from 'lodash/debounce.js';
+import debounce from 'lodash-es/debounce.js';
 import { functor, rebind } from './helper.js';
 
 function NOOP(selection, done) { done(); }

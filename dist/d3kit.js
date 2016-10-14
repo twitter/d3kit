@@ -622,7 +622,7 @@ function functor(v) {
   };
 }
 
-var _helper = Object.freeze({
+var helper = Object.freeze({
   isObject: isObject,
   isFunction: isFunction,
   kebabCase: kebabCase,
@@ -1567,10 +1567,6 @@ var SvgChart = function (_AbstractChart) {
 }(AbstractChart);
 
 SvgChart.DEFAULT_OPTIONS = {};
-
-// export { default as Chartlet } from './chartlet.js';
-
-var helper = _helper;
 
 exports.helper = helper;
 exports.AbstractChart = AbstractChart;
