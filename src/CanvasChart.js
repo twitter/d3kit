@@ -16,6 +16,27 @@ class CanvasChart extends AbstractChart {
     return this.canvas.node();
   }
 
+  getContext2d() {
+    const { pixelRatio, margin, offset } = this.options();
+    const ctx = this.canvas.node().getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(pixelRatio, pixelRatio);
+    ctx.translate(
+      margin.left + offset.x,
+      margin.top + offset.y
+    );
+    return ctx;
+  }
+
+  clear() {
+    const { pixelRatio } = this.options();
+    const ctx = this.canvas.node().getContext('2d');
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.scale(pixelRatio, pixelRatio);
+    ctx.clearRect(0, 0, this.width(), this.height());
+    return this;
+  }
+
   updateDimension() {
     super.updateDimension();
 

@@ -3,6 +3,7 @@ import isObject from 'lodash-es/isObject.js';
 
 export { isObject, isFunction };
 export { default as debounce } from 'lodash-es/debounce.js';
+export { default as throttle } from 'lodash-es/throttle.js';
 
 //---------------------------------------------------
 // From underscore.string

@@ -19,6 +19,10 @@ export default {
       format: 'umd',
       moduleName: 'd3Kit',
       sourceMap: true
+    },
+    {
+      dest: 'dist/d3kit-es.js',
+      format: 'es'
     }
   ]
 };
