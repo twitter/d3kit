@@ -66,7 +66,7 @@
     "tdd": "NODE_ENV=test karma start",
     "eslint": "eslint --ignore-path .gitignore \"src/**/*.@(js|jsx)\"",
     "eslint-fix": "eslint --fix --ignore-path .gitignore \"src/**/*.@(js|jsx)\"",
-    "preversion": "npm test",
+    "preversion": "npm run test",
     "version": "npm run build && git add -A dist",
     "postversion": "git push ; git push --tags; pkgfiles",
     "prepublish": "pkgfiles",
