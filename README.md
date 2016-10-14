@@ -53,22 +53,73 @@ The core of d3Kit are base classes for creating a chart. Currently there are `Sv
 ### AbstractChart
 
 * takes a target container (usually a `<div>`) and helps you build a chart inside. 
-* encapsulates [D3's margin convention](http://bl.ocks.org/mbostock/3019563) [P5]
-* can listen to resize (either window or element) and update the chart size to fit and maintain given aspect ratio. Once the chart is resized, it will dispatch event `resize`. [P3, P4]
-* defines two main input channels `.data(...)` and `.options(...)` and dispatch event `data` and `options` when they are changed, respectively. 
-* assumes little about how you implement a chart. You can extends it and implements it the way you want.
+* encapsulates [D3's margin convention](http://bl.ocks.org/mbostock/3019563). The dimension of each chart is defined by `width`, `height` and `margin`. 
+  * `chart.width()` get/set the total width (including margin)
+  * `chart.height()` get/set the total height (including margin) 
+  * `chart.margin()` get/set the margin
+  * `chart.getInnerWidth()` returns width excluding margin. 
+  * `chart.getInnerHeight()` returns height excluding margin.
+* can listen to resize (either window or element) and update the chart size to fit and maintain given aspect ratio using slimfit library. 
+  * `chart.fit(fitOptions, watchOptions)`
+  * `chart.stopFitWatcher()`
+* dispatches event `resize` when the chart is resized.
+  * `chart.on('resize', listener)` is then use to register what to do after the chart is resized.
+* defines two main input channels `.data(...)` and `.options(...)` and dispatches event `data` and `options` when they are changed, respectively. 
+  * `chart.on('data', listener)`
+  * `chart.on('options', listener)`
+* assumes little about how you implement a chart. You can extends the class and implements it the way you want.
 
 Most of the time you will not need to access `AbstractChart` directly, but you will use one of its children: `SvgChart` or `CanvasChart`.
 
 ### SvgChart
 
-* create `<svg>` boilerplate inside the container
+This class also creates `<svg>` boilerplate inside the container.
+
+#### Using the scaffold to create something quickly
+
+```html
+<div id="chart0"></div>
+```
+
+```javascript
+import { SvgChart } from 'd3kit';
+const chart = new SvgChart('#chart0', {  
+  initialWidth: 720,
+  initialHeight: 500,
+  margin: { top: 30, right: 30, bottom: 30, left: 30 },
+  offset: { x: 0.5, y: 0.5 } // add little offset for sharp-edge rendering
+});
+```
+
+The output will looks like this.
+
+```html
+<!--chart.container is a D3 selection of this element.-->
+<div id="chart0">
+  <!--chart.svg is a D3 selection of this element.-->
+  <svg width="720" height="500">
+    <!--chart.rootG is a D3 selection of this element.-->
+    <g transform="translate(30.5,30.5)"></g>
+  </svg>
+</div>
+```
+
+So you can append a circle or do anything you usually do with D3.
+
+```javascript
+chart.rootG.append('circle')
+  .attr('cx', 10)
+  .attr('cy', 10)
+  .attr('r', 5)
+```
+
+#### Create a reusable chart by extending SvgChart
 
 
 
 ### CanvasChart
 
-* create `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
+This class also creates `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
 
 ## Other features
 
