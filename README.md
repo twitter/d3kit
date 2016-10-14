@@ -57,8 +57,8 @@ The core of d3Kit are base classes for creating a chart. Currently there are `Sv
   * `chart.width()` get/set the total width (including margin)
   * `chart.height()` get/set the total height (including margin) 
   * `chart.margin()` get/set the margin
-  * `chart.getInnerWidth()` returns width excluding margin. 
-  * `chart.getInnerHeight()` returns height excluding margin.
+  * `chart.getInnerWidth()` returns width excluding margin. This is usually used as the boundary of the x-axis.
+  * `chart.getInnerHeight()` returns height excluding margin. This is usually used as the boundary of the y-axis.
 * can listen to resize (either window or element) and update the chart size to fit and maintain given aspect ratio using slimfit library. 
   * `chart.fit(fitOptions, watchOptions)`
   * `chart.stopFitWatcher()`
@@ -75,7 +75,7 @@ Most of the time you will not need to access `AbstractChart` directly, but you w
 
 This class also creates `<svg>` boilerplate inside the container.
 
-#### Using the scaffold to create something quickly
+#### Scaffold and create something quickly
 
 ```html
 <div id="chart0"></div>
@@ -113,9 +113,114 @@ chart.rootG.append('circle')
   .attr('r', 5)
 ```
 
-#### Create a reusable chart by extending SvgChart
+#### Create a reusable chart
 
+First create a chart by extending `SvgChart`.
 
+```javascript
+import { SvgChart } from 'd3kit';
+import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
+import { axisLeft, axisBottom } from 'd3-axis';
+import { extent } from 'd3-array';
+
+// Define default options for this chart
+const DEFAULT_OPTIONS = {
+  margin: {top: 60, right: 60, bottom: 60, left: 60},
+  initialWidth: 800,
+  initialHeight: 460
+};
+
+class SvgBubbleChart extends SvgChart {
+  /**
+   * Define the names of custom events that can be dispatched from this chart
+   * @return {Array[String]} event names
+   */
+  static getCustomEventNames() {
+    return ['bubbleClick'];
+  }
+
+  constructor(selector, options) {
+    super(selector, DEFAULT_OPTIONS, options);
+
+    // Create <g> layers. See LayerOrganizer
+    this.layers.create(['content', 'x-axis', 'y-axis']);
+
+    // Add custom variables
+    this.xScale = scaleLinear();
+    this.yScale = scaleLinear();
+    this.color = scaleOrdinal(schemeCategory10);
+    this.xAxis = axisBottom().scale(this.xScale);
+    this.yAxis = axisLeft().scale(this.yScale);
+
+    // Add basic event listeners
+    this.visualize = this.visualize.bind(this);
+    this.on('resize.default', this.visualize);
+    this.on('data.default', this.visualize);
+  }
+
+  // You can define a new function for this class.
+  visualize() {
+    if(!this.hasData()){
+      this.layers.get('content').selectAll('*').remove();
+      return;
+    }
+
+    const data = this.data();
+
+    this.xScale.domain(extent(data, d => d.x))
+      .range([0, this.getInnerWidth()]);
+    this.yScale.domain(extent(data, d => d.y))
+      .range([this.getInnerHeight(), 0]);
+
+    this.layers.get('x-axis')
+      .attr('transform', `translate(0,${this.getInnerHeight()})`)
+      .call(this.xAxis);
+
+    this.layers.get('y-axis')
+      .call(this.yAxis);
+
+    const selection = this.layers.get('content').selectAll('circle')
+      .data(data);
+
+    selection.exit().remove();
+
+    const sEnter = selection.enter().append('circle')
+      .attr('cx', d => this.xScale(d.x))
+      .attr('cy', d => this.yScale(d.y))
+      .on('click', (...args) => {
+        this.dispatcher.apply('bubbleClick', this, args);
+      });
+
+    selection.merge(sEnter)
+      .attr('cx', d => this.xScale(d.x))
+      .attr('cy', d => this.yScale(d.y))
+      .attr('r', d => d.r)
+      .style('fill', (d,i) => this.color(i));
+  }
+}
+
+SvgBubbleChart.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
+
+export default SvgBubbleChart;
+```
+
+Then use it
+
+```
+const chart1 = new SvgBubbleChart('#chart1', {
+  margin: { top: 20 },
+  initialWidth: 300,
+  initialHeight: 300,
+})
+  .data(bubbles)
+  // handle bubbleClick event
+  .on('bubbleClick', d => { alert(JSON.stringify(d)); })
+  // demonstrate auto resizing to maintain 16:9 aspect ratio
+  .fit({
+    mode: 'aspectRatio',
+    ratio: 16/9,
+  }, true);
+```
 
 ### CanvasChart
 
@@ -144,10 +249,10 @@ For more examples, [check out our gallery](https://github.com/twitter/d3kit/wiki
 
 ## Documentation
 
-Want to learn more? 
+Want to learn more? Follow these links. 
 
-* Getting started guide
-* [API Reference](https://github.com/twitter/d3kit/docs/API.md)
+* [Getting started guide](https://github.com/twitter/d3kit/docs/Getting-started.md)
+* [API Reference](https://github.com/twitter/d3kit/docs/API.md) (We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
 
 ## Appendix
 

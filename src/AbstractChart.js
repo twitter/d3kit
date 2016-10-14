@@ -164,7 +164,7 @@ class AbstractChart {
     return (innerWidth > 0 && innerHeight > 0);
   }
 
-  fit(fitOptions, watchOptions) {
+  fit(fitOptions, watchOptions = false) {
     if (fitOptions) {
       this.state.fitOptions = fitOptions;
     }
