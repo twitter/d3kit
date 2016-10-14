@@ -59,9 +59,11 @@ The core of d3Kit are base classes for creating a chart. Currently there are `Sv
   * `chart.margin()` get/set the margin
   * `chart.getInnerWidth()` returns width excluding margin. This is usually used as the boundary of the x-axis.
   * `chart.getInnerHeight()` returns height excluding margin. This is usually used as the boundary of the y-axis.
-* can listen to resize (either window or element) and update the chart size to fit and maintain given aspect ratio using slimfit library. 
-  * `chart.fit(fitOptions, watchOptions)`
-  * `chart.stopFitWatcher()`
+* can resize the chart to be percentage of a container and/or maintain aspect ratio
+  * `chart.fit(fitOptions:Object)` Calling this function with single argument will resize the chart to fit into the container once. Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions`.
+* can listen to resize (either window or element) and update the chart size to fit container. 
+  * `chart.fit(fitOptions:Object, watchOptions:Boolean/Object)` Calling with two arguments, such as `chart.fit({...}, true)` or `chart.fit({...}, {...})`, will enable watching. Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions` and `watchOptions`
+  * `chart.stopFitWatcher()` will disable the watcher.
 * dispatches event `resize` when the chart is resized.
   * `chart.on('resize', listener)` is then use to register what to do after the chart is resized.
 * defines two main input channels `.data(...)` and `.options(...)` and dispatches event `data` and `options` when they are changed, respectively. 
@@ -73,9 +75,9 @@ Most of the time you will not need to access `AbstractChart` directly, but you w
 
 ### SvgChart
 
-This class also creates `<svg>` boilerplate inside the container.
+This class creates `<svg>` boilerplate inside the container.
 
-#### Scaffold and create something quickly
+#### A. Scaffold and create something quickly
 
 ```html
 <div id="chart0"></div>
@@ -113,7 +115,7 @@ chart.rootG.append('circle')
   .attr('r', 5)
 ```
 
-#### Create a reusable chart
+#### B. Create a reusable chart
 
 First create a chart by extending `SvgChart`.
 
@@ -224,7 +226,11 @@ const chart1 = new SvgBubbleChart('#chart1', {
 
 ### CanvasChart
 
-This class also creates `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
+While `SvgChart` creates necessary element for building chart with `<svg>`. This class creates `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
+
+#### A. Scaffold and create something quickly
+
+#### B. Create a reusable chart
 
 ## Other features
 
@@ -247,12 +253,16 @@ Here are a few examples of d3Kit in action:
 
 For more examples, [check out our gallery](https://github.com/twitter/d3kit/wiki/Gallery).
 
+(We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
+
 ## Documentation
 
 Want to learn more? Follow these links. 
 
 * [Getting started guide](https://github.com/twitter/d3kit/docs/Getting-started.md)
-* [API Reference](https://github.com/twitter/d3kit/docs/API.md) (We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
+* [API Reference](https://github.com/twitter/d3kit/docs/API.md) 
+
+(We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
 
 ## Appendix
 
