@@ -810,18 +810,21 @@ var Fitter = function () {
   function Fitter() {
     var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     classCallCheck(this, Fitter);
-    var _options$mode = options.mode;
-    var mode = _options$mode === undefined ? Fitter.MODE_BASIC : _options$mode;
-    var _options$width = options.width;
-    var width = _options$width === undefined ? '100%' : _options$width;
-    var _options$height = options.height;
-    var height = _options$height === undefined ? null : _options$height;
-    var _options$ratio = options.ratio;
-    var ratio = _options$ratio === undefined ? 1 : _options$ratio;
-    var _options$maxWidth = options.maxWidth;
-    var maxWidth = _options$maxWidth === undefined ? null : _options$maxWidth;
-    var _options$maxHeight = options.maxHeight;
-    var maxHeight = _options$maxHeight === undefined ? null : _options$maxHeight;
+
+    var _ref = options || {};
+
+    var _ref$mode = _ref.mode;
+    var mode = _ref$mode === undefined ? Fitter.MODE_BASIC : _ref$mode;
+    var _ref$width = _ref.width;
+    var width = _ref$width === undefined ? '100%' : _ref$width;
+    var _ref$height = _ref.height;
+    var height = _ref$height === undefined ? null : _ref$height;
+    var _ref$ratio = _ref.ratio;
+    var ratio = _ref$ratio === undefined ? 1 : _ref$ratio;
+    var _ref$maxWidth = _ref.maxWidth;
+    var maxWidth = _ref$maxWidth === undefined ? null : _ref$maxWidth;
+    var _ref$maxHeight = _ref.maxHeight;
+    var maxHeight = _ref$maxHeight === undefined ? null : _ref$maxHeight;
 
 
     if (mode === Fitter.MODE_ASPECT_RATIO) {
@@ -886,7 +889,10 @@ Fitter.MODE_ASPECT_RATIO = 'aspectRatio';
 
 var Watcher = function () {
   function Watcher() {
-    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+    classCallCheck(this, Watcher);
+
+    var _ref = options || {};
 
     var _ref$mode = _ref.mode;
     var mode = _ref$mode === undefined ? Watcher.MODE_WINDOW : _ref$mode;
@@ -894,7 +900,7 @@ var Watcher = function () {
     var target = _ref$target === undefined ? null : _ref$target;
     var _ref$interval = _ref.interval;
     var interval = _ref$interval === undefined ? 500 : _ref$interval;
-    classCallCheck(this, Watcher);
+
 
     if (mode === Watcher.MODE_POLLING && !target) {
       isRequired('options.target');
@@ -1257,8 +1263,10 @@ var AbstractChart = function () {
     }
   }, {
     key: 'fit',
-    value: function fit(fitOptions, watchOptions) {
+    value: function fit(fitOptions) {
       var _this = this;
+
+      var watchOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
       if (fitOptions) {
         this.state.fitOptions = fitOptions;
