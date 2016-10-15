@@ -378,14 +378,8 @@ d3Kit v1-2 also helps you create reusable subcomponent (a.k.a. Chartlet). We hav
 
 Here are a few examples of d3Kit in action:
 
-* [Dot in a box](https://bl.ocks.org/trebor/b7155e556a90781d78ebe4101a35d062)
-* [Bubble Chart](https://bl.ocks.org/trebor/ccc5bb7da3fcaa73aa7cbee973d6dcb6)
-* [Reusable Bubble Chart](https://bl.ocks.org/trebor/2f4115302d3db4084ab6792863d7731e)
-* [Circle Chartlet](https://bl.ocks.org/trebor/3817668ce6a358a685cab29907c0f52f)
-
-For more examples, [check out our gallery](https://github.com/twitter/d3kit/wiki/Gallery).
-
-(We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
+* [SVG Scatterplot](http://bl.ocks.org/kristw/4628672d57f5fe822bb4c84b682abb6e)
+* [Canvas Scatterplot](http://bl.ocks.org/kristw/840bd7750742458f20f00749c13e6241)
 
 ## Documentation
 
