@@ -44,7 +44,7 @@ If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get
 
 ##### **P6:** You are familiar with creating charts in D3 and want to adapt them easily into React or angular components.
 
-Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert any chart written in d3Kit into React and angular components, respectively, in a few lines of code.
+Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert charts written in d3Kit into React and angular components, respectively, in a few lines of code. 
 
 ## What is d3Kit?
 
@@ -144,7 +144,7 @@ class SvgBubbleChart extends SvgChart {
   constructor(selector, options) {
     super(selector, DEFAULT_OPTIONS, options);
 
-    // Create <g> layers. See LayerOrganizer
+    // Create <g> layers. See LayerOrganizer below.
     this.layers.create(['content', 'x-axis', 'y-axis']);
 
     // Add custom variables
@@ -208,7 +208,7 @@ export default SvgBubbleChart;
 
 Then use it
 
-```
+```javascript
 const chart1 = new SvgBubbleChart('#chart1', {
   margin: { top: 20 },
   initialWidth: 300,
@@ -230,13 +230,113 @@ While `SvgChart` creates necessary element for building chart with `<svg>`. This
 
 #### A. Scaffold and create something quickly
 
+```html
+<div id="chart0"></div>
+```
+
+```javascript
+import { SvgChart } from 'd3kit';
+const chart = new CanvasChart('#chart0', {  
+  initialWidth: 720,
+  initialHeight: 500,
+  margin: { top: 30, right: 30, bottom: 30, left: 30 }
+});
+```
+
+The output will looks like this.
+
+```html
+<!--chart.container is a D3 selection of this element.-->
+<div id="chart0">
+  <!--chart.canvas is a D3 selection of this element.-->
+  <!--notice that width/height are handled to ensure that it will look nice on retina display-->
+  <canvas width="1440" height="1000" style="width: 720px; height: 500px;"></canvas>
+</div>
+```
+
+So you can draw on the canvas
+
+```javascript
+const ctx = chart.getContext2d();
+ctx.fillRect(10, 10, 10, 10);
+```
+
 #### B. Create a reusable chart
+
+```javascript
+import { CanvasChart } from 'd3kit';
+import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
+import { extent } from 'd3-array';
+
+// Define default options for this chart
+const DEFAULT_OPTIONS = {
+  margin: {top: 60, right: 60, bottom: 60, left: 60},
+  initialWidth: 800,
+  initialHeight: 460
+};
+
+class CanvasBubbleChart extends CanvasChart {
+  /**
+   * Define the names of custom events that can be dispatched from this chart
+   * @return {Array[String]} event names
+   */
+  static getCustomEventNames() {
+    return [];
+  }
+
+  constructor(selector, options) {
+    super(selector, DEFAULT_OPTIONS, options);
+
+    // add custom variables
+    this.xScale = scaleLinear();
+    this.yScale = scaleLinear();
+    this.color = scaleOrdinal(schemeCategory10);
+
+    // add basic event listeners
+    this.visualize = this.visualize.bind(this);
+    this.on('resize.default', this.visualize);
+    this.on('data.default', this.visualize);
+  }
+
+  // You can define a new function for this class.
+  visualize() {
+    this.clear();
+
+    if(!this.hasData()){
+      return;
+    }
+
+    const data = this.data();
+
+    this.xScale.domain(extent(data, d => d.x))
+      .range([0, this.getInnerWidth()]);
+    this.yScale.domain(extent(data, d => d.y))
+      .range([this.getInnerHeight(), 0]);
+
+    const ctx = this.getContext2d();
+    data.forEach((d,i) => {
+      ctx.fillStyle = this.color(i);
+      ctx.fillRect(
+        this.xScale(d.x) - d.r,
+        this.yScale(d.y) - d.r,
+        d.r * 2,
+        d.r * 2
+      );
+    });
+
+  }
+}
+
+CanvasBubbleChart.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
+
+export default CanvasBubbleChart;
+```
 
 ## Other features
 
 ### LayerOrganizer
 
-Help you manage layers.
+Help you manage layers. TBD
 
 ### Chartlet
 
