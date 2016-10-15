@@ -336,7 +336,39 @@ export default CanvasBubbleChart;
 
 ### LayerOrganizer
 
-Help you manage layers. TBD
+This was created from a habit of creating many `<g>`s inside the root `<g>`. 
+
+#### Input
+
+```html
+<svg>
+  <g class="container"></g>
+</svg>
+```
+
+```javascript
+const layers = new LayerOrganizer(d3.selection('.container'));
+layers.create(['content', 'x-axis', 'y-axis']);
+```
+
+#### Output
+
+```html
+<svg>
+  <g class="container">
+    <!-- layers.get('content') is a D3 selection of this g -->
+    <g class="content-layer"></g>
+    <!-- layers.get('x-axis') is a D3 selection of this g -->
+    <g class="x-axis-layer"></g>
+    <!-- layers.get('y-axis') is a D3 selection of this g -->
+    <g class="y-axis-layer"></g>
+  </g>
+</svg>
+```
+
+All `SvgChart` includes `chart.layers` by default, which is `new LayerOrganizer(chart.container)`.
+
+There are more features. [Read more here.](https://github.com/twitter/d3kit/docs/LayerOrganizer.md)
 
 ### Chartlet
 
