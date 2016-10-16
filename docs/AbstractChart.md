@@ -30,19 +30,7 @@ See this [bubble chart example](http://bl.ocks.org/kristw/75999459f1a34e05d580).
 
 ### Fields
 
-#### SvgChart only
 
-<a name="layers" href="Abstract#layers">#</a> chart.**layers**()
-
-Return the chart's internal layer organizer, which is a [LayerOrganizer](LayerOrganizer) that wraps the root ```<g>```.
-
-<a name="rootG" href="Abstract#rootG">#</a> chart.**rootG**
-
-Return a d3 selection that is the root ```<g>``` element, to which you will append the rest of the elements for your chart.
-
-<a name="svg" href="Abstract#svg">#</a> chart.**svg**
-
-Return a d3 selection that is the chart's ```<svg>``` element.
 
 ### Getter functions
 
@@ -166,3 +154,19 @@ chart.on('resize', function(info){ ... })
 ```
 
 ```info``` is an Array ```[width, height, innerWidth, innerHeight]```
+
+## SvgChart
+
+### Fields
+
+<a name="layers" href="Abstract#layers">#</a> chart.**layers**()
+
+Return the chart's internal layer organizer, which is a [LayerOrganizer](LayerOrganizer) that wraps the root ```<g>```.
+
+<a name="rootG" href="Abstract#rootG">#</a> chart.**rootG**
+
+Return a d3 selection that is the root ```<g>``` element, to which you will append the rest of the elements for your chart.
+
+<a name="svg" href="Abstract#svg">#</a> chart.**svg**
+
+Return a d3 selection that is the chart's ```<svg>``` element.

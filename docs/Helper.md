@@ -1,6 +1,6 @@
-> [Docs](README.md) ▸ [API Reference](API.md) ▸ **Helper**
+> [Docs](README.md) ▸ [API Reference](API.md) ▸ **helper**
 
-## d3Kit.helper
+## helper
 
 These functions were originally collected from multiple places (jQuery, lodash, ...) for usage in d3Kit core library. Since they are also useful for building visualizations in general, we also expose them to the API.
 
@@ -16,7 +16,7 @@ The output function can be called with .now() to execute immediately
 ```
 var doSomething = d3Kit.helper.debounce(function(){...}, 10);
 doSomething(params); // will debounce
-doSomething.now(params); // will execute immediately
+doSomething.flush(); // to make it execute immediately
 ```
 
 <a name="extend" href="Helper#extend">#</a> d3Kit.helper.**extend**(*target*[*, obj1*][*, obj2*], ...)

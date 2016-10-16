@@ -1,5 +1,7 @@
 > [Docs](README.md) ▸ [API Reference](API.md) ▸ **Chartlet**
 
+** This component was in d3Kit v1-2, but has not been ported to v3 yet **
+
 ## d3Kit.Chartlet
 
 Chartlets provide a way to break large, often entangled, chart code into smaller, reusable components.  The [Circle Chartlet](http://bl.ocks.org/treboresque/0f01e42fb3c9268d7105) provides the most simple, stripped down, example. Chartlets can be constructed from other chartlets, or even recursively call themselves - see the [Sierpinski Chartlet](http://bl.ocks.org/treboresque/28476a3ae1297af52d95) example. Chartlets feature:

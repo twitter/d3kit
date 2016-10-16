@@ -1,10 +1,18 @@
-[Getting started](Getting started.md)
+> [Docs](../README.md) ▸ **Table of Content**
 
-[Gallery](Gallery.md)
+### [Getting started](Getting started.md)
 
-[Developing d3Kit](Developing.md)
+### [API Reference](API.md)
 
-**[API Reference](API.md)**
-* [AbstractChart](AbstractChart.md)
-* [LayerOrganizer](LayerOrganizer.md)
-* [helper](helper.md)
+* [Brief version of everything](API.md)
+* module: [AbstractChart / SvgChart / CanvasChart](AbstractChart.md)
+* module: [LayerOrganizer](LayerOrganizer.md)
+* module: [helper](helper.md)
+
+### [Gallery](Gallery.md)
+
+### Development
+
+* [Developing d3Kit](Developing.md)
+* [Versioning](Versioning.md)
+

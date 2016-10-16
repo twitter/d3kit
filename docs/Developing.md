@@ -1,28 +1,14 @@
-> [Docs](README.md) ▸ **Developing d3Kit**
+> [Docs](../README.md) ▸ Development ▸ **Developing d3Kit**
 
 ### One-time setup
 
-1) Install these command line tools:
-
-- bower   -- http://bower.io/
-- node.js -- http://nodejs.org/
+1) Install [node.js](http://nodejs.org/)
 
 2) Load development tool and javascript dependencies:
 
 ```
 npm install
-bower install
 ```
-
-### Normal workflow
-
-To run in development mode
-
-```bash
-npm run dev
-```
-
-See your site at [localhost:7000](http://localhost:7000). It will automagically refresh when you change the code (via browsersync).
 
 ### Test
 
@@ -33,5 +19,4 @@ npm run test
 npm run tdd
 ```
 
-Test coverage will be generated to ```coverage``` directory.
-
+Test coverage will be reported on the command line and also generated as html to ```coverage``` directory.

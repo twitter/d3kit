@@ -1,5 +1,7 @@
 > [Docs](README.md) ▸ **Gallery**
 
+** TODO: This page has not been updated for v3 yet. **
+
 ## Examples
 
 ##### Skeleton
