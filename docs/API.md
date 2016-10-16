@@ -1,42 +1,66 @@
 > [Docs](../README.md) ▸ **API Reference**
 
-## d3Kit.AbstractChart
+## AbstractChart
 
-* [new d3Kit.AbstractChart](AbstractChart.md#constructor) - construct a chart within the specified container.
+##### Constructor
 
-##### Getter functions
+* [new AbstractChart(selector, options)](AbstractChart.md#constructor) - construct a chart within the specified container.
 
-* [chart.getCustomEventNames](AbstractChart.md#getCustomEventNames) - return the names of custom events that this skeleton can dispatch.
-* [chart.getDispatcher](AbstractChart.md#getDispatcher) - return the skeleton's internal event dispatcher.
-* [chart.getInnerWidth](AbstractChart.md#getInnerWidth) - return the width of the skeleton without margin.
-* [chart.getInnerHeight](AbstractChart.md#getInnerHeight) - return the height of the skeleton without margin.
-* [chart.getLayerOrganizer](AbstractChart.md#getLayerOrganizer) - return the skeleton's LayerOrganizer.
-* [chart.getRootG](AbstractChart.md#getRootG) - return the skeleton's root ```<g>``` element.
-* [chart.getSvg](AbstractChart.md#getSvg) - return the skeleton's ```<svg>``` element.
+##### Fields
 
-##### Getter/Setter functions
+These fields are created by the class. Please do not override.
 
-If a value is passed to these functions, set the specified value to the variable, otherwise these functions return the current value for that variable.
+* [chart.dispatcher()](AbstractChart.md#dispatcher) -  internal `d3-dispatch` event dispatcher for this chart.
 
-* [chart.data](AbstractChart.md#data) - get/set the data.
-* [chart.options](AbstractChart.md#options) - get/set the options.
-* [chart.margin](AbstractChart.md#margin) - get/set the margin.
-* [chart.offset](AbstractChart.md#offset) - get/set the offset.
-* [chart.width](AbstractChart.md#width) - get/set the width.
-* [chart.height](AbstractChart.md#height) - get/set the height.
-* [chart.dimension](AbstractChart.md#dimension) - get/set both width and height at the same time.
+##### Deal with events
 
-##### Other functions
+* [chart.getCustomEventNames()](AbstractChart.md#getCustomEventNames) - return the names of custom events that this chart can dispatch (other than `resize`, `data` and `options` that are included with every AbstractChart).
+* [chart.on(eventName, listener)](AbstractChart.md#on) - add an event listener to an event from this chart.
+* [chart.off(eventName, listener)](AbstractChart.md#off) - remove an event listener from this chart.
 
-* [chart.on](AbstractChart.md#on) - add an event listener to an event from this chart.
-* [chart.hasData](AbstractChart.md#hasData) - return true if skeleton has data.
-* [chart.hasNonZeroArea](AbstractChart.md#hasNonZeroArea) - return true if the inner area (*inner width x inner height*) is more than zero.
+##### Deal with size
 
-##### Events
+* [chart.margin([margin])](AbstractChart.md#margin) - get/set the margin.
+* [chart.offset([offset])](AbstractChart.md#offset) - get/set the offset.
+* [chart.width([width])](AbstractChart.md#width) - get/set the width.
+* [chart.height([height])](AbstractChart.md#height) - get/set the height.
+* [chart.dimension([dimension])](AbstractChart.md#dimension) - get/set both width and height at the same time.
+* [chart.fit(fitOptions, watchOptions)](AbstractChart.md#fit) - fit the chart to container.
+* [chart.stopFitWatcher()](AbstractChart.md#stopFitWatcher) - stop the watcher.
+* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the skeleton without margin.
+* [chart.getInnerHeight()](AbstractChart.md#getInnerHeight) - return the height of the skeleton without margin.
+* [chart.hasData()](AbstractChart.md#hasData) - return true if skeleton has data.
+* [chart.hasNonZeroArea()](AbstractChart.md#hasNonZeroArea) - return true if the inner area (*inner width x inner height*) is more than zero.
+* [chart.on('resize', listener)](AbstractChart.md#event_resize) - dispatched whenever the dimension of the skeleton is changed.
 
-* [data](AbstractChart.md#event_data) - dispatched whenever the data are set.
-* [options](AbstractChart.md#event_options) - dispatched whenever the options are set.
-* [resize](AbstractChart.md#event_resize) - dispatched whenever the dimension of the skeleton is changed.
+##### Deal with data
+
+* [chart.data([data])](AbstractChart.md#data) - get/set the data.
+* [chart.on('data', listener)](AbstractChart.md#event_data) - handle when the data are set.
+* [chart.options([options])](AbstractChart.md#options) - get/set the options.
+* [chart.on('options', listener)](AbstractChart.md#event_options) - handle when the options are set.
+
+## SvgChart
+
+This class extends from AbstractChart and therefor inherits all fields and functions. In addition, it also provides the followings:
+
+##### Fields
+
+* [chart.rootG](SvgChart.md#rootG) - D3 selection of the root `<g>` element.
+* [chart.svg](SvgChart.md#svg) - D3 selection of the `<svg>` element.
+* [chart.layers](SvgChart.md#layers) - return the LayerOrganizer.
+
+## CanvasChart
+
+This class extends from AbstractChart and therefor inherits all fields and functions. In addition, it also provides the followings:
+
+##### Fields
+
+* [chart.canvas](CanvasChart.md#canvas) - D3 selection of the `<canvas>` element.
+
+##### Functions
+
+* [chart.getContext2d()](CanvasChart.md#getContext2d) - Return a context for drawing on canvas that has been adjusted for screen resolution and margins.
 
 <!--
 ## d3Kit.Chartlet
@@ -73,17 +97,17 @@ If a value is passed to these functions, set the specified value to the variable
 * [exitDone](Chartlet.md#exitDone) - fired when asynchronous activity in [Chartlet.exit](Chartlet.md#exit) has completed.
 -->
 
-## d3Kit.LayerOrganizer
+## LayerOrganizer
 
-* [new d3Kit.LayerOrganizer](LayerOrganizer.md#constructor) - construct a layer organizer for the specified container.
+* [new d3Kit.LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a layer organizer for the specified container.
 * [layers.create](LayerOrganizer.md#create) - create layers of ```<g>``` within the container.
 * [layers.get](LayerOrganizer.md#get) - get a layer by name.
 * [layers.has](LayerOrganizer.md#has) - check if there is a layer with specified name.
 
-## d3Kit.helper
+## helper
 
-* [d3Kit.helper.debounce](Helper.md#debounce) - debounce function from lodash.
-* [d3Kit.helper.throttle](Helper.md#throttle) - throttle function from lodash.
-* [d3Kit.helper.functor](Helper.md#functor) - functor function from D3 v3.
-* [d3Kit.helper.extend](Helper.md#extend) - Merge the contents of two or more objects together into the first object.
-* [d3Kit.helper.deepExtend](Helper.md#deepExtend) - Recursively merge the contents of two or more objects together into the first object.
+* [helper.debounce(func, delay)](Helper.md#debounce) - debounce function from lodash.
+* [helper.throttle(func, delay)](Helper.md#throttle) - throttle function from lodash.
+* [helper.functor(valueOrFunc)](Helper.md#functor) - functor function from D3 v3.
+* [helper.extend](Helper.md#extend) - Merge the contents of two or more objects together into the first object.
+* [helper.deepExtend](Helper.md#deepExtend) - Recursively merge the contents of two or more objects together into the first object.
