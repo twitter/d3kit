@@ -16,7 +16,7 @@ npm install d3-selection d3-dispatch d3kit --save
 bower install d3 d3kit --save
 ```
 
-See [getting start guide](https://github.com/twitter/d3kit/docs/Getting-started.md) for more details.
+See [getting start guide](docs/Getting-started.md) for more details.
 
 ## Examples
 
@@ -382,7 +382,7 @@ layers.create(['content', 'x-axis', 'y-axis']);
 
 All `SvgChart` includes `chart.layers` by default, which is `new LayerOrganizer(chart.container)`.
 
-There are more features. [Read more here.](https://github.com/twitter/d3kit/docs/LayerOrganizer.md)
+There are more features. [Read more here.](docs/LayerOrganizer.md)
 
 ### Chartlet
 
@@ -392,8 +392,8 @@ d3Kit v1-2 also helps you create reusable subcomponent (a.k.a. Chartlet). We hav
 
 Want to learn more? Follow these links.
 
-* [Getting started guide](https://github.com/twitter/d3kit/docs/Getting-started.md)
-* [API Reference](https://github.com/twitter/d3kit/docs/API.md)
+* [Getting started guide](docs/Getting-started.md)
+* [API Reference](docs/API.md)
 
 (We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
 
