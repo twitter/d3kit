@@ -27,11 +27,11 @@ These fields are created by the class. Please do not override.
 * [chart.dimension([dimension])](AbstractChart.md#dimension) - get/set both width and height at the same time.
 * [chart.fit(fitOptions, watchOptions)](AbstractChart.md#fit) - fit the chart to container.
 * [chart.stopFitWatcher()](AbstractChart.md#stopFitWatcher) - stop the watcher.
-* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the skeleton without margin.
-* [chart.getInnerHeight()](AbstractChart.md#getInnerHeight) - return the height of the skeleton without margin.
-* [chart.hasData()](AbstractChart.md#hasData) - return true if skeleton has data.
+* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the chart without margin.
+* [chart.getInnerHeight()](AbstractChart.md#getInnerHeight) - return the height of the chart without margin.
+* [chart.hasData()](AbstractChart.md#hasData) - return true if chart has data.
 * [chart.hasNonZeroArea()](AbstractChart.md#hasNonZeroArea) - return true if the inner area (*inner width x inner height*) is more than zero.
-* [chart.on('resize', listener)](AbstractChart.md#event_resize) - dispatched whenever the dimension of the skeleton is changed.
+* [chart.on('resize', listener)](AbstractChart.md#event_resize) - handle when the dimension is changed.
 
 ##### Deal with data
 
@@ -100,9 +100,9 @@ This class extends from AbstractChart and therefor inherits all fields and funct
 ## LayerOrganizer
 
 * [new d3Kit.LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a layer organizer for the specified container.
-* [layers.create](LayerOrganizer.md#create) - create layers of ```<g>``` within the container.
-* [layers.get](LayerOrganizer.md#get) - get a layer by name.
-* [layers.has](LayerOrganizer.md#has) - check if there is a layer with specified name.
+* [layers.create(config)](LayerOrganizer.md#create) - create layers of ```<g>``` within the container.
+* [layers.get(name)](LayerOrganizer.md#get) - get a layer by name.
+* [layers.has(name)](LayerOrganizer.md#has) - check if there is a layer with specified name.
 
 ## helper
 
