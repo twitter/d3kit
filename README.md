@@ -16,7 +16,7 @@ npm install d3-selection d3-dispatch d3kit --save
 bower install d3 d3kit --save
 ```
 
-See [getting start guide](https://github.com/twitter/d3kit/docs/Getting-started.md)
+See [getting start guide](https://github.com/twitter/d3kit/docs/Getting-started.md) for more details.
 
 ## Examples
 
@@ -32,31 +32,31 @@ Here are a few examples of d3Kit in action:
 
 ## Why should you use d3Kit?
 
-##### **P1:** You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples.
+##### 😫 You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples.
 
 There is `SvgChart` for that.
 
-##### **P2:** You want to create a chart on `<canvas>` but never remember how to handle different screen resolution (retina display).
+##### 😫 You want to create a chart on `<canvas>` but never remember how to handle different screen resolution (retina display).
 
 There is `CanvasChart` for that.
 
-##### **P2:** You want to create a *reusable* chart in D3.
+##### 🤔 You want to create a *reusable* chart in D3.
 
 You can extends from `SvgChart`, `CanvasChart`, or `AbstractChart`.
 
-##### **P3:** You want to create a *responsive* chart, but are tired of listening to window resize or manually polling for changes of element size by yourself.
+##### 😫 You want to create a *responsive* chart, but are tired of listening to window resize or manually polling for changes of element size by yourself.
 
 If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
 
-##### **P4:** You want to make a responsive chart that maintains aspect ratio.
+##### 🤔 You want to make a responsive chart that maintains aspect ratio.
 
 If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
 
-##### **P5:** You use [D3's margin convention](http://bl.ocks.org/mbostock/3019563) and are tired of copy pasting from [Mike's block](http://bl.ocks.org/mbostock/3019563)
+##### 😫 You use [D3's margin convention](http://bl.ocks.org/mbostock/3019563) and are tired of copy pasting from [Mike's block](http://bl.ocks.org/mbostock/3019563).
 
 If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
 
-##### **P6:** You are familiar with creating charts in D3 and want to adapt them easily into React or angular components.
+##### 🤔 You are familiar with creating charts in D3 and want to adapt them easily into React or angular components.
 
 Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert charts written in d3Kit into React and angular components, respectively, in a few lines of code.
 

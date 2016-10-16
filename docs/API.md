@@ -1,4 +1,4 @@
-> [Docs](https://github.com/twitter/d3kit/README.md) ▸ **API Reference**
+> [Docs](../README.md) ▸ **API Reference**
 
 ## d3Kit.AbstractChart
 

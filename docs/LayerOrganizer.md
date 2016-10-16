@@ -1,4 +1,4 @@
-> [Docs](README.md) ▸ [API Reference](API.md) ▸ **LayerOrganizer**
+> [Docs](../README.md) ▸ [API Reference](API.md) ▸ **LayerOrganizer**
 
 ## d3Kit.LayerOrganizer
 
