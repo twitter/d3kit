@@ -10,11 +10,11 @@ Documentation of version 1-2 can be found [here](https://github.com/twitter/d3ki
 
 ## Install
 
-Note: d3Kit **v3** is still in beta, so please specify version number when installing. Latest stable release is **v2.0.0**
+Note: d3Kit **v3** is still in beta. Latest stable release is **v2.0.0**
 
 ```bash
 # via npm
-npm install d3-selection d3-dispatch d3kit@3.0.0-7 --save
+npm install d3-selection d3-dispatch d3kit --save
 ```
 
 See [getting start guide](docs/Getting-started.md) for more details.
