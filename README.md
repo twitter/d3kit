@@ -159,15 +159,14 @@ class SvgBubbleChart extends SvgChart {
   constructor(selector, options) {
     super(selector, DEFAULT_OPTIONS, options);
 
-    // Create <g> layers. See LayerOrganizer below.
-    this.layers.create(['content', 'x-axis', 'y-axis']);
-
     // Add custom variables
     this.xScale = scaleLinear();
     this.yScale = scaleLinear();
     this.color = scaleOrdinal(schemeCategory10);
     this.xAxis = axisBottom().scale(this.xScale);
     this.yAxis = axisLeft().scale(this.yScale);
+    this.xAxisG = this.rootG.append('g');
+    this.yAxisG = this.rootG.append('g');
 
     // Add basic event listeners
     this.visualize = this.visualize.bind(this);
@@ -177,10 +176,7 @@ class SvgBubbleChart extends SvgChart {
 
   // You can define a new function for this class.
   visualize() {
-    if(!this.hasData()){
-      this.layers.get('content').selectAll('*').remove();
-      return;
-    }
+    if(!this.hasData()) return;
 
     const data = this.data();
 
@@ -189,14 +185,13 @@ class SvgBubbleChart extends SvgChart {
     this.yScale.domain(extent(data, d => d.y))
       .range([this.getInnerHeight(), 0]);
 
-    this.layers.get('x-axis')
+    this.xAxisG
       .attr('transform', `translate(0,${this.getInnerHeight()})`)
       .call(this.xAxis);
 
-    this.layers.get('y-axis')
-      .call(this.yAxis);
+    this.yAxisG.call(this.yAxis);
 
-    const selection = this.layers.get('content').selectAll('circle')
+    const selection = this.rootG.selectAll('circle')
       .data(data);
 
     selection.exit().remove();
