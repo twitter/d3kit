@@ -82,6 +82,8 @@ The core of d3Kit are base classes for creating a chart. Currently there are `Sv
 * dispatches event `resize` when the chart is resized.
   * `chart.on('resize', listener)` is then use to register what to do after the chart is resized.
 * defines two main input channels `.data(...)` and `.options(...)` and dispatches event `data` and `options` when they are changed, respectively.
+  * `chart.data(data)` get/set data.
+  * `chart.options(options)` get/merge options
   * `chart.on('data', listener)`
   * `chart.on('options', listener)`
 * assumes little about how you implement a chart. You can extends the class and implements it the way you want.
