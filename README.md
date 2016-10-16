@@ -2,8 +2,8 @@
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-**d3Kit** provides thin scaffold for creating reusable charts and utilities for speeding visualization development with [D3](https://github.com/mbostock/d3).
-It aims to relieve you from the same groundwork tasks you found yourself doing again and again. Writing code in d3Kit way also help you create reusable and responsive components easily.
+**d3Kit** provides thin scaffold for creating reusable and responsive charts with [D3](https://github.com/mbostock/d3).
+It aims to relieve you from the same groundwork tasks you found yourself doing again and again.
 
 For developers who have tried d3Kit v1-2, d3Kit v3 was rewritten to support D3 v4, consider several new use cases (`<canvas>`, for example) and use ES6 class for the implementation, making every chart can be extended easily.
 
@@ -15,6 +15,8 @@ npm install d3-selection d3-dispatch d3kit --save
 # or bower
 bower install d3 d3kit --save
 ```
+
+See [getting start guide](https://github.com/twitter/d3kit/docs/Getting-started.md)
 
 ## Examples
 
@@ -30,7 +32,7 @@ Here are a few examples of d3Kit in action:
 
 ## Why should you use d3Kit?
 
-##### **P1:** You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples. 
+##### **P1:** You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples.
 
 There is `SvgChart` for that.
 
@@ -42,7 +44,7 @@ There is `CanvasChart` for that.
 
 You can extends from `SvgChart`, `CanvasChart`, or `AbstractChart`.
 
-##### **P3:** You want to create a *responsive* chart, but are tired of listening to window resize or manually polling for changes of element size by yourself. 
+##### **P3:** You want to create a *responsive* chart, but are tired of listening to window resize or manually polling for changes of element size by yourself.
 
 If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
 
@@ -56,7 +58,7 @@ If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get
 
 ##### **P6:** You are familiar with creating charts in D3 and want to adapt them easily into React or angular components.
 
-Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert charts written in d3Kit into React and angular components, respectively, in a few lines of code. 
+Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert charts written in d3Kit into React and angular components, respectively, in a few lines of code.
 
 ## What is d3Kit?
 
@@ -64,21 +66,21 @@ The core of d3Kit are base classes for creating a chart. Currently there are `Sv
 
 ### AbstractChart
 
-* takes a target container (usually a `<div>`) and helps you build a chart inside. 
-* encapsulates [D3's margin convention](http://bl.ocks.org/mbostock/3019563). The dimension of each chart is defined by `width`, `height` and `margin`. 
+* takes a target container (usually a `<div>`) and helps you build a chart inside.
+* encapsulates [D3's margin convention](http://bl.ocks.org/mbostock/3019563). The dimension of each chart is defined by `width`, `height` and `margin`.
   * `chart.width()` get/set the total width (including margin)
-  * `chart.height()` get/set the total height (including margin) 
+  * `chart.height()` get/set the total height (including margin)
   * `chart.margin()` get/set the margin
   * `chart.getInnerWidth()` returns width excluding margin. This is usually used as the boundary of the x-axis.
   * `chart.getInnerHeight()` returns height excluding margin. This is usually used as the boundary of the y-axis.
 * can resize the chart to be percentage of a container and/or maintain aspect ratio
   * `chart.fit(fitOptions:Object)` Calling this function with single argument will resize the chart to fit into the container once. Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions`.
-* can listen to resize (either window or element) and update the chart size to fit container. 
+* can listen to resize (either window or element) and update the chart size to fit container.
   * `chart.fit(fitOptions:Object, watchOptions:Boolean/Object)` Calling with two arguments, such as `chart.fit({...}, true)` or `chart.fit({...}, {...})`, will enable watching. Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions` and `watchOptions`
   * `chart.stopFitWatcher()` will disable the watcher.
 * dispatches event `resize` when the chart is resized.
   * `chart.on('resize', listener)` is then use to register what to do after the chart is resized.
-* defines two main input channels `.data(...)` and `.options(...)` and dispatches event `data` and `options` when they are changed, respectively. 
+* defines two main input channels `.data(...)` and `.options(...)` and dispatches event `data` and `options` when they are changed, respectively.
   * `chart.on('data', listener)`
   * `chart.on('options', listener)`
 * assumes little about how you implement a chart. You can extends the class and implements it the way you want.
@@ -97,7 +99,7 @@ This class creates `<svg>` boilerplate inside the container.
 
 ```javascript
 import { SvgChart } from 'd3kit';
-const chart = new SvgChart('#chart0', {  
+const chart = new SvgChart('#chart0', {
   initialWidth: 720,
   initialHeight: 500,
   margin: { top: 30, right: 30, bottom: 30, left: 30 },
@@ -248,7 +250,7 @@ While `SvgChart` creates necessary element for building chart with `<svg>`. This
 
 ```javascript
 import { SvgChart } from 'd3kit';
-const chart = new CanvasChart('#chart0', {  
+const chart = new CanvasChart('#chart0', {
   initialWidth: 720,
   initialHeight: 500,
   margin: { top: 30, right: 30, bottom: 30, left: 30 }
@@ -348,7 +350,7 @@ export default CanvasBubbleChart;
 
 ### LayerOrganizer
 
-This was created from a habit of creating many `<g>`s inside the root `<g>`. 
+This was created from a habit of creating many `<g>`s inside the root `<g>`.
 
 #### Input
 
@@ -384,14 +386,14 @@ There are more features. [Read more here.](https://github.com/twitter/d3kit/docs
 
 ### Chartlet
 
-d3Kit v1-2 also helps you create reusable subcomponent (a.k.a. Chartlet). We have not ported it to v3 yet. 
+d3Kit v1-2 also helps you create reusable subcomponent (a.k.a. Chartlet). We have not ported it to v3 yet.
 
 ## Documentation
 
-Want to learn more? Follow these links. 
+Want to learn more? Follow these links.
 
 * [Getting started guide](https://github.com/twitter/d3kit/docs/Getting-started.md)
-* [API Reference](https://github.com/twitter/d3kit/docs/API.md) 
+* [API Reference](https://github.com/twitter/d3kit/docs/API.md)
 
 (We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
 
