@@ -16,6 +16,18 @@ npm install d3-selection d3-dispatch d3kit --save
 bower install d3 d3kit --save
 ```
 
+## Examples
+
+Here are a few examples of d3Kit in action:
+
+* [Using d3Kit to scaffold \<svg>](http://bl.ocks.org/kristw/09d462027bb50e80cec0c53c0856e663)
+* [Using d3Kit to scaffold \<canvas>](http://bl.ocks.org/kristw/2cc83b10a1677a16f6448a5108b322a1)
+* [SVG Scatterplot](http://bl.ocks.org/kristw/4628672d57f5fe822bb4c84b682abb6e)
+* [Canvas Scatterplot](http://bl.ocks.org/kristw/840bd7750742458f20f00749c13e6241)
+* [Simple bar graph in v4 (with d3Kit)](http://bl.ocks.org/kristw/12991fb0fec6e9287980902bfb746ef7) - forked from [Simple bar graph in v4](http://bl.ocks.org/d3noob/bdf28027e0ce70bd132edc64f1dd7ea4) to show how to use d3Kit for scaffolding svg with D3 margin convention.
+* [Reusable bar graph](http://bl.ocks.org/kristw/f57f88f6f60d2ef22992d7866ba2933f) - forked from the bar chart above and make it a reusable component.
+
+
 ## Why should you use d3Kit?
 
 ##### **P1:** You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples. 
@@ -373,13 +385,6 @@ There are more features. [Read more here.](https://github.com/twitter/d3kit/docs
 ### Chartlet
 
 d3Kit v1-2 also helps you create reusable subcomponent (a.k.a. Chartlet). We have not ported it to v3 yet. 
-
-## Examples
-
-Here are a few examples of d3Kit in action:
-
-* [SVG Scatterplot](http://bl.ocks.org/kristw/4628672d57f5fe822bb4c84b682abb6e)
-* [Canvas Scatterplot](http://bl.ocks.org/kristw/840bd7750742458f20f00749c13e6241)
 
 ## Documentation
 
