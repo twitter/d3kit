@@ -1,4 +1,4 @@
-> [Docs](https://github.com/twitter/d3kit/README.md) ▸ **Getting started**
+> [Docs](../README.md) ▸ **Getting started**
 
 ### Download the library
 

@@ -9,11 +9,11 @@ For developers who have tried d3Kit v1-2, d3Kit v3 was rewritten to support D3 v
 
 ## Install
 
+d3Kit v3 is still in beta, so please specify version number when installing.
+
 ```bash
 # via npm
-npm install d3-selection d3-dispatch d3kit --save
-# or bower
-bower install d3 d3kit --save
+npm install d3-selection d3-dispatch d3kit@3.0.0-7 --save
 ```
 
 See [getting start guide](docs/Getting-started.md) for more details.
