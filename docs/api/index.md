@@ -10,12 +10,8 @@
 
 These fields are created by the class. Please do not override.
 
-##### Public
-
 * [chart.container](AbstractChart.md#container) - D3 selection of the container, specified in the constructor.
 * [chart.dispatcher](AbstractChart.md#dispatch) - A `d3-dispatch` event dispatcher for this chart.
-
-##### Private
 
 #### Functions
 
@@ -52,7 +48,7 @@ These fields are created by the class. Please do not override.
 
 ##### Others
 
-* [chart.destroy](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore. 
+* [chart.destroy()](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore. 
 
 ## SvgChart
 

@@ -12,10 +12,6 @@ class CanvasChart extends AbstractChart {
     this.updateDimensionNow();
   }
 
-  getBoundElement() {
-    return this.canvas.node();
-  }
-
   getContext2d() {
     const { pixelRatio, margin, offset } = this.options();
     const ctx = this.canvas.node().getContext('2d');

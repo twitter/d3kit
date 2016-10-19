@@ -15,10 +15,6 @@ class SvgChart extends AbstractChart {
     this.updateDimensionNow();
   }
 
-  getBoundElement() {
-    return this.svg.node();
-  }
-
   _updateDimension() {
     super._updateDimension();
 

@@ -171,7 +171,7 @@ class AbstractChart {
     // Fit once
     const fitter = new Fitter(fitOptions);
     const { changed, dimension } = fitter.fit(
-      this.getBoundElement(),
+      this.dimension(),
       this.container.node()
     );
 
@@ -186,7 +186,7 @@ class AbstractChart {
         this.fitWatcher.destroy();
       }
       this.fitWatcher = new FitWatcher(
-        this.getBoundElement(),
+        this.dimension(),
         this.container.node(),
         this._state.fitOptions,
         isObject(watchOptions) ? watchOptions : null
