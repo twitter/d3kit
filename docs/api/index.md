@@ -1,4 +1,4 @@
-> [Docs](../README.md) ▸ **API Reference**
+> [Docs](../../README.md) ▸ **API Reference**
 
 ## AbstractChart
 

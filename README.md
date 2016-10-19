@@ -5,7 +5,9 @@
 **d3Kit** provides thin scaffold for creating *reusable* and *responsive* charts with [D3](https://github.com/mbostock/d3).
 It aims to relieve you from the same groundwork tasks you found yourself doing again and again.
 
-[slides](http://d3kit.surge.sh)
+[Introduction slides](http://d3kit.surge.sh) |
+[Getting started guide](docs/Getting-started.md) |
+[API Reference](docs/api/index.md)
 
 For developers who have tried d3Kit v1-2, d3Kit v3 was rewritten to support D3 v4, consider several new use cases (`<canvas>`, for example) and use ES6 class for the implementation, making every chart can be extended easily.
 Documentation of version 1-2 can be found [here](https://github.com/twitter/d3kit/tree/be7a37738fb5661c84920faf7f1a981025fe4993/docs)
