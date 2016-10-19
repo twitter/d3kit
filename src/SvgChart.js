@@ -19,8 +19,8 @@ class SvgChart extends AbstractChart {
     return this.svg.node();
   }
 
-  updateDimension() {
-    super.updateDimension();
+  _updateDimension() {
+    super._updateDimension();
 
     const { width, height } = this._state;
     const { offset, margin } = this._state.options;

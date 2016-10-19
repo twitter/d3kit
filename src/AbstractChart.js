@@ -31,21 +31,20 @@ class AbstractChart {
     const customEvents = this.constructor.getCustomEventNames();
     this.setupDispatcher(customEvents);
 
-    this.dispatchData = debounce(this.dispatchData.bind(this), 1);
-    this.dispatchOptions = debounce(this.dispatchOptions.bind(this), 1);
-    this.dispatchResize = debounce(this.dispatchResize.bind(this), 1);
-
-    this.updateDimension = debounce(this.updateDimension.bind(this), 1);
+    this._dispatchData = debounce(this._dispatchData.bind(this), 1);
+    this._dispatchOptions = debounce(this._dispatchOptions.bind(this), 1);
+    this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
+    this._updateDimension = debounce(this._updateDimension.bind(this), 1);
   }
 
   setupDispatcher(customEventNames = []) {
-    this.customEventNames = customEventNames;
-    this.eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
-    this.dispatcher = dispatch.apply(this, this.eventNames);
+    this._customEventNames = customEventNames;
+    this._eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
+    this.dispatcher = dispatch.apply(this, this._eventNames);
   }
 
   getCustomEventNames() {
-    return this.customEventNames;
+    return this._customEventNames;
   }
 
   getInnerWidth() {
@@ -61,8 +60,8 @@ class AbstractChart {
     const newValue = Math.floor(+args[0]);
     if (newValue !== this._state.width) {
       this._state.width = newValue;
-      this.updateDimension();
-      this.dispatchResize();
+      this._updateDimension();
+      this._dispatchResize();
     }
     return this;
   }
@@ -72,8 +71,8 @@ class AbstractChart {
     const newValue = Math.floor(+args[0]);
     if (newValue !== this._state.height) {
       this._state.height = newValue;
-      this.updateDimension();
-      this.dispatchResize();
+      this._updateDimension();
+      this._dispatchResize();
     }
     return this;
   }
@@ -91,7 +90,7 @@ class AbstractChart {
     if (args.length === 0) return this._state.data;
     const [newData] = args;
     this._state.data = newData;
-    this.dispatchData();
+    this._dispatchData();
     return this;
   }
 
@@ -103,8 +102,8 @@ class AbstractChart {
       .some(field => oldMargin[field] !== newMargin[field]);
     if (changed) {
       this._state.options.margin = newMargin;
-      this.updateDimension();
-      this.dispatchResize();
+      this._updateDimension();
+      this._dispatchResize();
     }
     return this;
   }
@@ -117,8 +116,8 @@ class AbstractChart {
       .some(field => oldOffset[field] !== newOffset[field]);
     if (changed) {
       this._state.options.offset = newOffset;
-      this.updateDimension();
-      this.dispatchResize();
+      this._updateDimension();
+      this._dispatchResize();
     }
     return this;
   }
@@ -133,11 +132,11 @@ class AbstractChart {
       this.offset(newOptions.offset);
     }
     this._state.options = deepExtend(this._state.options, newOptions);
-    this.dispatchOptions();
+    this._dispatchOptions();
     return this;
   }
 
-  updateDimension() {
+  _updateDimension() {
     const { width, height } = this._state;
     const { margin } = this._state.options;
     const { top, right, bottom, left } = margin;
@@ -149,8 +148,8 @@ class AbstractChart {
   }
 
   updateDimensionNow() {
-    this.updateDimension();
-    this.updateDimension.flush();
+    this._updateDimension();
+    this._updateDimension.flush();
     return this;
   }
 
@@ -207,17 +206,17 @@ class AbstractChart {
     return this;
   }
 
-  dispatchData() {
+  _dispatchData() {
     this.dispatcher.call('data', this, this._state.data);
     return this;
   }
 
-  dispatchOptions() {
+  _dispatchOptions() {
     this.dispatcher.call('options', this, this._state.options);
     return this;
   }
 
-  dispatchResize() {
+  _dispatchResize() {
     const { width, height, innerWidth, innerHeight } = this._state;
     this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
     return this;
@@ -234,7 +233,7 @@ class AbstractChart {
   }
 
   destroy() {
-    this.eventNames.forEach(name => {
+    this._eventNames.forEach(name => {
       this.off(name);
     });
     this.stopFitWatcher();

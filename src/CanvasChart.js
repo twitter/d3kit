@@ -37,8 +37,8 @@ class CanvasChart extends AbstractChart {
     return this;
   }
 
-  updateDimension() {
-    super.updateDimension();
+  _updateDimension() {
+    super._updateDimension();
 
     const { width, height } = this._state;
     const { pixelRatio } = this._state.options;

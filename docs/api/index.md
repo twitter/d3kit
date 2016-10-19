@@ -4,48 +4,59 @@
 
 #### Constructor
 
-* [new AbstractChart(container, options)](AbstractChart.md#constructor) - construct a chart within the specified container.
+* const chart = [new AbstractChart(container[, options])](AbstractChart.md#constructor) - construct a chart within the specified container.
 
 #### Fields
 
 These fields are created by the class. Please do not override.
 
+##### Public
+
 * [chart.container](AbstractChart.md#container) - D3 selection of the container, specified in the constructor.
 * [chart.dispatcher](AbstractChart.md#dispatch) - A `d3-dispatch` event dispatcher for this chart.
+
+##### Private
 
 #### Functions
 
 ##### Event handling
 
+* *(static)* [AbstractChart.getCustomEventNames()](AbstractChart.md#static-getCustomEventNames) - return the names of custom events that an object of this class can dispatch (other than `resize`, `data` and `options` that are included with every AbstractChart).
 * [chart.getCustomEventNames()](AbstractChart.md#getCustomEventNames) - return the names of custom events that this chart can dispatch (other than `resize`, `data` and `options` that are included with every AbstractChart).
+* [chart.setupDispatcher(customEventNames)](AbstractChart.md#setupDispatcher) - setup the dispatcher to include the specified custom event names.
 * [chart.on(eventName, listener)](AbstractChart.md#on) - add an event listener to an event from this chart.
 * [chart.off(eventName, listener)](AbstractChart.md#off) - remove an event listener from this chart.
-
-##### Size handling
-
-* [chart.margin([margin])](AbstractChart.md#margin) - get/set the margin.
-* [chart.offset([offset])](AbstractChart.md#offset) - get/set the offset.
-* [chart.width([width])](AbstractChart.md#width) - get/set the width.
-* [chart.height([height])](AbstractChart.md#height) - get/set the height.
-* [chart.dimension([dimension])](AbstractChart.md#dimension) - get/set both width and height at the same time.
-* [chart.fit(fitOptions, watchOptions)](AbstractChart.md#fit) - fit the chart to container.
-* [chart.stopFitWatcher()](AbstractChart.md#stopFitWatcher) - stop the watcher.
-* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the chart without margin.
-* [chart.getInnerHeight()](AbstractChart.md#getInnerHeight) - return the height of the chart without margin.
-* [chart.hasData()](AbstractChart.md#hasData) - return true if chart has data.
-* [chart.hasNonZeroArea()](AbstractChart.md#hasNonZeroArea) - return true if the inner area (*inner width x inner height*) is more than zero.
-* [chart.on('resize', listener)](AbstractChart.md#event_resize) - handle when the dimension is changed.
 
 ##### Data handling
 
 * [chart.data([data])](AbstractChart.md#data) - get/set the data.
+* [chart.hasData()](AbstractChart.md#hasData) - return `true` if data is not null nor undefined.
 * [chart.on('data', listener)](AbstractChart.md#event_data) - handle when the data are set.
 * [chart.options([options])](AbstractChart.md#options) - get/set the options.
 * [chart.on('options', listener)](AbstractChart.md#event_options) - handle when the options are set.
 
+##### Size handling
+
+* [chart.width([width])](AbstractChart.md#width) - get/set the width.
+* [chart.height([height])](AbstractChart.md#height) - get/set the height.
+* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the chart without margin.
+* [chart.getInnerHeight()](AbstractChart.md#getInnerHeight) - return the height of the chart without margin.
+* [chart.hasNonZeroArea()](AbstractChart.md#hasNonZeroArea) - return `true` if the inner area (*inner width x inner height*) is more than zero.
+* [chart.dimension([dimension])](AbstractChart.md#dimension) - get/set both width and height at the same time.
+* [chart.margin([margin])](AbstractChart.md#margin) - get/set the margin.
+* [chart.offset([offset])](AbstractChart.md#offset) - get/set the offset.
+* [chart.fit(fitOptions, watchOptions)](AbstractChart.md#fit) - fit the chart to container.
+* [chart.stopFitWatcher()](AbstractChart.md#stopFitWatcher) - stop the watcher.
+* [chart.updateDimensionNow()](AbstractChart.md#updateDimensionNow()) - force the chart to recompute the dimension immediately. This is a synchronous operation while other sizing functions are asynchronous.
+* [chart.on('resize', listener)](AbstractChart.md#event_resize) - handle when the dimension is changed.
+
+##### Others
+
+* [chart.destroy](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore. 
+
 ## SvgChart
 
-This class extends from AbstractChart and therefor inherits all fields and functions. In addition, it also provides the followings:
+This class extends from `AbstractChart` and therefore inherits all fields and functions. In addition, it also provides the followings:
 
 #### Fields
 
@@ -55,7 +66,7 @@ This class extends from AbstractChart and therefor inherits all fields and funct
 
 ## CanvasChart
 
-This class extends from AbstractChart and therefor inherits all fields and functions. In addition, it also provides the followings:
+This class extends from `AbstractChart` and therefore inherits all fields and functions. In addition, it also provides the followings:
 
 #### Fields
 
@@ -104,7 +115,7 @@ This class extends from AbstractChart and therefor inherits all fields and funct
 
 #### Constructor
 
-* [const layers = new LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a LayerOrganizer for the specified container.
+* const layers = [new LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a LayerOrganizer for the specified container.
 
 #### Functions
 

@@ -1,6 +1,6 @@
 > [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **LayerOrganizer**
 
-## d3Kit.LayerOrganizer
+## LayerOrganizer
 
 A utility for creating layers from a given config. If you have a habit of creating many ```<g>``` or other tags to layer your visual elements. This utility will let you create nested layers easily. For example,
 
