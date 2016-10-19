@@ -16,7 +16,7 @@ class AbstractChart {
       ...options
     );
 
-    this.state = {
+    this._state = {
       width: mergedOptions.initialWidth,
       height: mergedOptions.initialHeight,
       innerWidth: 0,
@@ -49,18 +49,18 @@ class AbstractChart {
   }
 
   getInnerWidth() {
-    return this.state.innerWidth;
+    return this._state.innerWidth;
   }
 
   getInnerHeight() {
-    return this.state.innerHeight;
+    return this._state.innerHeight;
   }
 
   width(...args) {
-    if (args.length === 0) return this.state.width;
+    if (args.length === 0) return this._state.width;
     const newValue = Math.floor(+args[0]);
-    if (newValue !== this.state.width) {
-      this.state.width = newValue;
+    if (newValue !== this._state.width) {
+      this._state.width = newValue;
       this.updateDimension();
       this.dispatchResize();
     }
@@ -68,10 +68,10 @@ class AbstractChart {
   }
 
   height(...args) {
-    if (args.length === 0) return this.state.height;
+    if (args.length === 0) return this._state.height;
     const newValue = Math.floor(+args[0]);
-    if (newValue !== this.state.height) {
-      this.state.height = newValue;
+    if (newValue !== this._state.height) {
+      this._state.height = newValue;
       this.updateDimension();
       this.dispatchResize();
     }
@@ -80,7 +80,7 @@ class AbstractChart {
 
   dimension(...args) {
     if (args.length === 0) {
-      return [this.state.width, this.state.height];
+      return [this._state.width, this._state.height];
     }
     const [w, h] = args[0];
     this.width(w).height(h);
@@ -88,21 +88,21 @@ class AbstractChart {
   }
 
   data(...args) {
-    if (args.length === 0) return this.state.data;
+    if (args.length === 0) return this._state.data;
     const [newData] = args;
-    this.state.data = newData;
+    this._state.data = newData;
     this.dispatchData();
     return this;
   }
 
   margin(...args) {
-    if (args.length === 0) return this.state.options.margin;
-    const oldMargin = this.state.options.margin;
-    const newMargin = extend({}, this.state.options.margin, args[0]);
+    if (args.length === 0) return this._state.options.margin;
+    const oldMargin = this._state.options.margin;
+    const newMargin = extend({}, this._state.options.margin, args[0]);
     const changed = Object.keys(oldMargin)
       .some(field => oldMargin[field] !== newMargin[field]);
     if (changed) {
-      this.state.options.margin = newMargin;
+      this._state.options.margin = newMargin;
       this.updateDimension();
       this.dispatchResize();
     }
@@ -110,13 +110,13 @@ class AbstractChart {
   }
 
   offset(...args) {
-    if (args.length === 0) return this.state.options.offset;
-    const oldOffset = this.state.options.offset;
-    const newOffset = extend({}, this.state.offset, args[0]);
+    if (args.length === 0) return this._state.options.offset;
+    const oldOffset = this._state.options.offset;
+    const newOffset = extend({}, this._state.offset, args[0]);
     const changed = Object.keys(oldOffset)
       .some(field => oldOffset[field] !== newOffset[field]);
     if (changed) {
-      this.state.options.offset = newOffset;
+      this._state.options.offset = newOffset;
       this.updateDimension();
       this.dispatchResize();
     }
@@ -124,7 +124,7 @@ class AbstractChart {
   }
 
   options(...args) {
-    if (args.length === 0) return this.state.options;
+    if (args.length === 0) return this._state.options;
     const [newOptions] = args;
     if (newOptions.margin) {
       this.margin(newOptions.margin);
@@ -132,18 +132,18 @@ class AbstractChart {
     if (newOptions.offset) {
       this.offset(newOptions.offset);
     }
-    this.state.options = deepExtend(this.state.options, newOptions);
+    this._state.options = deepExtend(this._state.options, newOptions);
     this.dispatchOptions();
     return this;
   }
 
   updateDimension() {
-    const { width, height } = this.state;
-    const { margin } = this.state.options;
+    const { width, height } = this._state;
+    const { margin } = this._state.options;
     const { top, right, bottom, left } = margin;
 
-    this.state.innerWidth = width - left - right;
-    this.state.innerHeight = height - top - bottom;
+    this._state.innerWidth = width - left - right;
+    this._state.innerHeight = height - top - bottom;
 
     return this;
   }
@@ -155,18 +155,18 @@ class AbstractChart {
   }
 
   hasData() {
-    const { data } = this.state;
+    const { data } = this._state;
     return data !== null && data !== undefined;
   }
 
   hasNonZeroArea() {
-    const { innerWidth, innerHeight } = this.state;
+    const { innerWidth, innerHeight } = this._state;
     return (innerWidth > 0 && innerHeight > 0);
   }
 
   fit(fitOptions, watchOptions = false) {
     if (fitOptions) {
-      this.state.fitOptions = fitOptions;
+      this._state.fitOptions = fitOptions;
     }
 
     // Fit once
@@ -189,7 +189,7 @@ class AbstractChart {
       this.fitWatcher = new FitWatcher(
         this.getBoundElement(),
         this.container.node(),
-        this.state.fitOptions,
+        this._state.fitOptions,
         isObject(watchOptions) ? watchOptions : null
       )
         .on('change', dim => this.dimension([dim.width, dim.height]))
@@ -208,17 +208,17 @@ class AbstractChart {
   }
 
   dispatchData() {
-    this.dispatcher.call('data', this, this.state.data);
+    this.dispatcher.call('data', this, this._state.data);
     return this;
   }
 
   dispatchOptions() {
-    this.dispatcher.call('options', this, this.state.options);
+    this.dispatcher.call('options', this, this._state.options);
     return this;
   }
 
   dispatchResize() {
-    const { width, height, innerWidth, innerHeight } = this.state;
+    const { width, height, innerWidth, innerHeight } = this._state;
     this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
     return this;
   }

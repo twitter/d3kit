@@ -2,23 +2,26 @@
 
 ## AbstractChart
 
-##### Constructor
+#### Constructor
 
-* [new AbstractChart(selector, options)](AbstractChart.md#constructor) - construct a chart within the specified container.
+* [new AbstractChart(container, options)](AbstractChart.md#constructor) - construct a chart within the specified container.
 
-##### Fields
+#### Fields
 
 These fields are created by the class. Please do not override.
 
-* [chart.dispatcher()](AbstractChart.md#dispatcher) -  internal `d3-dispatch` event dispatcher for this chart.
+* [chart.container](AbstractChart.md#container) - D3 selection of the container, specified in the constructor.
+* [chart.dispatcher](AbstractChart.md#dispatch) - A `d3-dispatch` event dispatcher for this chart.
 
-##### Deal with events
+#### Functions
+
+##### Event handling
 
 * [chart.getCustomEventNames()](AbstractChart.md#getCustomEventNames) - return the names of custom events that this chart can dispatch (other than `resize`, `data` and `options` that are included with every AbstractChart).
 * [chart.on(eventName, listener)](AbstractChart.md#on) - add an event listener to an event from this chart.
 * [chart.off(eventName, listener)](AbstractChart.md#off) - remove an event listener from this chart.
 
-##### Deal with size
+##### Size handling
 
 * [chart.margin([margin])](AbstractChart.md#margin) - get/set the margin.
 * [chart.offset([offset])](AbstractChart.md#offset) - get/set the offset.
@@ -33,7 +36,7 @@ These fields are created by the class. Please do not override.
 * [chart.hasNonZeroArea()](AbstractChart.md#hasNonZeroArea) - return true if the inner area (*inner width x inner height*) is more than zero.
 * [chart.on('resize', listener)](AbstractChart.md#event_resize) - handle when the dimension is changed.
 
-##### Deal with data
+##### Data handling
 
 * [chart.data([data])](AbstractChart.md#data) - get/set the data.
 * [chart.on('data', listener)](AbstractChart.md#event_data) - handle when the data are set.
@@ -44,7 +47,7 @@ These fields are created by the class. Please do not override.
 
 This class extends from AbstractChart and therefor inherits all fields and functions. In addition, it also provides the followings:
 
-##### Fields
+#### Fields
 
 * [chart.rootG](SvgChart.md#rootG) - D3 selection of the root `<g>` element.
 * [chart.svg](SvgChart.md#svg) - D3 selection of the `<svg>` element.
@@ -54,11 +57,11 @@ This class extends from AbstractChart and therefor inherits all fields and funct
 
 This class extends from AbstractChart and therefor inherits all fields and functions. In addition, it also provides the followings:
 
-##### Fields
+#### Fields
 
 * [chart.canvas](CanvasChart.md#canvas) - D3 selection of the `<canvas>` element.
 
-##### Functions
+#### Functions
 
 * [chart.getContext2d()](CanvasChart.md#getContext2d) - Return a context for drawing on canvas that has been adjusted for screen resolution and margins.
 
@@ -99,15 +102,23 @@ This class extends from AbstractChart and therefor inherits all fields and funct
 
 ## LayerOrganizer
 
-* [new d3Kit.LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a layer organizer for the specified container.
-* [layers.create(config)](LayerOrganizer.md#create) - create layers of ```<g>``` within the container.
+#### Constructor
+
+* [const layers = new LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a LayerOrganizer for the specified container.
+
+#### Functions
+
+* [layers.create(config)](LayerOrganizer.md#create) - create layers of default tag, such as ```<g>```, within the container.
 * [layers.get(name)](LayerOrganizer.md#get) - get a layer by name.
 * [layers.has(name)](LayerOrganizer.md#has) - check if there is a layer with specified name.
 
 ## helper
 
-* [helper.debounce(func, delay)](Helper.md#debounce) - debounce function from lodash.
-* [helper.throttle(func, delay)](Helper.md#throttle) - throttle function from lodash.
-* [helper.functor(valueOrFunc)](Helper.md#functor) - functor function from D3 v3.
-* [helper.extend](Helper.md#extend) - Merge the contents of two or more objects together into the first object.
-* [helper.deepExtend](Helper.md#deepExtend) - Recursively merge the contents of two or more objects together into the first object.
+* [helper.debounce(func, delay)](https://lodash.com/docs/4.16.4#debounce) - returns a debounced function with given delay.
+* [helper.deepExtend(dest, src1, src2, ...)](Helper.md#deepExtend) - Recursively merge the contents of two or more objects together into the first object.
+* [helper.extend(dest, src1, src2, ...)](Helper.md#extend) - Merge the contents of two or more objects together into the first object.
+* [helper.functor(valueOrFunc)](https://github.com/d3/d3-3.x-api-reference/blob/master/Internals#functor) - If value is not a function, returns a function that returns the value. Otherwise returns the function.
+* [helper.isObject(value)](https://lodash.com/docs/4.16.4#isObject) - returns `true` if value is an object.
+* [helper.isFunction(value)](https://lodash.com/docs/4.16.4#isFunction) - returns `true` if value is a function.
+* [helper.kebabCase(string)](https://lodash.com/docs/4.16.4#kebabCase) - converts any string into `kebab-case`
+* [helper.throttle(func, delay)](https://lodash.com/docs/4.16.4#throttle) - returns a throttled function with given delay.

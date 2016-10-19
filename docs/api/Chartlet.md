@@ -1,4 +1,4 @@
-> [Docs](README.md) ▸ [API Reference](API.md) ▸ **Chartlet**
+> [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **Chartlet**
 
 ** This component was in d3Kit v1-2, but has not been ported to v3 yet **
 

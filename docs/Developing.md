@@ -6,7 +6,7 @@
 
 2) Load development tool and javascript dependencies:
 
-```
+```bash
 npm install
 ```
 

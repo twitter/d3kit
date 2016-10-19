@@ -40,8 +40,8 @@ class CanvasChart extends AbstractChart {
   updateDimension() {
     super.updateDimension();
 
-    const { width, height } = this.state;
-    const { pixelRatio } = this.state.options;
+    const { width, height } = this._state;
+    const { pixelRatio } = this._state.options;
 
     this.canvas
       .style('width', width)

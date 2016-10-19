@@ -2,12 +2,12 @@
 
 ### [Getting started](Getting started.md)
 
-### [API Reference](API.md)
+### [API Reference](api/index.md)
 
-* [Brief version of everything](API.md)
-* module: [AbstractChart / SvgChart / CanvasChart](AbstractChart.md)
-* module: [LayerOrganizer](LayerOrganizer.md)
-* module: [helper](helper.md)
+* [Brief version of everything](api/index.md)
+* module: [AbstractChart / SvgChart / CanvasChart](api/AbstractChart.md)
+* module: [LayerOrganizer](api/LayerOrganizer.md)
+* module: [helper](api/helper.md)
 
 ### [Gallery](Gallery.md)
 

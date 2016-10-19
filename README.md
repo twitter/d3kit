@@ -396,7 +396,7 @@ d3Kit v1-2 also helps you create reusable subcomponent (a.k.a. Chartlet). We hav
 Want to learn more? Follow these links.
 
 * [Getting started guide](docs/Getting-started.md)
-* [API Reference](docs/API.md)
+* [API Reference](docs/api/index.md)
 
 (We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
 
