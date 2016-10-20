@@ -4,7 +4,7 @@
 
 #### Constructor
 
-* const chart = [new AbstractChart(container[, options])](AbstractChart.md#constructor) - construct a chart within the specified container.
+const chart = [new AbstractChart(container[, options])](AbstractChart.md#constructor) - construct a chart within the specified container.
 
 #### Fields
 
@@ -26,7 +26,7 @@ These fields are created by the class. Please do not override.
 ##### Data handling
 
 * [chart.data([data])](AbstractChart.md#data) - get/set the data.
-* [chart.hasData()](AbstractChart.md#hasData) - return `true` if data is not null nor undefined.
+* [chart.hasData()](AbstractChart.md#hasData) - return `true` if data is not `null` or `undefined`.
 * [chart.on('data', listener)](AbstractChart.md#event_data) - handle when the data are set.
 * [chart.options([options])](AbstractChart.md#options) - get/set the options.
 * [chart.on('options', listener)](AbstractChart.md#event_options) - handle when the options are set.
@@ -41,18 +41,22 @@ These fields are created by the class. Please do not override.
 * [chart.dimension([dimension])](AbstractChart.md#dimension) - get/set both width and height at the same time.
 * [chart.margin([margin])](AbstractChart.md#margin) - get/set the margin.
 * [chart.offset([offset])](AbstractChart.md#offset) - get/set the offset.
-* [chart.fit(fitOptions, watchOptions)](AbstractChart.md#fit) - fit the chart to container.
+* [chart.fit(fitOptions[, watchOptions])](AbstractChart.md#fit) - Calling this function with single argument will resize the chart to fit into the container once. Calling with two arguments, such as `chart.fit({...}, true)` or `chart.fit({...}, {...})`, will enable watching. Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions` and `watchOptions`
 * [chart.stopFitWatcher()](AbstractChart.md#stopFitWatcher) - stop the watcher.
 * [chart.updateDimensionNow()](AbstractChart.md#updateDimensionNow()) - force the chart to recompute the dimension immediately. This is a synchronous operation while other sizing functions are asynchronous.
 * [chart.on('resize', listener)](AbstractChart.md#event_resize) - handle when the dimension is changed.
 
 ##### Others
 
-* [chart.destroy()](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore. 
+* [chart.destroy()](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore.
 
 ## SvgChart
 
 This class extends from `AbstractChart` and therefore inherits all fields and functions. In addition, it also provides the followings:
+
+#### Constructor
+
+const chart = [new SvgChart(container[, options])](SvgChart.md#constructor) - construct a chart within the specified container.
 
 #### Fields
 
@@ -64,13 +68,18 @@ This class extends from `AbstractChart` and therefore inherits all fields and fu
 
 This class extends from `AbstractChart` and therefore inherits all fields and functions. In addition, it also provides the followings:
 
+#### Constructor
+
+const chart = [new CanvasChart(container[, options])](CanvasChart.md#constructor) - construct a chart within the specified container.
+
 #### Fields
 
 * [chart.canvas](CanvasChart.md#canvas) - D3 selection of the `<canvas>` element.
 
 #### Functions
 
-* [chart.getContext2d()](CanvasChart.md#getContext2d) - Return a context for drawing on canvas that has been adjusted for screen resolution and margins.
+* [chart.getContext2d()](CanvasChart.md#getContext2d) - return a context for drawing on canvas that has been adjusted for screen resolution and margins.
+* [chart.clear()](CanvasChart.md#clear) - clear canvas.
 
 <!--
 ## d3Kit.Chartlet
@@ -111,7 +120,7 @@ This class extends from `AbstractChart` and therefore inherits all fields and fu
 
 #### Constructor
 
-* const layers = [new LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a LayerOrganizer for the specified container.
+const layers = [new LayerOrganizer(container, defaultTag='g')](LayerOrganizer.md#constructor) - construct a LayerOrganizer for the specified container.
 
 #### Functions
 
@@ -121,11 +130,13 @@ This class extends from `AbstractChart` and therefore inherits all fields and fu
 
 ## helper
 
-* [helper.debounce(func, delay)](https://lodash.com/docs/4.16.4#debounce) - returns a debounced function with given delay.
-* [helper.deepExtend(dest, src1, src2, ...)](Helper.md#deepExtend) - Recursively merge the contents of two or more objects together into the first object.
-* [helper.extend(dest, src1, src2, ...)](Helper.md#extend) - Merge the contents of two or more objects together into the first object.
-* [helper.functor(valueOrFunc)](https://github.com/d3/d3-3.x-api-reference/blob/master/Internals#functor) - If value is not a function, returns a function that returns the value. Otherwise returns the function.
-* [helper.isObject(value)](https://lodash.com/docs/4.16.4#isObject) - returns `true` if value is an object.
-* [helper.isFunction(value)](https://lodash.com/docs/4.16.4#isFunction) - returns `true` if value is a function.
-* [helper.kebabCase(string)](https://lodash.com/docs/4.16.4#kebabCase) - converts any string into `kebab-case`
-* [helper.throttle(func, delay)](https://lodash.com/docs/4.16.4#throttle) - returns a throttled function with given delay.
+#### Functions
+
+* *(static)* [helper.debounce(func, delay)](https://lodash.com/docs/4.16.4#debounce) - returns a debounced function with given delay.
+* *(static)* [helper.deepExtend(dest, src1, src2, ...)](Helper.md#deepExtend) - Recursively merge the contents of two or more objects together into the first object.
+* *(static)* [helper.extend(dest, src1, src2, ...)](Helper.md#extend) - Merge the contents of two or more objects together into the first object.
+* *(static)* [helper.functor(valueOrFunc)](https://github.com/d3/d3-3.x-api-reference/blob/master/Internals#functor) - If value is not a function, returns a function that returns the value. Otherwise returns the function.
+* *(static)* [helper.isObject(value)](https://lodash.com/docs/4.16.4#isObject) - returns `true` if value is an object.
+* *(static)* [helper.isFunction(value)](https://lodash.com/docs/4.16.4#isFunction) - returns `true` if value is a function.
+* *(static)* [helper.kebabCase(string)](https://lodash.com/docs/4.16.4#kebabCase) - converts any string into `kebab-case`
+* *(static)* [helper.throttle(func, delay)](https://lodash.com/docs/4.16.4#throttle) - returns a throttled function with given delay.
