@@ -202,3 +202,8 @@ console.log(chart.container.clientWidth); // 800
 
 Get/Set the total width for this chart. Calling ```chart.width(value)``` will make the chart dispatch event *resize*.
 
+### Other functions
+
+<a name="destroy" href="AbstractChart.md#destroy">#</a> chart.**destroy**()
+
+Kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore.
