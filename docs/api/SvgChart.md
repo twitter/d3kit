@@ -1,4 +1,4 @@
-> [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **SvgChart**
+> [Docs](../../TableOfContent.md) ▸ [API Reference](index.md) ▸ **SvgChart**
 
 # SvgChart
 
