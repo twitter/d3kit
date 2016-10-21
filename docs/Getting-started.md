@@ -1,4 +1,4 @@
-> [Docs](../README.md) ▸ **Getting started**
+> [Docs](../TableOfContent.md) ▸ **Getting started**
 
 ### Download the library
 

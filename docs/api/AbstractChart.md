@@ -1,4 +1,4 @@
-> [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **AbstractChart**
+> [Docs](../../TableOfContent.md) ▸ [API Reference](index.md) ▸ **AbstractChart**
 
 # AbstractChart
 
@@ -41,7 +41,7 @@ For getter/setter function, if a value is passed these functions set the specifi
 
 ### Event handling
 
-<a name="getCustomEventNames" href="AbstractChart.md#getCustomEventNames">#</a> *(static)* AbstractChart.**getCustomEventNames**()
+<a name="static-getCustomEventNames" href="AbstractChart.md#static-getCustomEventNames">#</a> *(static)* AbstractChart.**getCustomEventNames**()
 
 Return the names of custom events that an object of this class can dispatch (other than `resize`, `data` and `options` that are included with every AbstractChart).
 

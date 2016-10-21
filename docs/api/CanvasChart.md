@@ -1,4 +1,4 @@
- > [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **CanvasChart**
+ > [Docs](../../TableOfContent.md) ▸ [API Reference](index.md) ▸ **CanvasChart**
 
 # CanvasChart
 
@@ -20,10 +20,11 @@ Return a D3 selection of ```<canvas>``` element.
 
 ## Functions
 
+<a name="clear" href="CanvasChart.md#clear">#</a> chart.**clear**()
+
+Clear canvas
+
 <a name="getContext2d" href="CanvasChart.md#getContext2d">#</a> chart.**getContext2d**()
 
 Return `context2d` that has been adjusted for scaling and margins.
 
-<a name="clear" href="CanvasChart.md#clear">#</a> chart.**clear**()
-
-Clear canvas
