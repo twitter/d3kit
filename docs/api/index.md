@@ -8,7 +8,7 @@
 
 ##### Fields
 
-* [chart.container](AbstractChart.md#container) - D3 selection of the container, specified in the constructor.
+* [chart.container](AbstractChart.md#container) - D3 selection of the container.
 * [chart.dispatcher](AbstractChart.md#dispatch) - A `d3-dispatch` event dispatcher for this chart.
 
 ##### Event functions
@@ -31,8 +31,8 @@
 
 * [chart.dimension([dimension])](AbstractChart.md#dimension) - get/set both width and height at the same time.
 * [chart.fit(fitOptions[, watchOptions])](AbstractChart.md#fit) - Calling this function with single argument will resize the chart to fit into the container once. Calling with two arguments, such as `chart.fit({...}, true)` or `chart.fit({...}, {...})`, will enable watching. Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions` and `watchOptions`
-* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the chart without margin.
 * [chart.getInnerHeight()](AbstractChart.md#getInnerHeight) - return the height of the chart without margin.
+* [chart.getInnerWidth()](AbstractChart.md#getInnerWidth) - return the width of the chart without margin.
 * [chart.hasNonZeroArea()](AbstractChart.md#hasNonZeroArea) - return `true` if the inner area (*inner width x inner height*) is more than zero.
 * [chart.height([height])](AbstractChart.md#height) - get/set the height.
 * [chart.margin([margin])](AbstractChart.md#margin) - get/set the margin.
