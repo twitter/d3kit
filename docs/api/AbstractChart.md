@@ -1,10 +1,10 @@
 > [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **AbstractChart**
 
-## AbstractChart
+# AbstractChart
 
 An AbstractChart does all the basic groundwork for you before creating any chart.
 
-### Constructor
+## Constructor
 
 ```javascript
 const chart = new AbstractChart(container[, options]);
@@ -19,9 +19,9 @@ However, never call this constructor directly, but use [SvgChart](SvgChart.md) o
 
 * **options:Object** will override default options similar to calling ```chart.options(options)``` later.
 
-### Fields
+## Fields
 
-#### Public
+### Public
 
 <a name="container" href="AbstractChart.md#container">#</a> chart.**container**
 
@@ -31,31 +31,67 @@ Return a D3 selection of the container.
 
 Return the chart's event dispatcher. This dispatcher is `d3.dispatch`.
 
-#### Private
+### Private
 
 There are private fields named begin with underscore (`_`). Please do not touch them unless you really know what you are doing.
 
-### Static functions
+## Functions
 
+For getter/setter function, if a value is passed these functions set the specified value to the variable, otherwise these functions return the current value for that variable.
 
+### Event handling
 
-### Getter functions
+<a name="getCustomEventNames" href="AbstractChart.md#getCustomEventNames">#</a> *(static)* AbstractChart.**getCustomEventNames**()
+
+Return the names of custom events that an object of this class can dispatch (other than `resize`, `data` and `options` that are included with every AbstractChart).
 
 <a name="getCustomEventNames" href="AbstractChart.md#getCustomEventNames">#</a> chart.**getCustomEventNames**()
 
 Return the names of custom events that this chart can dispatch.
 
-<a name="getInnerWidth" href="AbstractChart.md#getInnerWidth">#</a> chart.**getInnerWidth**()
+<a name="setupDispatcher" href="AbstractChart.md#setupDispatcher">#</a> chart.**setupDispatcher**(*customEventNames:Array*)
 
-Return the width of the chart, less the left and right margin values.
+Setup the dispatcher to include the specified custom event names.
 
-<a name="getInnerHeight" href="AbstractChart.md#getInnerHeight">#</a> chart.**getInnerHeight**()
+<a name="on" href="AbstractChart.md#on">#</a> chart.**on**(*eventName:String*, *listener:Function*)
 
-Return the height of the chart, less the top and bottom margin values.
+Add an event listener to an event from this chart. Similar to [d3.dispatch.on](https://github.com/mbostock/d3/wiki/Internals#dispatch_on).
 
-### Getter/Setter functions
+<a name="off" href="AbstractChart.md#off">#</a> chart.**off**(*eventName:String*, *listener:Function*)
 
-If a value is passed these functions set the specified value to the variable, otherwise these functions return the current value for that variable.
+Remove event listener.
+
+#### Events
+
+By default, the chart can dispatch these events out-of-the-box.
+
+<a name="event_data" href="AbstractChart.md#event_data">#</a> event: **data**
+
+dispatched whenever the data are set via ```chart.data(value)```. Note that it the chart does not watch for changes in the data.
+
+```
+chart.on('data', function(data){ ... })
+```
+
+<a name="event_options" href="AbstractChart.md#event_options">#</a> event: **options**
+
+dispatched whenever the options are set via ```chart.options(value)```. Note that it the chart does not watch for changes in the options Object.
+
+```
+chart.on('options', function(options){ ... })
+```
+
+<a name="event_resize" href="AbstractChart.md#event_resize">#</a> event: **resize**
+
+dispatched whenever the dimension of the chart is changed. This could be due to changes in *width*, *height*, *margin* or *offset*.
+
+```
+chart.on('resize', function(info){ ... })
+```
+
+```info``` is an Array ```[width, height, innerWidth, innerHeight]```
+
+### Data Handling
 
 <a name="data" href="AbstractChart.md#data">#</a> chart.**data**([*data:Any*])
 
@@ -77,6 +113,20 @@ var DEFAULT_OPTIONS = {
 ```
 
 Calling ```chart.options(value)``` will make the chart dispatch event *options*.
+
+<a name="hasData" href="AbstractChart.md#hasData">#</a> chart.**hasData**()
+
+Return true if ```chart.data()``` is not null and not undefined.
+
+### Size Handling
+
+<a name="getInnerWidth" href="AbstractChart.md#getInnerWidth">#</a> chart.**getInnerWidth**()
+
+Return the width of the chart, less the left and right margin values.
+
+<a name="getInnerHeight" href="AbstractChart.md#getInnerHeight">#</a> chart.**getInnerHeight**()
+
+Return the height of the chart, less the top and bottom margin values.
 
 <a name="margin" href="AbstractChart.md#margin">#</a> chart.**margin**([*margin:Object*,[*, doNotDispatch:Boolean*]])
 
@@ -114,51 +164,6 @@ Calling ```chart.height(value)``` will make the chart dispatch event *resize*.
 
 Syntactic sugar for getting/setting both width and height at the same time. Will dispatch *resize* event only once. ```dimension``` is an Array ```[width, height]```.
 
-### Other functions
-
-<a name="hasData" href="AbstractChart.md#hasData">#</a> chart.**hasData**()
-
-Return true if ```chart.data()``` is not null and not undefined.
-
 <a name="hasNonZeroArea" href="AbstractChart.md#hasNonZeroArea">#</a> chart.**hasNonZeroArea**()
 
 Return true if ```inner width * inner height > 0```
-
-### Event Handling
-
-<a name="on" href="AbstractChart.md#on">#</a> chart.**on**(*eventName*, *listener*)
-
-Add an event listener to an event from this chart. Similar to [d3.dispatch.on](https://github.com/mbostock/d3/wiki/Internals#dispatch_on).
-
-<a name="off" href="AbstractChart.md#off">#</a> chart.**off**(*eventName*, *listener*)
-
-Remove event listener.
-
-By default, the chart can dispatch these events out-of-the-box.
-
-<a name="event_data" href="AbstractChart.md#event_data">#</a> event: **data**
-
-dispatched whenever the data are set via ```chart.data(value)```. Note that it the chart does not watch for changes in the data.
-
-```
-chart.on('data', function(data){ ... })
-```
-
-<a name="event_options" href="AbstractChart.md#event_options">#</a> event: **options**
-
-dispatched whenever the options are set via ```chart.options(value)```. Note that it the chart does not watch for changes in the options Object.
-
-```
-chart.on('options', function(options){ ... })
-```
-
-<a name="event_resize" href="AbstractChart.md#event_resize">#</a> event: **resize**
-
-dispatched whenever the dimension of the chart is changed. This could be due to changes in *width*, *height*, *margin* or *offset*.
-
-```
-chart.on('resize', function(info){ ... })
-```
-
-```info``` is an Array ```[width, height, innerWidth, innerHeight]```
-

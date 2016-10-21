@@ -1,6 +1,6 @@
 > [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **LayerOrganizer**
 
-## LayerOrganizer
+# LayerOrganizer
 
 A utility for creating layers from a given config. If you have a habit of creating many ```<g>``` or other tags to layer your visual elements. This utility will let you create nested layers easily. For example,
 
@@ -31,7 +31,7 @@ layers.get('highlight.cursor'); // a d3 selection of <g class="cursor-layer"></g
 
 This was originally written to support just `<g>` but since version 1.1.0 we have added support for other tags. Just specify the tag name in the constructor.
 
-#### Functions
+## Functions
 
 <a name="constructor" href="LayerOrganizer#constructor">#</a> new **d3Kit.LayerOrganizer**(*container*[,tag])
 

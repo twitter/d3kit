@@ -1,6 +1,6 @@
 > [Docs](../../README.md) ▸ [API Reference](index.md) ▸ **helper**
 
-## helper
+# helper
 
 These functions were originally collected from multiple places (jQuery, lodash, ...) for usage in d3Kit core library. Since they are also useful for building visualizations in general, we also expose them to the API.
 
