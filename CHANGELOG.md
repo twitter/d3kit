@@ -2,6 +2,10 @@
 
 ## v2.x.x
 
+### 2.0.2 (2016-10-21)
+
+Moves `d3-selection` and `d3-dispatch` to `dependencies` instead of `peerDependencies`.
+
 ### 2.0.1 (2016-10-21)
 
 Fix issue #13, resizing `height` used to have issue if `line-height` is more than zero. This patch force container `line-height` to 0 to fix the problem.
