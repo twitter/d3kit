@@ -2,6 +2,10 @@
 
 ## v2.x.x
 
+### 2.0.1 (2016-10-21)
+
+Fix issue #13, resizing `height` used to have issue if `line-height` is more than zero. This patch force container `line-height` to 0 to fix the problem.
+
 ### 2.0.0 (2016-08-16)
 
 Make d3Kit compatible with D3 v4. Key changes are due to:
