@@ -27,6 +27,9 @@ class AbstractChart {
     };
 
     this.container = select(selector);
+    // Enforce line-height = 0 to fix issue with height resizing
+    // https://github.com/twitter/d3kit/issues/13
+    this.container.style('line-height', 0);
 
     const customEvents = this.constructor.getCustomEventNames();
     this.setupDispatcher(customEvents);

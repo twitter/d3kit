@@ -28,8 +28,8 @@ describe('AbstractChart', () => {
           return ['custom1', 'custom2'];
         }
       }
-      const chart = new Chart();
-      expect(chart.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
+      const chart2 = new Chart();
+      expect(chart2.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
     });
   });
 
