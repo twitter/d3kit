@@ -1064,7 +1064,7 @@ var AbstractChart = function () {
 
     var mergedOptions = deepExtend.apply(undefined, [{}, AbstractChart.DEFAULT_OPTIONS].concat(options));
 
-    this.state = {
+    this._state = {
       width: mergedOptions.initialWidth,
       height: mergedOptions.initialHeight,
       innerWidth: 0,
@@ -1075,15 +1075,17 @@ var AbstractChart = function () {
     };
 
     this.container = select(selector);
+    // Enforce line-height = 0 to fix issue with height resizing
+    // https://github.com/twitter/d3kit/issues/13
+    this.container.style('line-height', 0);
 
     var customEvents = this.constructor.getCustomEventNames();
     this.setupDispatcher(customEvents);
 
-    this.dispatchData = debounce(this.dispatchData.bind(this), 1);
-    this.dispatchOptions = debounce(this.dispatchOptions.bind(this), 1);
-    this.dispatchResize = debounce(this.dispatchResize.bind(this), 1);
-
-    this.updateDimension = debounce(this.updateDimension.bind(this), 1);
+    this._dispatchData = debounce(this._dispatchData.bind(this), 1);
+    this._dispatchOptions = debounce(this._dispatchOptions.bind(this), 1);
+    this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
+    this._updateDimension = debounce(this._updateDimension.bind(this), 1);
   }
 
   createClass(AbstractChart, [{
@@ -1091,46 +1093,46 @@ var AbstractChart = function () {
     value: function setupDispatcher() {
       var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-      this.customEventNames = customEventNames;
-      this.eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
-      this.dispatcher = dispatch.apply(this, this.eventNames);
+      this._customEventNames = customEventNames;
+      this._eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
+      this.dispatcher = dispatch.apply(this, this._eventNames);
     }
   }, {
     key: 'getCustomEventNames',
     value: function getCustomEventNames() {
-      return this.customEventNames;
+      return this._customEventNames;
     }
   }, {
     key: 'getInnerWidth',
     value: function getInnerWidth() {
-      return this.state.innerWidth;
+      return this._state.innerWidth;
     }
   }, {
     key: 'getInnerHeight',
     value: function getInnerHeight() {
-      return this.state.innerHeight;
+      return this._state.innerHeight;
     }
   }, {
     key: 'width',
     value: function width() {
-      if (arguments.length === 0) return this.state.width;
+      if (arguments.length === 0) return this._state.width;
       var newValue = Math.floor(+(arguments.length <= 0 ? undefined : arguments[0]));
-      if (newValue !== this.state.width) {
-        this.state.width = newValue;
-        this.updateDimension();
-        this.dispatchResize();
+      if (newValue !== this._state.width) {
+        this._state.width = newValue;
+        this._updateDimension();
+        this._dispatchResize();
       }
       return this;
     }
   }, {
     key: 'height',
     value: function height() {
-      if (arguments.length === 0) return this.state.height;
+      if (arguments.length === 0) return this._state.height;
       var newValue = Math.floor(+(arguments.length <= 0 ? undefined : arguments[0]));
-      if (newValue !== this.state.height) {
-        this.state.height = newValue;
-        this.updateDimension();
-        this.dispatchResize();
+      if (newValue !== this._state.height) {
+        this._state.height = newValue;
+        this._updateDimension();
+        this._dispatchResize();
       }
       return this;
     }
@@ -1138,7 +1140,7 @@ var AbstractChart = function () {
     key: 'dimension',
     value: function dimension() {
       if (arguments.length === 0) {
-        return [this.state.width, this.state.height];
+        return [this._state.width, this._state.height];
       }
 
       var _ref = arguments.length <= 0 ? undefined : arguments[0];
@@ -1158,42 +1160,42 @@ var AbstractChart = function () {
         args[_key2] = arguments[_key2];
       }
 
-      if (args.length === 0) return this.state.data;
+      if (args.length === 0) return this._state.data;
       var newData = args[0];
 
-      this.state.data = newData;
-      this.dispatchData();
+      this._state.data = newData;
+      this._dispatchData();
       return this;
     }
   }, {
     key: 'margin',
     value: function margin() {
-      if (arguments.length === 0) return this.state.options.margin;
-      var oldMargin = this.state.options.margin;
-      var newMargin = extend({}, this.state.options.margin, arguments.length <= 0 ? undefined : arguments[0]);
+      if (arguments.length === 0) return this._state.options.margin;
+      var oldMargin = this._state.options.margin;
+      var newMargin = extend({}, this._state.options.margin, arguments.length <= 0 ? undefined : arguments[0]);
       var changed = Object.keys(oldMargin).some(function (field) {
         return oldMargin[field] !== newMargin[field];
       });
       if (changed) {
-        this.state.options.margin = newMargin;
-        this.updateDimension();
-        this.dispatchResize();
+        this._state.options.margin = newMargin;
+        this._updateDimension();
+        this._dispatchResize();
       }
       return this;
     }
   }, {
     key: 'offset',
     value: function offset() {
-      if (arguments.length === 0) return this.state.options.offset;
-      var oldOffset = this.state.options.offset;
-      var newOffset = extend({}, this.state.offset, arguments.length <= 0 ? undefined : arguments[0]);
+      if (arguments.length === 0) return this._state.options.offset;
+      var oldOffset = this._state.options.offset;
+      var newOffset = extend({}, this._state.offset, arguments.length <= 0 ? undefined : arguments[0]);
       var changed = Object.keys(oldOffset).some(function (field) {
         return oldOffset[field] !== newOffset[field];
       });
       if (changed) {
-        this.state.options.offset = newOffset;
-        this.updateDimension();
-        this.dispatchResize();
+        this._state.options.offset = newOffset;
+        this._updateDimension();
+        this._dispatchResize();
       }
       return this;
     }
@@ -1204,7 +1206,7 @@ var AbstractChart = function () {
         args[_key3] = arguments[_key3];
       }
 
-      if (args.length === 0) return this.state.options;
+      if (args.length === 0) return this._state.options;
       var newOptions = args[0];
 
       if (newOptions.margin) {
@@ -1213,46 +1215,46 @@ var AbstractChart = function () {
       if (newOptions.offset) {
         this.offset(newOptions.offset);
       }
-      this.state.options = deepExtend(this.state.options, newOptions);
-      this.dispatchOptions();
+      this._state.options = deepExtend(this._state.options, newOptions);
+      this._dispatchOptions();
       return this;
     }
   }, {
-    key: 'updateDimension',
-    value: function updateDimension() {
-      var _state = this.state;
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      var _state = this._state;
       var width = _state.width;
       var height = _state.height;
-      var margin = this.state.options.margin;
+      var margin = this._state.options.margin;
       var top = margin.top;
       var right = margin.right;
       var bottom = margin.bottom;
       var left = margin.left;
 
 
-      this.state.innerWidth = width - left - right;
-      this.state.innerHeight = height - top - bottom;
+      this._state.innerWidth = width - left - right;
+      this._state.innerHeight = height - top - bottom;
 
       return this;
     }
   }, {
     key: 'updateDimensionNow',
     value: function updateDimensionNow() {
-      this.updateDimension();
-      this.updateDimension.flush();
+      this._updateDimension();
+      this._updateDimension.flush();
       return this;
     }
   }, {
     key: 'hasData',
     value: function hasData() {
-      var data = this.state.data;
+      var data = this._state.data;
 
       return data !== null && data !== undefined;
     }
   }, {
     key: 'hasNonZeroArea',
     value: function hasNonZeroArea() {
-      var _state2 = this.state;
+      var _state2 = this._state;
       var innerWidth = _state2.innerWidth;
       var innerHeight = _state2.innerHeight;
 
@@ -1266,13 +1268,13 @@ var AbstractChart = function () {
       var watchOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
       if (fitOptions) {
-        this.state.fitOptions = fitOptions;
+        this._state.fitOptions = fitOptions;
       }
 
       // Fit once
       var fitter = new Fitter(fitOptions);
 
-      var _fitter$fit = fitter.fit(this.getBoundElement(), this.container.node());
+      var _fitter$fit = fitter.fit(this.dimension(), this.container.node());
 
       var changed = _fitter$fit.changed;
       var dimension = _fitter$fit.dimension;
@@ -1288,7 +1290,7 @@ var AbstractChart = function () {
         if (this.fitWatcher) {
           this.fitWatcher.destroy();
         }
-        this.fitWatcher = new FitWatcher(this.getBoundElement(), this.container.node(), this.state.fitOptions, isObject(watchOptions) ? watchOptions : null).on('change', function (dim) {
+        this.fitWatcher = new FitWatcher(this.dimension(), this.container.node(), this._state.fitOptions, isObject(watchOptions) ? watchOptions : null).on('change', function (dim) {
           return _this.dimension([dim.width, dim.height]);
         }).start();
       }
@@ -1305,21 +1307,21 @@ var AbstractChart = function () {
       return this;
     }
   }, {
-    key: 'dispatchData',
-    value: function dispatchData() {
-      this.dispatcher.call('data', this, this.state.data);
+    key: '_dispatchData',
+    value: function _dispatchData() {
+      this.dispatcher.call('data', this, this._state.data);
       return this;
     }
   }, {
-    key: 'dispatchOptions',
-    value: function dispatchOptions() {
-      this.dispatcher.call('options', this, this.state.options);
+    key: '_dispatchOptions',
+    value: function _dispatchOptions() {
+      this.dispatcher.call('options', this, this._state.options);
       return this;
     }
   }, {
-    key: 'dispatchResize',
-    value: function dispatchResize() {
-      var _state3 = this.state;
+    key: '_dispatchResize',
+    value: function _dispatchResize() {
+      var _state3 = this._state;
       var width = _state3.width;
       var height = _state3.height;
       var innerWidth = _state3.innerWidth;
@@ -1345,7 +1347,7 @@ var AbstractChart = function () {
     value: function destroy() {
       var _this2 = this;
 
-      this.eventNames.forEach(function (name) {
+      this._eventNames.forEach(function (name) {
         _this2.off(name);
       });
       this.stopFitWatcher();
@@ -1397,11 +1399,6 @@ var CanvasChart = function (_AbstractChart) {
   }
 
   createClass(CanvasChart, [{
-    key: 'getBoundElement',
-    value: function getBoundElement() {
-      return this.canvas.node();
-    }
-  }, {
     key: 'getContext2d',
     value: function getContext2d() {
       var _options = this.options();
@@ -1430,14 +1427,14 @@ var CanvasChart = function (_AbstractChart) {
       return this;
     }
   }, {
-    key: 'updateDimension',
-    value: function updateDimension() {
-      get(Object.getPrototypeOf(CanvasChart.prototype), 'updateDimension', this).call(this);
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      get(Object.getPrototypeOf(CanvasChart.prototype), '_updateDimension', this).call(this);
 
-      var _state = this.state;
+      var _state = this._state;
       var width = _state.width;
       var height = _state.height;
-      var pixelRatio = this.state.options.pixelRatio;
+      var pixelRatio = this._state.options.pixelRatio;
 
 
       this.canvas.style('width', width).style('height', height).attr('width', width * pixelRatio).attr('height', height * pixelRatio);
@@ -1571,19 +1568,14 @@ var SvgChart = function (_AbstractChart) {
   }
 
   createClass(SvgChart, [{
-    key: 'getBoundElement',
-    value: function getBoundElement() {
-      return this.svg.node();
-    }
-  }, {
-    key: 'updateDimension',
-    value: function updateDimension() {
-      get(Object.getPrototypeOf(SvgChart.prototype), 'updateDimension', this).call(this);
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      get(Object.getPrototypeOf(SvgChart.prototype), '_updateDimension', this).call(this);
 
-      var _state = this.state;
+      var _state = this._state;
       var width = _state.width;
       var height = _state.height;
-      var _state$options = this.state.options;
+      var _state$options = this._state.options;
       var offset = _state$options.offset;
       var margin = _state$options.margin;
       var top = margin.top;
