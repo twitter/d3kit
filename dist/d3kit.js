@@ -157,8 +157,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var _autoResizeFn = null;
 	  var _autoResizeToAspectRatio = false;
 
+	  var _container = (0, _d3Selection.select)(chartNode).style('line-height', 0);
 	  // add svg element
-	  var _svg = (0, _d3Selection.select)(chartNode).append('svg');
+	  var _svg = _container.append('svg');
 	  var _vis = _svg.append('g');
 	  updateOffset();
 
