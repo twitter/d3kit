@@ -33,8 +33,10 @@ function Skeleton(chartNode, customOptions, customEvents) {
   let _autoResizeFn = null;
   let _autoResizeToAspectRatio = false;
 
+  const _container = select(chartNode)
+    .style('line-height', 0);
   // add svg element
-  const _svg = select(chartNode).append('svg');
+  const _svg = _container.append('svg');
   const _vis = _svg.append('g');
   updateOffset();
 

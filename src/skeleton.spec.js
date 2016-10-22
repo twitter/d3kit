@@ -427,36 +427,29 @@ describe('Skeleton', function () {
       expect(skeleton.dimension()).to.deep.equal([w, h]);
     });
     it('when mode is "width" should resize width to fit container but keep original height', function () {
-      const w1 = element.clientWidth / 2;
-      const h1 = element.clientHeight / 2;
+      const w1 = element.clientWidth;
+      const h1 = element.clientHeight;
 
-      skeleton.dimension([w1, h1]);
-
-      const w2 = element.clientWidth;
-      const h2 = element.clientHeight;
-
+      skeleton.dimension([200, 200]);
       skeleton.resizeToFitContainer('width');
 
-      expect(skeleton.width()).to.equal(Math.floor(w2));
-      expect(skeleton.height()).to.equal(Math.floor(h1));
-      expect(skeleton.width()).to.not.equal(w1);
-      expect(skeleton.height()).to.not.equal(h2);
+      expect(skeleton.width()).to.equal(w1);
+      expect(skeleton.height()).to.equal(200);
+      expect(skeleton.width()).to.not.equal(200);
+      expect(skeleton.height()).to.not.equal(h1);
     });
     it('when mode is "height" should resize height to fit container but keep original width', function () {
-      const w1 = element.clientWidth / 2;
-      const h1 = element.clientHeight * 2;
+      const w1 = element.clientWidth;
+      element.style.height = '400px';
+      const h1 = element.clientHeight;
 
-      skeleton.dimension([w1, h1]);
-
-      const w2 = element.clientWidth;
-      const h2 = element.clientHeight;
-
+      skeleton.dimension([200, 200]);
       skeleton.resizeToFitContainer('height');
 
-      expect(skeleton.width()).to.equal(Math.floor(w1));
-      expect(skeleton.height()).to.equal(Math.floor(h2));
-      expect(skeleton.width()).to.not.equal(w2);
-      expect(skeleton.height()).to.not.equal(h1);
+      expect(skeleton.width()).to.equal(200);
+      expect(skeleton.height()).to.equal(400);
+      expect(skeleton.width()).to.not.equal(w1);
+      expect(skeleton.height()).to.not.equal(200);
     });
   });
 
