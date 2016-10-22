@@ -22,7 +22,7 @@
     "src/**/*.*",
     "dist/*.*"
   ],
-  "peerDependencies": {
+  "dependencies": {
     "d3-dispatch": "^1.0.1",
     "d3-selection": "^1.0.2"
   },
@@ -34,8 +34,6 @@
     "babelrc-rollup": "^3.0.0",
     "browser-sync": "~2.14.0",
     "chai": "^3.5.0",
-    "d3-dispatch": "~1.0.1",
-    "d3-selection": "~1.0.2",
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.12.0",
