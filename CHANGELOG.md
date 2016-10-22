@@ -2,7 +2,7 @@
 
 ## v2.x.x
 
-### 2.0.2 (2016-10-21)
+### 2.1.0 (2016-10-21)
 
 Moves `d3-selection` and `d3-dispatch` to `dependencies` instead of `peerDependencies`.
 
