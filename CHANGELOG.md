@@ -4,7 +4,7 @@
 
 ### 3.0.0
 
-TBD
+Rewrite the chart abstraction in es6 and split `Skeleton` into `SvgChart` and `CanvasChart`, both extends from `AbstractChart`. The resize/auto-resize logic are revisited and published as another library called `slimfit`. (d3Kit wraps and includes slimfit by default.)
 
 ## v2.x.x
 
