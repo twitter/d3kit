@@ -4,121 +4,8 @@ import { dispatch } from 'd3-dispatch';
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
 };
-
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -918,7 +805,7 @@ var Dimension = function () {
 
 var Fitter = function () {
   function Fitter() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     classCallCheck(this, Fitter);
 
     var _ref = options || {};
@@ -960,8 +847,8 @@ var Fitter = function () {
   createClass(Fitter, [{
     key: 'fit',
     value: function fit() {
-      var box = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : isRequired('box');
-      var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : isRequired('container');
+      var box = arguments.length <= 0 || arguments[0] === undefined ? isRequired('box') : arguments[0];
+      var container = arguments.length <= 1 || arguments[1] === undefined ? isRequired('container') : arguments[1];
 
       var boxDim = new Dimension(box);
       var w = boxDim.width;
@@ -999,7 +886,7 @@ Fitter.MODE_ASPECT_RATIO = 'aspectRatio';
 
 var Watcher = function () {
   function Watcher() {
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     classCallCheck(this, Watcher);
 
     var _ref = options || {};
@@ -1126,13 +1013,13 @@ var FitWatcher = function (_Watcher) {
   inherits(FitWatcher, _Watcher);
 
   function FitWatcher() {
-    var box = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : isRequired('box');
-    var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : isRequired('container');
+    var box = arguments.length <= 0 || arguments[0] === undefined ? isRequired('box') : arguments[0];
+    var container = arguments.length <= 1 || arguments[1] === undefined ? isRequired('container') : arguments[1];
     var fitterOptions = arguments[2];
     var watcherOptions = arguments[3];
     classCallCheck(this, FitWatcher);
 
-    var _this = possibleConstructorReturn(this, (FitWatcher.__proto__ || Object.getPrototypeOf(FitWatcher)).call(this, watcherOptions));
+    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(FitWatcher).call(this, watcherOptions));
 
     var fitter = new Fitter(fitterOptions);
     _this.fit = function () {
@@ -1204,7 +1091,7 @@ var AbstractChart = function () {
   createClass(AbstractChart, [{
     key: 'setupDispatcher',
     value: function setupDispatcher() {
-      var customEventNames = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
       this._customEventNames = customEventNames;
       this._eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
@@ -1378,7 +1265,7 @@ var AbstractChart = function () {
     value: function fit(fitOptions) {
       var _this = this;
 
-      var watchOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var watchOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
       if (fitOptions) {
         this._state.fitOptions = fitOptions;
@@ -1496,7 +1383,7 @@ var CanvasChart = function (_AbstractChart) {
   }]);
 
   function CanvasChart(selector) {
-    var _ref;
+    var _Object$getPrototypeO;
 
     classCallCheck(this, CanvasChart);
 
@@ -1504,7 +1391,7 @@ var CanvasChart = function (_AbstractChart) {
       options[_key - 1] = arguments[_key];
     }
 
-    var _this = possibleConstructorReturn(this, (_ref = CanvasChart.__proto__ || Object.getPrototypeOf(CanvasChart)).call.apply(_ref, [this, selector, CanvasChart.DEFAULT_OPTIONS].concat(options)));
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasChart)).call.apply(_Object$getPrototypeO, [this, selector, CanvasChart.DEFAULT_OPTIONS].concat(options)));
 
     _this.canvas = _this.container.append('canvas');
     _this.updateDimensionNow();
@@ -1542,7 +1429,7 @@ var CanvasChart = function (_AbstractChart) {
   }, {
     key: '_updateDimension',
     value: function _updateDimension() {
-      get(CanvasChart.prototype.__proto__ || Object.getPrototypeOf(CanvasChart.prototype), '_updateDimension', this).call(this);
+      get(Object.getPrototypeOf(CanvasChart.prototype), '_updateDimension', this).call(this);
 
       var _state = this._state;
       var width = _state.width;
@@ -1579,12 +1466,12 @@ CanvasChart.DEFAULT_OPTIONS = {
 // layers.get('label')
 
 function LayerOrganizer (mainContainer) {
-  var defaultTag = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'g';
+  var defaultTag = arguments.length <= 1 || arguments[1] === undefined ? 'g' : arguments[1];
 
   var layers = {};
 
   function createLayerFromName(container, layerName) {
-    var prefix = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
 
     var chunks = layerName.split('.');
     var name = void 0;
@@ -1609,7 +1496,7 @@ function LayerOrganizer (mainContainer) {
   }
 
   function createLayerFromConfig(container, config) {
-    var prefix = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+    var prefix = arguments.length <= 2 || arguments[2] === undefined ? '' : arguments[2];
 
     if (Array.isArray(config)) {
       return config.map(function (info) {
@@ -1663,7 +1550,7 @@ var SvgChart = function (_AbstractChart) {
   }]);
 
   function SvgChart(selector) {
-    var _ref;
+    var _Object$getPrototypeO;
 
     classCallCheck(this, SvgChart);
 
@@ -1671,7 +1558,7 @@ var SvgChart = function (_AbstractChart) {
       options[_key - 1] = arguments[_key];
     }
 
-    var _this = possibleConstructorReturn(this, (_ref = SvgChart.__proto__ || Object.getPrototypeOf(SvgChart)).call.apply(_ref, [this, selector, SvgChart.DEFAULT_OPTIONS].concat(options)));
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector, SvgChart.DEFAULT_OPTIONS].concat(options)));
 
     _this.svg = _this.container.append('svg');
     _this.rootG = _this.svg.append('g');
@@ -1683,7 +1570,7 @@ var SvgChart = function (_AbstractChart) {
   createClass(SvgChart, [{
     key: '_updateDimension',
     value: function _updateDimension() {
-      get(SvgChart.prototype.__proto__ || Object.getPrototypeOf(SvgChart.prototype), '_updateDimension', this).call(this);
+      get(Object.getPrototypeOf(SvgChart.prototype), '_updateDimension', this).call(this);
 
       var _state = this._state;
       var width = _state.width;
