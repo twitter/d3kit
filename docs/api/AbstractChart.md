@@ -69,7 +69,7 @@ By default, the chart can dispatch these events out-of-the-box.
 
 dispatched whenever the data are set via ```chart.data(value)```. Note that it the chart does not watch for changes in the data.
 
-```
+```javascript
 chart.on('data', function(data){ ... })
 ```
 
@@ -77,7 +77,7 @@ chart.on('data', function(data){ ... })
 
 dispatched whenever the options are set via ```chart.options(value)```. Note that it the chart does not watch for changes in the options Object.
 
-```
+```javascript
 chart.on('options', function(options){ ... })
 ```
 
@@ -85,13 +85,31 @@ chart.on('options', function(options){ ... })
 
 dispatched whenever the dimension of the chart is changed. This could be due to changes in *width*, *height*, *margin* or *offset*.
 
-```
+```javascript
 chart.on('resize', function(info){ ... })
 ```
 
 ```info``` is an Array ```[width, height, innerWidth, innerHeight]```
 
 ### Data Handling
+
+<a name="static-getDefaultOptions" href="AbstractChart.md#static-getDefaultOptions">#</a> *(static)* AbstractChart.**getDefaultOptions**()
+
+Create and return a default `options` Object. Overwrite this function when extending the class to modify default options. For example:
+
+```javascript
+class CanvasChart extends AbstractChart {
+  static getDefaultOptions() {
+    return deepExtend(
+      super.getDefaultOptions(),
+      {
+        pixelRatio: window.devicePixelRatio,
+      }
+    );
+  }
+  ...
+}
+```
 
 <a name="data" href="AbstractChart.md#data">#</a> chart.**data**([*data:Any*])
 
@@ -107,8 +125,9 @@ Return true if ```chart.data()``` is not null and not undefined.
 
 Get/Set the options for this chart. The input options will merge with current options and override any field with the same key. When the chart was created, these are the default options:
 
-```
-var DEFAULT_OPTIONS = {
+```javascript
+// AbstractChart.getDefaultOptions()
+{
   margin: {top: 30, right: 30, bottom: 30, left: 30},
   offset: [0.5, 0.5],
   initialWidth:  720,
@@ -122,15 +141,15 @@ Calling ```chart.options(value)``` will make the chart dispatch event *options*.
 
 <a name="dimension" href="AbstractChart.md#dimension">#</a> chart.**dimension**([*dimension:Array*])
 
-Syntactic sugar for getting/setting both width and height at the same time. 
+Syntactic sugar for getting/setting both width and height at the same time.
 
-* When called without argument will return Array `[width, height]`. 
+* When called without argument will return Array `[width, height]`.
 * When called with argument will set both width and height and dispatch *resize* event.
 
 <a name="fit" href="AbstractChart.md#fit">#</a> chart.**fit**([*fitOptions:Object*[, *watchOptions:Object*])
 
 * Calling this function without any argument will resize the chart to fit into the container once using default settings (width = 100%, height <= container), or previous settings if `.fit(fitOptions)` has been called with more than one argument before.
-* Calling this function with single argument will resize the chart to fit into the container once using the specified `fitOptions`. 
+* Calling this function with single argument will resize the chart to fit into the container once using the specified `fitOptions`.
 * Calling with two arguments, such as `chart.fit({...}, true)` or `chart.fit({...}, {...})`, will create a `fitWatcher` that watch for size changes and auto-resize to fit. To kill the `fitWatcher`, call `chart.stopFitWatcher()`.
 
 Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `fitOptions` and `watchOptions`
@@ -139,7 +158,7 @@ Please refer to [slimfit documentation](https://github.com/kristw/slimfit) for `
 
 Return the height of the chart, less the top and bottom margin values.
 
-```
+```javascript
 innerHeight = chart.height() - chart.options().margin.top - chart.options().margin.bottom;
 ```
 
@@ -147,7 +166,7 @@ innerHeight = chart.height() - chart.options().margin.top - chart.options().marg
 
 Return the width of the chart, less the left and right margin values.
 
-```
+```javascript
 innerWidth = chart.width() - chart.options().margin.left - chart.options().margin.right;
 ```
 

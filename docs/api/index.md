@@ -21,6 +21,7 @@
 
 ##### Data functions
 
+* *(static)* [AbstractChart.getDefaultOptions()](AbstractChart.md#static-getDefaultOptions) - create and return a default `options` Object. Overwrite this function when extending the class to modify default options.
 * [chart.data([data])](AbstractChart.md#data) - get/set the data.
 * [chart.on('data', listener)](AbstractChart.md#event_data) - handle when the data are set.
 * [chart.hasData()](AbstractChart.md#hasData) - return `true` if data is not `null` or `undefined`.
