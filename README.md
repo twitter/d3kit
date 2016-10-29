@@ -144,14 +144,19 @@ import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { extent } from 'd3-array';
 
-// Define default options for this chart
-const DEFAULT_OPTIONS = {
-  margin: {top: 60, right: 60, bottom: 60, left: 60},
-  initialWidth: 800,
-  initialHeight: 460
-};
-
 class SvgBubbleChart extends SvgChart {
+  // Define default options for this chart
+  static getDefaultOptions() {
+    return deepExtend(
+      super.getDefaultOptions(),
+      {
+		  margin: {top: 60, right: 60, bottom: 60, left: 60},
+		  initialWidth: 800,
+		  initialHeight: 460
+      }
+    );
+  }
+
   /**
    * Define the names of custom events that can be dispatched from this chart
    * @return {Array[String]} event names
@@ -161,7 +166,7 @@ class SvgBubbleChart extends SvgChart {
   }
 
   constructor(selector, options) {
-    super(selector, DEFAULT_OPTIONS, options);
+    super(selector, options);
 
     // Add custom variables
     this.xScale = scaleLinear();
@@ -214,8 +219,6 @@ class SvgBubbleChart extends SvgChart {
       .style('fill', (d,i) => this.color(i));
   }
 }
-
-SvgBubbleChart.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
 export default SvgBubbleChart;
 ```
@@ -282,14 +285,19 @@ import { CanvasChart } from 'd3kit';
 import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
 import { extent } from 'd3-array';
 
-// Define default options for this chart
-const DEFAULT_OPTIONS = {
-  margin: {top: 60, right: 60, bottom: 60, left: 60},
-  initialWidth: 800,
-  initialHeight: 460
-};
-
 class CanvasBubbleChart extends CanvasChart {
+  // Define default options for this chart
+  static getDefaultOptions() {
+    return deepExtend(
+      super.getDefaultOptions(),
+      {
+		  margin: {top: 60, right: 60, bottom: 60, left: 60},
+		  initialWidth: 800,
+		  initialHeight: 460
+      }
+    );
+  }
+
   /**
    * Define the names of custom events that can be dispatched from this chart
    * @return {Array[String]} event names
@@ -299,7 +307,7 @@ class CanvasBubbleChart extends CanvasChart {
   }
 
   constructor(selector, options) {
-    super(selector, DEFAULT_OPTIONS, options);
+    super(selector, options);
 
     // add custom variables
     this.xScale = scaleLinear();
@@ -340,8 +348,6 @@ class CanvasBubbleChart extends CanvasChart {
 
   }
 }
-
-CanvasBubbleChart.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
 
 export default CanvasBubbleChart;
 ```
