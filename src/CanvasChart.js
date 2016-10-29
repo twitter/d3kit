@@ -1,12 +1,18 @@
 import AbstractChart from './AbstractChart.js';
+import { deepExtend } from './helper.js';
 
 class CanvasChart extends AbstractChart {
-  static getCustomEventNames() {
-    return [];
+  static getDefaultOptions() {
+    return deepExtend(
+      super.getDefaultOptions(),
+      {
+        pixelRatio: window.devicePixelRatio,
+      }
+    );
   }
 
   constructor(selector, ...options) {
-    super(selector, CanvasChart.DEFAULT_OPTIONS, ...options);
+    super(selector, ...options);
 
     this.canvas = this.container.append('canvas');
     this.updateDimensionNow();
@@ -48,9 +54,5 @@ class CanvasChart extends AbstractChart {
     return this;
   }
 }
-
-CanvasChart.DEFAULT_OPTIONS = {
-  pixelRatio: window.devicePixelRatio,
-};
 
 export default CanvasChart;

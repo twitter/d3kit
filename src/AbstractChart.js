@@ -5,14 +5,30 @@ import Fitter from 'slimfit/src/Fitter.js';
 import { debounce, deepExtend, extend, isObject } from './helper.js';
 
 class AbstractChart {
+  static getDefaultOptions() {
+    return {
+      initialWidth: 720,
+      initialHeight: 500,
+      margin: {
+        top: 30,
+        right: 30,
+        bottom: 30,
+        left: 30,
+      },
+      offset: {
+        x: 0.5,
+        y: 0.5,
+      },
+    };
+  }
+
   static getCustomEventNames() {
     return [];
   }
 
   constructor(selector, ...options) {
     const mergedOptions = deepExtend(
-      {},
-      AbstractChart.DEFAULT_OPTIONS,
+      this.constructor.getDefaultOptions(),
       ...options
     );
 
@@ -242,21 +258,6 @@ class AbstractChart {
     this.stopFitWatcher();
   }
 }
-
-AbstractChart.DEFAULT_OPTIONS = {
-  initialWidth: 720,
-  initialHeight: 500,
-  margin: {
-    top: 30,
-    right: 30,
-    bottom: 30,
-    left: 30,
-  },
-  offset: {
-    x: 0.5,
-    y: 0.5,
-  },
-};
 
 AbstractChart.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 

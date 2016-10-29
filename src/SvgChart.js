@@ -2,12 +2,8 @@ import AbstractChart from './AbstractChart.js';
 import LayerOrganizer from './layerOrganizer.js';
 
 class SvgChart extends AbstractChart {
-  static getCustomEventNames() {
-    return [];
-  }
-
   constructor(selector, ...options) {
-    super(selector, SvgChart.DEFAULT_OPTIONS, ...options);
+    super(selector, ...options);
 
     this.svg = this.container.append('svg');
     this.rootG = this.svg.append('g');
@@ -34,7 +30,5 @@ class SvgChart extends AbstractChart {
     return this;
   }
 }
-
-SvgChart.DEFAULT_OPTIONS = {};
 
 export default SvgChart;
