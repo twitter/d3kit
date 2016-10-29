@@ -1049,6 +1049,24 @@ var FitWatcher = function (_Watcher) {
 
 var AbstractChart = function () {
   createClass(AbstractChart, null, [{
+    key: 'getDefaultOptions',
+    value: function getDefaultOptions() {
+      return {
+        initialWidth: 720,
+        initialHeight: 500,
+        margin: {
+          top: 30,
+          right: 30,
+          bottom: 30,
+          left: 30
+        },
+        offset: {
+          x: 0.5,
+          y: 0.5
+        }
+      };
+    }
+  }, {
     key: 'getCustomEventNames',
     value: function getCustomEventNames() {
       return [];
@@ -1062,7 +1080,7 @@ var AbstractChart = function () {
       options[_key - 1] = arguments[_key];
     }
 
-    var mergedOptions = deepExtend.apply(undefined, [{}, AbstractChart.DEFAULT_OPTIONS].concat(options));
+    var mergedOptions = deepExtend.apply(undefined, [this.constructor.getDefaultOptions()].concat(options));
 
     this._state = {
       width: mergedOptions.initialWidth,
@@ -1356,29 +1374,16 @@ var AbstractChart = function () {
   return AbstractChart;
 }();
 
-AbstractChart.DEFAULT_OPTIONS = {
-  initialWidth: 720,
-  initialHeight: 500,
-  margin: {
-    top: 30,
-    right: 30,
-    bottom: 30,
-    left: 30
-  },
-  offset: {
-    x: 0.5,
-    y: 0.5
-  }
-};
-
 AbstractChart.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
 var CanvasChart = function (_AbstractChart) {
   inherits(CanvasChart, _AbstractChart);
   createClass(CanvasChart, null, [{
-    key: 'getCustomEventNames',
-    value: function getCustomEventNames() {
-      return [];
+    key: 'getDefaultOptions',
+    value: function getDefaultOptions() {
+      return deepExtend(get(Object.getPrototypeOf(CanvasChart), 'getDefaultOptions', this).call(this), {
+        pixelRatio: window.devicePixelRatio
+      });
     }
   }]);
 
@@ -1391,7 +1396,7 @@ var CanvasChart = function (_AbstractChart) {
       options[_key - 1] = arguments[_key];
     }
 
-    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasChart)).call.apply(_Object$getPrototypeO, [this, selector, CanvasChart.DEFAULT_OPTIONS].concat(options)));
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
 
     _this.canvas = _this.container.append('canvas');
     _this.updateDimensionNow();
@@ -1444,10 +1449,6 @@ var CanvasChart = function (_AbstractChart) {
   }]);
   return CanvasChart;
 }(AbstractChart);
-
-CanvasChart.DEFAULT_OPTIONS = {
-  pixelRatio: window.devicePixelRatio
-};
 
 // EXAMPLE USAGE:
 //
@@ -1542,12 +1543,6 @@ function LayerOrganizer (mainContainer) {
 
 var SvgChart = function (_AbstractChart) {
   inherits(SvgChart, _AbstractChart);
-  createClass(SvgChart, null, [{
-    key: 'getCustomEventNames',
-    value: function getCustomEventNames() {
-      return [];
-    }
-  }]);
 
   function SvgChart(selector) {
     var _Object$getPrototypeO;
@@ -1558,7 +1553,7 @@ var SvgChart = function (_AbstractChart) {
       options[_key - 1] = arguments[_key];
     }
 
-    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector, SvgChart.DEFAULT_OPTIONS].concat(options)));
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
 
     _this.svg = _this.container.append('svg');
     _this.rootG = _this.svg.append('g');
@@ -1591,7 +1586,5 @@ var SvgChart = function (_AbstractChart) {
   }]);
   return SvgChart;
 }(AbstractChart);
-
-SvgChart.DEFAULT_OPTIONS = {};
 
 export { helper, AbstractChart, CanvasChart, SvgChart, LayerOrganizer };
