@@ -2,6 +2,10 @@
 
 ## v3.x.x
 
+### 3.1.0
+
+Change from using `DEFAULT_OPTIONS` variable to store default options to static function `.getDefaultOptions()` that creates and returns a new Object. This resolve issues when the value in the options is not plain Object (for example, a scale) and multiple chart instances try to access and modify the default value (scale).
+
 ### 3.0.0
 
 Rewrite the chart abstraction in es6 and split `Skeleton` into `SvgChart` and `CanvasChart`, both extends from `AbstractChart`. The resize/auto-resize logic are revisited and published as another library called `slimfit`. (d3Kit wraps and includes slimfit by default.)
