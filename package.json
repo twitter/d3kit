@@ -55,11 +55,12 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-istanbul": "^1.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "slimfit": "^0.4.1",
+    "slimfit": "^0.4.2",
     "uglifyjs": "^2.4.10"
   },
   "scripts": {
-    "gh-pages": "npm run build && gh-pages -d dist",
+    "rollup": "rollup -c",
+    "build": "npm run rollup && uglifyjs dist/d3kit.js -m -c > dist/d3kit.min.js",
     "test": "NODE_ENV=test karma start --single-run",
     "tdd": "NODE_ENV=test karma start",
     "eslint": "eslint --ignore-path .gitignore \"src/**/*.@(js|jsx)\"",
@@ -68,7 +69,6 @@
     "version": "npm run build && git add -A dist",
     "postversion": "git push ; git push --tags; pkgfiles",
     "prepublish": "pkgfiles",
-    "rollup": "rollup -c",
-    "build": "npm run rollup && uglifyjs dist/d3kit.js -m -c > dist/d3kit.min.js"
+    "gh-pages": "npm run build && gh-pages -d dist"
   }
 }

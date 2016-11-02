@@ -2,6 +2,11 @@
 
 ## v3.x.x
 
+### 3.1.1
+
+- Use existing `fitOptions` when calling `.fit()` with no argument.
+- Fix issue with fit watching when it does not resize as expected.
+
 ### 3.1.0
 
 Change from using `DEFAULT_OPTIONS` variable to store default options to static function `.getDefaultOptions()` that creates and returns a new Object. This resolve issues when the value in the options is not plain Object (for example, a scale) and multiple chart instances try to access and modify the default value (scale).
