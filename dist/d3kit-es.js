@@ -896,7 +896,7 @@ var Watcher = function () {
     var _ref$target = _ref.target;
     var target = _ref$target === undefined ? null : _ref$target;
     var _ref$interval = _ref.interval;
-    var interval = _ref$interval === undefined ? 500 : _ref$interval;
+    var interval = _ref$interval === undefined ? 200 : _ref$interval;
 
 
     if (mode === Watcher.MODE_POLLING && !target) {
@@ -1290,7 +1290,7 @@ var AbstractChart = function () {
       }
 
       // Fit once
-      var fitter = new Fitter(fitOptions);
+      var fitter = new Fitter(this._state.fitOptions);
 
       var _fitter$fit = fitter.fit(this.dimension(), this.container.node());
 
@@ -1308,7 +1308,12 @@ var AbstractChart = function () {
         if (this.fitWatcher) {
           this.fitWatcher.destroy();
         }
-        this.fitWatcher = new FitWatcher(this.dimension(), this.container.node(), this._state.fitOptions, isObject(watchOptions) ? watchOptions : null).on('change', function (dim) {
+        this.fitWatcher = new FitWatcher(
+        // pass getter instead of value
+        // because the value may change when time the watcher checks
+        function () {
+          return _this.dimension();
+        }, this.container.node(), this._state.fitOptions, isObject(watchOptions) ? watchOptions : null).on('change', function (dim) {
           return _this.dimension([dim.width, dim.height]);
         }).start();
       }
