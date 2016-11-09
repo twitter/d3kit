@@ -139,7 +139,7 @@ chart.rootG.append('circle')
 First create a chart by extending `SvgChart`.
 
 ```javascript
-import { SvgChart } from 'd3kit';
+import { SvgChart, helper } from 'd3kit';
 import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
 import { axisLeft, axisBottom } from 'd3-axis';
 import { extent } from 'd3-array';
@@ -147,7 +147,7 @@ import { extent } from 'd3-array';
 class SvgBubbleChart extends SvgChart {
   // Define default options for this chart
   static getDefaultOptions() {
-    return deepExtend(
+    return helper.deepExtend(
       super.getDefaultOptions(),
       {
 		  margin: {top: 60, right: 60, bottom: 60, left: 60},
@@ -281,14 +281,14 @@ ctx.fillRect(10, 10, 10, 10);
 #### B. Create a reusable chart
 
 ```javascript
-import { CanvasChart } from 'd3kit';
+import { CanvasChart, helper } from 'd3kit';
 import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
 import { extent } from 'd3-array';
 
 class CanvasBubbleChart extends CanvasChart {
   // Define default options for this chart
   static getDefaultOptions() {
-    return deepExtend(
+    return helper.deepExtend(
       super.getDefaultOptions(),
       {
 		  margin: {top: 60, right: 60, bottom: 60, left: 60},
