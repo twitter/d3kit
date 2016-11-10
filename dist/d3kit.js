@@ -1054,7 +1054,11 @@ var AbstractChart = function () {
   createClass(AbstractChart, null, [{
     key: 'getDefaultOptions',
     value: function getDefaultOptions() {
-      return {
+      for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
+        options[_key] = arguments[_key];
+      }
+
+      return deepExtend.apply(undefined, [{
         initialWidth: 720,
         initialHeight: 500,
         margin: {
@@ -1063,11 +1067,8 @@ var AbstractChart = function () {
           bottom: 30,
           left: 30
         },
-        offset: {
-          x: 0.5,
-          y: 0.5
-        }
-      };
+        offset: [0.5, 0.5]
+      }].concat(options));
     }
   }, {
     key: 'getCustomEventNames',
@@ -1079,8 +1080,8 @@ var AbstractChart = function () {
   function AbstractChart(selector) {
     classCallCheck(this, AbstractChart);
 
-    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      options[_key - 1] = arguments[_key];
+    for (var _len2 = arguments.length, options = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      options[_key2 - 1] = arguments[_key2];
     }
 
     var mergedOptions = deepExtend.apply(undefined, [this.constructor.getDefaultOptions()].concat(options));
@@ -1177,8 +1178,8 @@ var AbstractChart = function () {
   }, {
     key: 'data',
     value: function data() {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
       }
 
       if (args.length === 0) return this._state.data;
@@ -1208,12 +1209,19 @@ var AbstractChart = function () {
     key: 'offset',
     value: function offset() {
       if (arguments.length === 0) return this._state.options.offset;
-      var oldOffset = this._state.options.offset;
-      var newOffset = extend({}, this._state.offset, arguments.length <= 0 ? undefined : arguments[0]);
-      var changed = Object.keys(oldOffset).some(function (field) {
-        return oldOffset[field] !== newOffset[field];
-      });
-      if (changed) {
+      var newOffset = arguments.length <= 0 ? undefined : arguments[0];
+
+      var _state$options$offset = slicedToArray(this._state.options.offset, 2);
+
+      var ox = _state$options$offset[0];
+      var oy = _state$options$offset[1];
+
+      var _newOffset = slicedToArray(newOffset, 2);
+
+      var nx = _newOffset[0];
+      var ny = _newOffset[1];
+
+      if (ox !== nx || oy !== ny) {
         this._state.options.offset = newOffset;
         this._updateDimension();
         this._dispatchResize();
@@ -1223,8 +1231,8 @@ var AbstractChart = function () {
   }, {
     key: 'options',
     value: function options() {
-      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
+      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
       }
 
       if (args.length === 0) return this._state.options;
@@ -1420,10 +1428,15 @@ var CanvasChart = function (_AbstractChart) {
       var margin = _options.margin;
       var offset = _options.offset;
 
+      var _offset = slicedToArray(offset, 2);
+
+      var x = _offset[0];
+      var y = _offset[1];
+
       var ctx = this.canvas.node().getContext('2d');
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(pixelRatio, pixelRatio);
-      ctx.translate(margin.left + offset.x, margin.top + offset.y);
+      ctx.translate(margin.left + x, margin.top + y);
       return ctx;
     }
   }, {
@@ -1584,10 +1597,15 @@ var SvgChart = function (_AbstractChart) {
       var top = margin.top;
       var left = margin.left;
 
+      var _offset = slicedToArray(offset, 2);
+
+      var x = _offset[0];
+      var y = _offset[1];
+
 
       this.svg.attr('width', width).attr('height', height);
 
-      this.rootG.attr('transform', 'translate(' + (left + offset.x) + ',' + (top + offset.y) + ')');
+      this.rootG.attr('transform', 'translate(' + (left + x) + ',' + (top + y) + ')');
 
       return this;
     }
