@@ -20,12 +20,13 @@ class CanvasChart extends AbstractChart {
 
   getContext2d() {
     const { pixelRatio, margin, offset } = this.options();
+    const [x, y] = offset;
     const ctx = this.canvas.node().getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
     ctx.scale(pixelRatio, pixelRatio);
     ctx.translate(
-      margin.left + offset.x,
-      margin.top + offset.y
+      margin.left + x,
+      margin.top + y
     );
     return ctx;
   }

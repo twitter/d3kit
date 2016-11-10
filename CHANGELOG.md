@@ -2,6 +2,9 @@
 
 ## v3.x.x
 
+### 3.1.2
+- Revert `options.offset` format from object `{ x, y }` to array `[x, y]` for consistency with v1-2.
+
 ### 3.1.1
 
 - Use existing `fitOptions` when calling `.fit()` with no argument.

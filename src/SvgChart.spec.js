@@ -44,7 +44,7 @@ describe('SvgChart', () => {
     it('should update the root <g> transform/translate', () => {
       chart
         .margin({ left: 30, top: 30 })
-        .offset({ x: 0.5, y: 0.5 })
+        .offset([0.5, 0.5])
         .margin({ left: 10, top: 10 })
         .updateDimensionNow();
 
@@ -56,9 +56,9 @@ describe('SvgChart', () => {
   describe('.offset(offset)', () => {
     it('should update the root <g> transform/translate', () => {
       chart
-        .offset({ x: 0.5, y: 0.5 })
+        .offset([0.5, 0.5])
         .margin({ left: 10, top: 10 })
-        .offset({ x: 2, y: 3 })
+        .offset([2, 3])
         .updateDimensionNow();
       const translate = chart.rootG.attr('transform');
       expect(translate).to.equal('translate(12,13)');

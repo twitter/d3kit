@@ -150,15 +150,15 @@ describe('AbstractChart', () => {
 
   describe('.offset(offset)', () => {
     it('should return offset when called without argument', () => {
-      const offset = { x: 1, y: 1 };
+      const offset = [1, 1];
       chart.offset(offset);
       expect(chart.offset()).to.deep.equal(offset);
     });
     it('should set offset when called with at least one argument', () => {
       chart
-        .offset({ x: 1, y: 1 })
-        .offset({ x: 2, y: 3 });
-      expect(chart.offset()).to.deep.equal({ x: 2, y: 3 });
+        .offset([1, 1])
+        .offset([2, 3]);
+      expect(chart.offset()).to.deep.equal([2, 3]);
     });
   });
 

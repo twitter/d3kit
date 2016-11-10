@@ -5,8 +5,8 @@ import Fitter from 'slimfit/src/Fitter.js';
 import { debounce, deepExtend, extend, isObject } from './helper.js';
 
 class AbstractChart {
-  static getDefaultOptions() {
-    return {
+  static getDefaultOptions(...options) {
+    return deepExtend({
       initialWidth: 720,
       initialHeight: 500,
       margin: {
@@ -15,11 +15,8 @@ class AbstractChart {
         bottom: 30,
         left: 30,
       },
-      offset: {
-        x: 0.5,
-        y: 0.5,
-      },
-    };
+      offset: [0.5, 0.5],
+    }, ...options);
   }
 
   static getCustomEventNames() {
@@ -129,11 +126,10 @@ class AbstractChart {
 
   offset(...args) {
     if (args.length === 0) return this._state.options.offset;
-    const oldOffset = this._state.options.offset;
-    const newOffset = extend({}, this._state.offset, args[0]);
-    const changed = Object.keys(oldOffset)
-      .some(field => oldOffset[field] !== newOffset[field]);
-    if (changed) {
+    const newOffset = args[0];
+    const [ox, oy] = this._state.options.offset;
+    const [nx, ny] = newOffset;
+    if (ox !== nx || oy !== ny) {
       this._state.options.offset = newOffset;
       this._updateDimension();
       this._dispatchResize();

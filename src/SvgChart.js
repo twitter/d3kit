@@ -17,6 +17,7 @@ class SvgChart extends AbstractChart {
     const { width, height } = this._state;
     const { offset, margin } = this._state.options;
     const { top, left } = margin;
+    const [x, y] = offset;
 
     this.svg
       .attr('width', width)
@@ -24,7 +25,7 @@ class SvgChart extends AbstractChart {
 
     this.rootG.attr(
       'transform',
-      `translate(${left + offset.x},${top + offset.y})`
+      `translate(${left + x},${top + y})`
     );
 
     return this;

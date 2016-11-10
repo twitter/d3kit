@@ -108,7 +108,7 @@ const chart = new SvgChart('#chart0', {
   initialWidth: 720,
   initialHeight: 500,
   margin: { top: 30, right: 30, bottom: 30, left: 30 },
-  offset: { x: 0.5, y: 0.5 } // add little offset for sharp-edge rendering
+  offset: [0.5, 0.5] // add little offset for sharp-edge rendering
 });
 ```
 
