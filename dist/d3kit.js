@@ -1463,7 +1463,7 @@ var CanvasChart = function (_AbstractChart) {
       var pixelRatio = this._state.options.pixelRatio;
 
 
-      this.canvas.style('width', width).style('height', height).attr('width', width * pixelRatio).attr('height', height * pixelRatio);
+      this.canvas.style('width', width + 'px').style('height', height + 'px').attr('width', width * pixelRatio).attr('height', height * pixelRatio);
 
       return this;
     }
