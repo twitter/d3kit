@@ -2,6 +2,9 @@
 
 ## v3.x.x
 
+### 3.1.3
+- Fix issue with CanvasChart when setting style `width` and `height` by adding `'px'`.
+
 ### 3.1.2
 - Revert `options.offset` format from object `{ x, y }` to array `[x, y]` for consistency with v1-2.
 
