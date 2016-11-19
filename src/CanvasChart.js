@@ -47,8 +47,8 @@ class CanvasChart extends AbstractChart {
     const { pixelRatio } = this._state.options;
 
     this.canvas
-      .style('width', width)
-      .style('height', height)
+      .style('width', `${width}px`)
+      .style('height', `${height}px`)
       .attr('width', width * pixelRatio)
       .attr('height', height * pixelRatio);
 
