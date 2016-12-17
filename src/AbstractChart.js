@@ -57,8 +57,9 @@ class AbstractChart {
 
   addPlate(plate, doNotAppend) {
     this._plates.push(plate);
-    if(doNotAppend) return select(plate);
-    return this.container.append(() => plate.getNode());
+    if(doNotAppend) return plate;
+    this.container.append(() => plate.getNode());
+    return plate;
   }
 
   setupDispatcher(customEventNames = []) {

@@ -5,8 +5,8 @@ class SvgPlate {
   constructor(chart) {
     this.chart = chart;
     this.node = document.createElement('svg');
-    this.svg = select(this.node);
-    this.rootG = this.svg.append('g');
+    this.selection = select(this.node);
+    this.rootG = this.selection.append('g');
     this.layers = new LayerOrganizer(this.rootG);
   }
 
@@ -14,13 +14,17 @@ class SvgPlate {
     return this.node;
   }
 
+  getSelection() {
+    return this.selection;
+  }
+
   updateDimension() {
     const { width, height } = this.chart._state;
-    const { offset, margin } = this.chart._state.options;
+    const { offset, margin } = this.chart.options();
     const { top, left } = margin;
     const [x, y] = offset;
 
-    this.svg
+    this.selection
       .attr('width', width)
       .attr('height', height);
 

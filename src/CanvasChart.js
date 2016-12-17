@@ -15,8 +15,8 @@ class CanvasChart extends AbstractChart {
   constructor(selector, ...options) {
     super(selector, ...options);
 
-    const canvasPlate = new CanvasPlate(this);
-    this.canvas = this.addPlate(canvasPlate);
+    this.canvasPlate = this.addPlate(new CanvasPlate(this));
+    this.canvas = this.canvasPlate.getSelection();
     this.updateDimensionNow();
   }
 

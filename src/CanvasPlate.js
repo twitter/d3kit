@@ -1,11 +1,18 @@
+import { select } from 'd3-selection';
+
 class CanvasPlate {
   constructor(chart) {
     this.chart = chart;
     this.node = document.createElement('canvas');
+    this.selection = select(this.node);
   }
 
   getNode() {
     return this.node;
+  }
+
+  getSelection() {
+    return this.selection;
   }
 
   getContext2d() {
