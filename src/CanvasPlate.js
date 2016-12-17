@@ -7,7 +7,7 @@ class CanvasPlate extends AbstractPlate {
   }
 
   getContext2d() {
-    const { pixelRatio = window.devicePixelRatio, margin, offset } = this._state.options;
+    const { pixelRatio, margin, offset } = this._state.options;
     const [x, y] = offset;
     const ctx = this.node.getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
@@ -28,10 +28,10 @@ class CanvasPlate extends AbstractPlate {
     return this;
   }
 
-  updateDimension(parentPlate) {
-    super.updateDimension(parentPlate);
-    if (parentPlate) {
-      this._state.options.pixelRatio = parentPlate._state.options.pixelRatio || window.devicePixelRatio;
+  updateDimension(parent) {
+    super.updateDimension(parent);
+    if (parent) {
+      this._state.options.pixelRatio = parent._state.options.pixelRatio || window.devicePixelRatio;
     }
 
     const { width, height } = this._state;

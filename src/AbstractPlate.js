@@ -28,10 +28,10 @@ class AbstractPlate {
     return this.selection;
   }
 
-  updateDimension(parentPlate) {
-    if (parentPlate) {
-      const { width, height } = parentPlate._state;
-      const { offset, margin } = parentPlate._state.options;
+  updateDimension(parent) {
+    if (parent) {
+      const { width, height } = parent._state;
+      const { offset, margin } = parent._state.options;
       this._state.width = width;
       this._state.height = height;
       this._state.options.offset = offset.concat();
