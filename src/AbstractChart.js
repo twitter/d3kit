@@ -39,6 +39,8 @@ class AbstractChart {
       data: null,
     };
 
+    this._plates = [];
+
     this.container = select(selector);
     // Enforce line-height = 0 to fix issue with height resizing
     // https://github.com/twitter/d3kit/issues/13
@@ -51,6 +53,12 @@ class AbstractChart {
     this._dispatchOptions = debounce(this._dispatchOptions.bind(this), 1);
     this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
     this._updateDimension = debounce(this._updateDimension.bind(this), 1);
+  }
+
+  addPlate(plate, doNotAppend) {
+    this._plates.push(plate);
+    if(doNotAppend) return select(plate);
+    return this.container.append(() => plate.getNode());
   }
 
   setupDispatcher(customEventNames = []) {
@@ -158,6 +166,8 @@ class AbstractChart {
 
     this._state.innerWidth = width - left - right;
     this._state.innerHeight = height - top - bottom;
+
+    this._plates.forEach(plate => plate.updateDimension());
 
     return this;
   }

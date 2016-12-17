@@ -97,6 +97,7 @@ describe('SvgChart', () => {
         .height(300)
         .updateDimensionNow();
       expect(+chart2.svg.attr('height')).to.equal(300);
+      console.log('???', +chart2.container.node().clientHeight);
       expect(+chart2.container.node().clientHeight).to.equal(300);
       expect(+element2.style.lineHeight).to.equal(0);
     });
