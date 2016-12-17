@@ -2,42 +2,23 @@ import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
 import FitWatcher from 'slimfit/src/FitWatcher.js';
 import Fitter from 'slimfit/src/Fitter.js';
+import Box from '../Box.js';
 import { debounce, deepExtend, extend, isObject } from '../helper.js';
 
-class AbstractChart {
-  static getDefaultOptions(...options) {
-    return deepExtend({
-      initialWidth: 720,
-      initialHeight: 500,
-      margin: {
-        top: 30,
-        right: 30,
-        bottom: 30,
-        left: 30,
-      },
-      offset: [0.5, 0.5],
-    }, ...options);
-  }
-
+class AbstractChart extends Box {
   static getCustomEventNames() {
     return [];
   }
 
   constructor(selector, ...options) {
-    const mergedOptions = deepExtend(
-      this.constructor.getDefaultOptions(),
-      ...options
-    );
+    super(...options);
 
-    this._state = {
-      width: mergedOptions.initialWidth,
-      height: mergedOptions.initialHeight,
+    extend(this._state, {
       innerWidth: 0,
       innerHeight: 0,
       fitOptions: null,
-      options: mergedOptions,
       data: null,
-    };
+    })
 
     this._plates = [];
 
@@ -52,7 +33,6 @@ class AbstractChart {
     this._dispatchData = debounce(this._dispatchData.bind(this), 1);
     this._dispatchOptions = debounce(this._dispatchOptions.bind(this), 1);
     this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
-    this._updateDimension = debounce(this._updateDimension.bind(this), 1);
   }
 
   addPlate(plate, doNotAppend) {
@@ -80,69 +60,11 @@ class AbstractChart {
     return this._state.innerHeight;
   }
 
-  width(...args) {
-    if (args.length === 0) return this._state.width;
-    const newValue = Math.floor(+args[0]);
-    if (newValue !== this._state.width) {
-      this._state.width = newValue;
-      this._updateDimension();
-      this._dispatchResize();
-    }
-    return this;
-  }
-
-  height(...args) {
-    if (args.length === 0) return this._state.height;
-    const newValue = Math.floor(+args[0]);
-    if (newValue !== this._state.height) {
-      this._state.height = newValue;
-      this._updateDimension();
-      this._dispatchResize();
-    }
-    return this;
-  }
-
-  dimension(...args) {
-    if (args.length === 0) {
-      return [this._state.width, this._state.height];
-    }
-    const [w, h] = args[0];
-    this.width(w).height(h);
-    return this;
-  }
-
   data(...args) {
     if (args.length === 0) return this._state.data;
     const [newData] = args;
     this._state.data = newData;
     this._dispatchData();
-    return this;
-  }
-
-  margin(...args) {
-    if (args.length === 0) return this._state.options.margin;
-    const oldMargin = this._state.options.margin;
-    const newMargin = extend({}, this._state.options.margin, args[0]);
-    const changed = Object.keys(oldMargin)
-      .some(field => oldMargin[field] !== newMargin[field]);
-    if (changed) {
-      this._state.options.margin = newMargin;
-      this._updateDimension();
-      this._dispatchResize();
-    }
-    return this;
-  }
-
-  offset(...args) {
-    if (args.length === 0) return this._state.options.offset;
-    const newOffset = args[0];
-    const [ox, oy] = this._state.options.offset;
-    const [nx, ny] = newOffset;
-    if (ox !== nx || oy !== ny) {
-      this._state.options.offset = newOffset;
-      this._updateDimension();
-      this._dispatchResize();
-    }
     return this;
   }
 
@@ -169,15 +91,10 @@ class AbstractChart {
     this._state.innerHeight = height - top - bottom;
 
     this._plates.forEach(plate => {
-      plate.updateDimension(this);
+      plate.copyDimension(this)
+        .updateDimensionNow();
     });
 
-    return this;
-  }
-
-  updateDimensionNow() {
-    this._updateDimension();
-    this._updateDimension.flush();
     return this;
   }
 

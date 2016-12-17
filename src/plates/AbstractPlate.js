@@ -16,10 +16,6 @@ class AbstractPlate extends Box {
   getSelection() {
     return this.selection;
   }
-
-  updateDimension(parent) {
-    this.copyDimension(parent);
-  }
 }
 
 export default AbstractPlate;

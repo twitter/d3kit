@@ -3,15 +3,6 @@ import CanvasPlate from '../plates/CanvasPlate.js';
 import { deepExtend } from '../helper.js';
 
 class CanvasChart extends AbstractChart {
-  static getDefaultOptions() {
-    return deepExtend(
-      super.getDefaultOptions(),
-      {
-        pixelRatio: window.devicePixelRatio,
-      }
-    );
-  }
-
   constructor(selector, ...options) {
     super(selector, ...options);
 

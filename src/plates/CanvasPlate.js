@@ -1,41 +1,40 @@
 import AbstractPlate from './AbstractPlate.js';
 
 class CanvasPlate extends AbstractPlate {
-  constructor() {
-    super(document.createElement('canvas'));
-    this._state.options.pixelRatio = window.devicePixelRatio;
+  constructor(...options) {
+    super(document.createElement('canvas'), ...options);
   }
 
   getContext2d() {
-    const { pixelRatio, margin, offset } = this._state.options;
-    const [x, y] = offset;
+    const width = this.width();
+    const height = this.height();
+    const pixelRatio = this.pixelRatio();
+    const { top, left } = this.margin();
+    const [x, y] = this.offset();
+
     const ctx = this.node.getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
     ctx.scale(pixelRatio, pixelRatio);
-    ctx.translate(
-      margin.left + x,
-      margin.top + y
-    );
+    ctx.translate(left + x, top + y);
     return ctx;
   }
 
   clear() {
-    const { pixelRatio } = this._state.options;
+    const width = this.width();
+    const height = this.height();
+    const pixelRatio = this.pixelRatio();
+
     const ctx = this.node.getContext('2d');
     ctx.setTransform(1,0,0,1,0,0);
     ctx.scale(pixelRatio, pixelRatio);
-    ctx.clearRect(0, 0, this._state.width, this._state.height);
+    ctx.clearRect(0, 0, width, height);
     return this;
   }
 
-  updateDimension(parent) {
-    super.updateDimension(parent);
-    if (parent) {
-      this._state.options.pixelRatio = parent._state.options.pixelRatio || window.devicePixelRatio;
-    }
-
-    const { width, height } = this._state;
-    const { pixelRatio } = this._state.options;
+  _updateDimension() {
+    const width = this.width();
+    const height = this.height();
+    const pixelRatio = this.pixelRatio();
 
     this.node.setAttribute('width', width * pixelRatio);
     this.node.setAttribute('height', height * pixelRatio);
