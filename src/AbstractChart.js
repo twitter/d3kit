@@ -168,7 +168,9 @@ class AbstractChart {
     this._state.innerWidth = width - left - right;
     this._state.innerHeight = height - top - bottom;
 
-    this._plates.forEach(plate => plate.updateDimension());
+    this._plates.forEach(plate => {
+      plate.updateDimension(this);
+    });
 
     return this;
   }

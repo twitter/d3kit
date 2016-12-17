@@ -1,26 +1,18 @@
-import { select } from 'd3-selection';
+import AbstractPlate from './AbstractPlate.js';
 import LayerOrganizer from './layerOrganizer.js';
 
-class SvgPlate {
-  constructor(chart) {
-    this.chart = chart;
-    this.node = document.createElement('svg');
-    this.selection = select(this.node);
+class SvgPlate extends AbstractPlate {
+  constructor() {
+    super(document.createElementNS('http://www.w3.org/2000/svg', 'svg'));
     this.rootG = this.selection.append('g');
     this.layers = new LayerOrganizer(this.rootG);
   }
 
-  getNode() {
-    return this.node;
-  }
+  updateDimension(...args) {
+    super.updateDimension(...args);
 
-  getSelection() {
-    return this.selection;
-  }
-
-  updateDimension() {
-    const { width, height } = this.chart._state;
-    const { offset, margin } = this.chart.options();
+    const { width, height } = this._state;
+    const { offset, margin } = this._state.options;
     const { top, left } = margin;
     const [x, y] = offset;
 

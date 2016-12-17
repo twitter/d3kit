@@ -5,7 +5,7 @@ class SvgChart extends AbstractChart {
   constructor(selector, ...options) {
     super(selector, ...options);
 
-    const plate = this.addPlate(new SvgPlate(this));
+    const plate = this.addPlate(new SvgPlate());
     this.svg = plate.getSelection();
     this.rootG = plate.rootG;
     this.layers = plate.layers;
