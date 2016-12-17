@@ -77,6 +77,9 @@ class AbstractChart extends Box {
     if (newOptions.offset) {
       this.offset(newOptions.offset);
     }
+    if (newOptions.pixelRatio) {
+      this.pixelRatio(newOptions.pixelRatio);
+    }
     this._state.options = deepExtend(this._state.options, newOptions);
     this._dispatchOptions();
     return this;
