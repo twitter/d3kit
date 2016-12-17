@@ -1,5 +1,5 @@
 import AbstractChart from './AbstractChart.js';
-import SvgPlate from './SvgPlate.js';
+import SvgPlate from '../plates/SvgPlate.js';
 
 class SvgChart extends AbstractChart {
   constructor(selector, ...options) {

@@ -1,6 +1,6 @@
 import AbstractChart from './AbstractChart.js';
-import CanvasPlate from './CanvasPlate.js';
-import { deepExtend } from './helper.js';
+import CanvasPlate from '../plates/CanvasPlate.js';
+import { deepExtend } from '../helper.js';
 
 class CanvasChart extends AbstractChart {
   static getDefaultOptions() {

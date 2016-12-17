@@ -1093,6 +1093,8 @@ var AbstractChart = function () {
       data: null
     };
 
+    this._plates = [];
+
     this.container = select(selector);
     // Enforce line-height = 0 to fix issue with height resizing
     // https://github.com/twitter/d3kit/issues/13
@@ -1108,6 +1110,16 @@ var AbstractChart = function () {
   }
 
   createClass(AbstractChart, [{
+    key: 'addPlate',
+    value: function addPlate(plate, doNotAppend) {
+      this._plates.push(plate);
+      if (doNotAppend) return plate;
+      this.container.append(function () {
+        return plate.getNode();
+      });
+      return plate;
+    }
+  }, {
     key: 'setupDispatcher',
     value: function setupDispatcher() {
       var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
@@ -1248,6 +1260,8 @@ var AbstractChart = function () {
   }, {
     key: '_updateDimension',
     value: function _updateDimension() {
+      var _this = this;
+
       var _state = this._state;
       var width = _state.width;
       var height = _state.height;
@@ -1260,6 +1274,10 @@ var AbstractChart = function () {
 
       this._state.innerWidth = width - left - right;
       this._state.innerHeight = height - top - bottom;
+
+      this._plates.forEach(function (plate) {
+        plate.updateDimension(_this);
+      });
 
       return this;
     }
@@ -1289,7 +1307,7 @@ var AbstractChart = function () {
   }, {
     key: 'fit',
     value: function fit(fitOptions) {
-      var _this = this;
+      var _this2 = this;
 
       var watchOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
@@ -1320,9 +1338,9 @@ var AbstractChart = function () {
         // pass getter instead of value
         // because the value may change when time the watcher checks
         function () {
-          return _this.dimension();
+          return _this2.dimension();
         }, this.container.node(), this._state.fitOptions, isObject(watchOptions) ? watchOptions : null).on('change', function (dim) {
-          return _this.dimension([dim.width, dim.height]);
+          return _this2.dimension([dim.width, dim.height]);
         }).start();
       }
 
@@ -1376,10 +1394,10 @@ var AbstractChart = function () {
   }, {
     key: 'destroy',
     value: function destroy() {
-      var _this2 = this;
+      var _this3 = this;
 
       this._eventNames.forEach(function (name) {
-        _this2.off(name);
+        _this3.off(name);
       });
       this.stopFitWatcher();
     }
@@ -1388,6 +1406,125 @@ var AbstractChart = function () {
 }();
 
 AbstractChart.DEFAULT_EVENTS = ['data', 'options', 'resize'];
+
+var AbstractPlate = function () {
+  function AbstractPlate(node) {
+    classCallCheck(this, AbstractPlate);
+
+    this._state = {
+      width: 720,
+      height: 500,
+      options: {
+        margin: {
+          top: 30,
+          right: 30,
+          bottom: 30,
+          left: 30
+        },
+        offset: [0.5, 0.5]
+      }
+    };
+    this.node = node;
+    this.selection = select(this.node);
+  }
+
+  createClass(AbstractPlate, [{
+    key: 'getNode',
+    value: function getNode() {
+      return this.node;
+    }
+  }, {
+    key: 'getSelection',
+    value: function getSelection() {
+      return this.selection;
+    }
+  }, {
+    key: 'updateDimension',
+    value: function updateDimension(parent) {
+      if (parent) {
+        var _parent$_state = parent._state;
+        var width = _parent$_state.width;
+        var height = _parent$_state.height;
+        var _parent$_state$option = parent._state.options;
+        var offset = _parent$_state$option.offset;
+        var margin = _parent$_state$option.margin;
+
+        this._state.width = width;
+        this._state.height = height;
+        this._state.options.offset = offset.concat();
+        extend(this._state.options.margin, margin);
+      }
+    }
+  }]);
+  return AbstractPlate;
+}();
+
+var CanvasPlate = function (_AbstractPlate) {
+  inherits(CanvasPlate, _AbstractPlate);
+
+  function CanvasPlate() {
+    classCallCheck(this, CanvasPlate);
+
+    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(CanvasPlate).call(this, document.createElement('canvas')));
+
+    _this._state.options.pixelRatio = window.devicePixelRatio;
+    return _this;
+  }
+
+  createClass(CanvasPlate, [{
+    key: 'getContext2d',
+    value: function getContext2d() {
+      var _state$options = this._state.options;
+      var pixelRatio = _state$options.pixelRatio;
+      var margin = _state$options.margin;
+      var offset = _state$options.offset;
+
+      var _offset = slicedToArray(offset, 2);
+
+      var x = _offset[0];
+      var y = _offset[1];
+
+      var ctx = this.node.getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.translate(margin.left + x, margin.top + y);
+      return ctx;
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      var pixelRatio = this._state.options.pixelRatio;
+
+      var ctx = this.node.getContext('2d');
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(pixelRatio, pixelRatio);
+      ctx.clearRect(0, 0, this._state.width, this._state.height);
+      return this;
+    }
+  }, {
+    key: 'updateDimension',
+    value: function updateDimension(parent) {
+      get(Object.getPrototypeOf(CanvasPlate.prototype), 'updateDimension', this).call(this, parent);
+      if (parent) {
+        this._state.options.pixelRatio = parent._state.options.pixelRatio || window.devicePixelRatio;
+      }
+
+      var _state = this._state;
+      var width = _state.width;
+      var height = _state.height;
+      var pixelRatio = this._state.options.pixelRatio;
+
+
+      this.node.setAttribute('width', width * pixelRatio);
+      this.node.setAttribute('height', height * pixelRatio);
+      this.node.style.width = width + 'px';
+      this.node.style.height = height + 'px';
+
+      return this;
+    }
+  }]);
+  return CanvasPlate;
+}(AbstractPlate);
 
 var CanvasChart = function (_AbstractChart) {
   inherits(CanvasChart, _AbstractChart);
@@ -1411,7 +1548,8 @@ var CanvasChart = function (_AbstractChart) {
 
     var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
 
-    _this.canvas = _this.container.append('canvas');
+    _this.canvasPlate = _this.addPlate(new CanvasPlate());
+    _this.canvas = _this.canvasPlate.getSelection();
     _this.updateDimensionNow();
     return _this;
   }
@@ -1419,49 +1557,12 @@ var CanvasChart = function (_AbstractChart) {
   createClass(CanvasChart, [{
     key: 'getContext2d',
     value: function getContext2d() {
-      var _options = this.options();
-
-      var pixelRatio = _options.pixelRatio;
-      var margin = _options.margin;
-      var offset = _options.offset;
-
-      var _offset = slicedToArray(offset, 2);
-
-      var x = _offset[0];
-      var y = _offset[1];
-
-      var ctx = this.canvas.node().getContext('2d');
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(pixelRatio, pixelRatio);
-      ctx.translate(margin.left + x, margin.top + y);
-      return ctx;
+      return this.canvasPlate.getContext2d();
     }
   }, {
     key: 'clear',
     value: function clear() {
-      var _options2 = this.options();
-
-      var pixelRatio = _options2.pixelRatio;
-
-      var ctx = this.canvas.node().getContext('2d');
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(pixelRatio, pixelRatio);
-      ctx.clearRect(0, 0, this.width(), this.height());
-      return this;
-    }
-  }, {
-    key: '_updateDimension',
-    value: function _updateDimension() {
-      get(Object.getPrototypeOf(CanvasChart.prototype), '_updateDimension', this).call(this);
-
-      var _state = this._state;
-      var width = _state.width;
-      var height = _state.height;
-      var pixelRatio = this._state.options.pixelRatio;
-
-
-      this.canvas.style('width', width + 'px').style('height', height + 'px').attr('width', width * pixelRatio).attr('height', height * pixelRatio);
-
+      this.canvasPlate.clear();
       return this;
     }
   }]);
@@ -1559,31 +1660,29 @@ function LayerOrganizer (mainContainer) {
   };
 }
 
-var SvgChart = function (_AbstractChart) {
-  inherits(SvgChart, _AbstractChart);
+var SvgPlate = function (_AbstractPlate) {
+  inherits(SvgPlate, _AbstractPlate);
 
-  function SvgChart(selector) {
-    var _Object$getPrototypeO;
+  function SvgPlate() {
+    classCallCheck(this, SvgPlate);
 
-    classCallCheck(this, SvgChart);
+    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(SvgPlate).call(this, document.createElementNS('http://www.w3.org/2000/svg', 'svg')));
 
-    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      options[_key - 1] = arguments[_key];
-    }
-
-    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
-
-    _this.svg = _this.container.append('svg');
-    _this.rootG = _this.svg.append('g');
+    _this.rootG = _this.selection.append('g');
     _this.layers = new LayerOrganizer(_this.rootG);
-    _this.updateDimensionNow();
     return _this;
   }
 
-  createClass(SvgChart, [{
-    key: '_updateDimension',
-    value: function _updateDimension() {
-      get(Object.getPrototypeOf(SvgChart.prototype), '_updateDimension', this).call(this);
+  createClass(SvgPlate, [{
+    key: 'updateDimension',
+    value: function updateDimension() {
+      var _babelHelpers$get;
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      (_babelHelpers$get = get(Object.getPrototypeOf(SvgPlate.prototype), 'updateDimension', this)).call.apply(_babelHelpers$get, [this].concat(args));
 
       var _state = this._state;
       var width = _state.width;
@@ -1600,14 +1699,39 @@ var SvgChart = function (_AbstractChart) {
       var y = _offset[1];
 
 
-      this.svg.attr('width', width).attr('height', height);
+      this.selection.attr('width', width).attr('height', height);
 
       this.rootG.attr('transform', 'translate(' + (left + x) + ',' + (top + y) + ')');
 
       return this;
     }
   }]);
+  return SvgPlate;
+}(AbstractPlate);
+
+var SvgChart = function (_AbstractChart) {
+  inherits(SvgChart, _AbstractChart);
+
+  function SvgChart(selector) {
+    var _Object$getPrototypeO;
+
+    classCallCheck(this, SvgChart);
+
+    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      options[_key - 1] = arguments[_key];
+    }
+
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
+
+    var plate = _this.addPlate(new SvgPlate());
+    _this.svg = plate.getSelection();
+    _this.rootG = plate.rootG;
+    _this.layers = plate.layers;
+    _this.updateDimensionNow();
+    return _this;
+  }
+
   return SvgChart;
 }(AbstractChart);
 
-export { helper, AbstractChart, CanvasChart, SvgChart, LayerOrganizer };
+export { helper, AbstractChart, CanvasChart, SvgChart, AbstractPlate, CanvasPlate, SvgPlate, LayerOrganizer };

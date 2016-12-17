@@ -2,7 +2,7 @@ import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
 import FitWatcher from 'slimfit/src/FitWatcher.js';
 import Fitter from 'slimfit/src/Fitter.js';
-import { debounce, deepExtend, extend, isObject } from './helper.js';
+import { debounce, deepExtend, extend, isObject } from '../helper.js';
 
 class AbstractChart {
   static getDefaultOptions(...options) {

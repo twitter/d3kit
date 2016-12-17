@@ -1,5 +1,5 @@
 import AbstractPlate from './AbstractPlate.js';
-import LayerOrganizer from './layerOrganizer.js';
+import LayerOrganizer from '../layerOrganizer.js';
 
 class SvgPlate extends AbstractPlate {
   constructor() {
