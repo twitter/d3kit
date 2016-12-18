@@ -12,10 +12,10 @@ class DivPlate extends AbstractPlate {
 
     this.node.style.width = `${width - margin.left - margin.right}px`;
     this.node.style.height = `${height - margin.top - margin.bottom}px`;
-    this.node.style.marginLeft = `${margin.left}`;
-    this.node.style.marginRight = `${margin.right}`;
-    this.node.style.marginTop = `${margin.top}`;
-    this.node.style.marginBottom = `${margin.bottom}`;
+    this.node.style.marginLeft = `${margin.left}px`;
+    this.node.style.marginRight = `${margin.right}px`;
+    this.node.style.marginTop = `${margin.top}px`;
+    this.node.style.marginBottom = `${margin.bottom}px`;
 
     return this;
   }
