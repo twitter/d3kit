@@ -6,17 +6,17 @@ class CanvasChart extends AbstractChart {
   constructor(selector, ...options) {
     super(selector, ...options);
 
-    this.canvasPlate = this.addPlate(new CanvasPlate());
-    this.canvas = this.canvasPlate.getSelection();
+    const plate = this.addPlate('canvas', new CanvasPlate());
+    this.canvas = plate.getSelection();
     this.updateDimensionNow();
   }
 
   getContext2d() {
-    return this.canvasPlate.getContext2d();
+    return this.plates.canvas.getContext2d();
   }
 
   clear() {
-    this.canvasPlate.clear();
+    this.plates.canvas.clear();
     return this;
   }
 }

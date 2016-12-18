@@ -18,9 +18,8 @@ class AbstractChart extends Box {
       innerHeight: 0,
       fitOptions: null,
       data: null,
-    })
-
-    this._plates = [];
+      plates: []
+    });
 
     this.container = select(selector);
     // Enforce line-height = 0 to fix issue with height resizing
@@ -33,6 +32,8 @@ class AbstractChart extends Box {
       .style('position', 'relative')
       .style('line-height', 0);
 
+    this.plates = {};
+
     const customEvents = this.constructor.getCustomEventNames();
     this.setupDispatcher(customEvents);
 
@@ -41,8 +42,9 @@ class AbstractChart extends Box {
     this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
   }
 
-  addPlate(plate, doNotAppend) {
-    this._plates.push(plate);
+  addPlate(name, plate, doNotAppend) {
+    this._state.plates.push(plate);
+    this.plates[name] = plate;
     if(doNotAppend) return plate;
     plate.getSelection().style('position', 'absolute');
     this.chartRoot.append(() => plate.getNode());
@@ -93,7 +95,7 @@ class AbstractChart extends Box {
   }
 
   _updateDimension() {
-    const { width, height } = this._state;
+    const { width, height, plates } = this._state;
     const { margin } = this._state.options;
     const { top, right, bottom, left } = margin;
 
@@ -104,7 +106,7 @@ class AbstractChart extends Box {
       .style('width', `${width}px`)
       .style('height', `${height}px`);
 
-    this._plates.forEach(plate => {
+    plates.forEach(plate => {
       plate.copyDimension(this)
         .updateDimensionNow();
     });

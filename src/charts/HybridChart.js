@@ -1,7 +1,7 @@
-import AbstractChart from './AbstractChart.js';
+import CanvasChart from './CanvasChart.js';
 import SvgPlate from '../plates/SvgPlate.js';
 
-class SvgChart extends AbstractChart {
+class HybridChart extends CanvasChart {
   constructor(selector, ...options) {
     super(selector, ...options);
 
@@ -13,4 +13,4 @@ class SvgChart extends AbstractChart {
   }
 }
 
-export default SvgChart;
+export default HybridChart;
