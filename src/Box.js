@@ -12,7 +12,7 @@ class Box {
         left: 30,
       },
       offset: [0.5, 0.5],
-      pixelRatio: window.devicePixelRatio,
+      pixelRatio: window.devicePixelRatio || 1,
     }, ...options);
   }
 
@@ -127,13 +127,15 @@ class Box {
   }
 
   _updateDimension() {
-    // Intentionally left empty
+    // Intentionally do nothing
     // Subclasses can override this function
+    return this;
   }
 
   _dispatchResize() {
-    // Intentionally left empty
+    // Intentionally do nothing
     // Subclasses can override this function
+    return this;
   }
 }
 

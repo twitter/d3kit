@@ -27,6 +27,12 @@ class AbstractChart extends Box {
     // https://github.com/twitter/d3kit/issues/13
     this.container.style('line-height', 0);
 
+    this.chartRoot = this.container.append('div')
+      .classed('d3kit-chart-root', true)
+      .style('display', 'inline-block')
+      .style('position', 'relative')
+      .style('line-height', 0);
+
     const customEvents = this.constructor.getCustomEventNames();
     this.setupDispatcher(customEvents);
 
@@ -38,7 +44,8 @@ class AbstractChart extends Box {
   addPlate(plate, doNotAppend) {
     this._plates.push(plate);
     if(doNotAppend) return plate;
-    this.container.append(() => plate.getNode());
+    plate.getSelection().style('position', 'absolute');
+    this.chartRoot.append(() => plate.getNode());
     return plate;
   }
 
@@ -92,6 +99,10 @@ class AbstractChart extends Box {
 
     this._state.innerWidth = width - left - right;
     this._state.innerHeight = height - top - bottom;
+
+    this.chartRoot
+      .style('width', `${width}px`)
+      .style('height', `${height}px`);
 
     this._plates.forEach(plate => {
       plate.copyDimension(this)
