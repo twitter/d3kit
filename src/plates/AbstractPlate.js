@@ -1,8 +1,8 @@
 import { select } from 'd3-selection';
 import { extend } from '../helper.js';
-import Box from '../Box.js';
+import Base from '../Base.js';
 
-class AbstractPlate extends Box {
+class AbstractPlate extends Base {
   constructor(node, ...options) {
     super(...options);
     this.node = node;

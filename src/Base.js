@@ -1,6 +1,6 @@
 import { debounce, deepExtend, extend } from './helper.js';
 
-class Box {
+class Base {
   static getDefaultOptions(...options) {
     return deepExtend({
       initialWidth: 720,
@@ -31,10 +31,10 @@ class Box {
     this._updateDimension = debounce(this._updateDimension.bind(this), 1);
   }
 
-  copyDimension(anotherBox) {
-    if (anotherBox) {
-      const { width, height } = anotherBox._state;
-      const { offset, margin, pixelRatio } = anotherBox._state.options;
+  copyDimension(another) {
+    if (another) {
+      const { width, height } = another._state;
+      const { offset, margin, pixelRatio } = another._state.options;
 
       deepExtend(this._state, {
         width,
@@ -139,4 +139,4 @@ class Box {
   }
 }
 
-export default Box;
+export default Base;

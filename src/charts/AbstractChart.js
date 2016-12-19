@@ -2,10 +2,10 @@ import { select } from 'd3-selection';
 import { dispatch } from 'd3-dispatch';
 import FitWatcher from 'slimfit/src/FitWatcher.js';
 import Fitter from 'slimfit/src/Fitter.js';
-import Box from '../Box.js';
+import Base from '../Base.js';
 import { debounce, deepExtend, extend, isObject } from '../helper.js';
 
-class AbstractChart extends Box {
+class AbstractChart extends Base {
   static getCustomEventNames() {
     return [];
   }
@@ -193,6 +193,13 @@ class AbstractChart extends Box {
   off(name) {
     this.dispatcher.on(name, null);
     return this;
+  }
+
+  dispatchAs(name) {
+    const self = this;
+    return function handler(...args) {
+      self.dispatcher.apply(name, this, args);
+    };
   }
 
   destroy() {
