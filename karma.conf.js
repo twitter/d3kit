@@ -17,7 +17,11 @@ module.exports = function (config) {
 
     // each file acts as entry point for the webpack configuration
     files: [
-      // all files ending in ".spec.js"
+      // Add the js files so it will trigger watch,
+      // but do not include them as tests
+      { pattern: 'src/**/*!(.spec).@(js|jsx)', included: false, served: false },
+      // Add all files ending in ".spec.js"
+      // These are the unit test files
       'src/**/*.spec.js'
     ],
 
