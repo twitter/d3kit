@@ -15,21 +15,21 @@ describe('HybridChart', () => {
     it('has a CanvasPlate accessible from this.plates.canvas', () => {
       expect(chart.plates.canvas).to.be.instanceof(CanvasPlate);
     });
-    it('should create <canvas> inside the element, accessible as chart.canvas', () => {
+    it('should create <canvas> inside the container, accessible as chart.canvas', () => {
       expect(chart.canvas).to.exist;
-      expect(chart.canvas.size()).to.be.equal(1);
+      expect(chart.container.select('canvas').node()).to.equal(chart.canvas.node());
     });
 
     it('has an SvgPlate accessible from this.plates.svg', () => {
       expect(chart.plates.svg).to.be.instanceof(SvgPlate);
     });
-    it('should create <svg> inside the element, accessible from chart.svg', () => {
+    it('should create <svg> inside the container, accessible from chart.svg', () => {
       expect(chart.svg).to.exist;
-      expect(chart.svg.size()).to.be.equal(1);
+      expect(chart.container.select('svg').node()).to.equal(chart.svg.node());
     });
     it('should create <g> inside the <svg> above, accessible as chart.rootG', () => {
       expect(chart.rootG).to.exist;
-      expect(chart.rootG.size()).to.be.equal(1);
+      expect(chart.svg.select('g').node()).to.equal(chart.rootG.node());
     });
   });
 

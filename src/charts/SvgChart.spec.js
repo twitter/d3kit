@@ -1,5 +1,6 @@
 import { select } from 'd3-selection';
 import SvgChart from './SvgChart.js';
+import SvgPlate from '../plates/SvgPlate.js';
 
 describe('SvgChart', () => {
   let element, $element, chart;
@@ -11,17 +12,16 @@ describe('SvgChart', () => {
   });
 
   describe('new SvgChart(element, options)', () => {
-    it('should create <svg> inside the element', () => {
-      expect($element.select('svg').size()).to.be.equal(1);
+    it('has an SvgPlate accessible from this.plates.svg', () => {
+      expect(chart.plates.svg).to.be.instanceof(SvgPlate);
     });
-    it('which is accessible from chart.svg', () => {
+    it('should create <svg> inside the container, accessible from chart.svg', () => {
       expect(chart.svg).to.exist;
+      expect(chart.container.select('svg').node()).to.equal(chart.svg.node());
     });
-    it('should create <g> inside the <svg> above', () => {
-      expect($element.select('svg').select('g').size()).to.be.equal(1);
-    });
-    it('which is accessible from chart.rootG', () => {
+    it('should create <g> inside the <svg> above, accessible as chart.rootG', () => {
       expect(chart.rootG).to.exist;
+      expect(chart.svg.select('g').node()).to.equal(chart.rootG.node());
     });
   });
 

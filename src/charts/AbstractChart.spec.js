@@ -84,10 +84,7 @@ describe('AbstractChart', () => {
       expect(chart.data()).to.equal('test');
     });
     it('after setting, should dispatch "data" event', done => {
-      chart.on('data.test', () => {
-        // This block should be reached to pass the test.
-        done();
-      });
+      chart.on('data.test', () => { done(); });
       chart.data({ a: 1 });
     });
   });
@@ -111,48 +108,32 @@ describe('AbstractChart', () => {
       expect(chart.options().b).to.equal(2);
     });
     it('should dispatch "resize" as necessary if margin was included in the options.', (done) => {
-      chart.on('resize.test', () => {
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('resize.test', () => { done(); });
       chart.options({
         margin: { top: 12 },
       });
     });
     it('should dispatch "resize" as necessary if offset was included in the options.', (done) => {
-      chart.on('resize.test', () => {
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('resize.test', () => { done(); });
       chart.options({
         offset: [4, 4],
       });
     });
     it('should dispatch "resize" as necessary if pixelRatio was included in the options.', (done) => {
-      chart.on('resize.test', () => {
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('resize.test', () => { done(); });
       chart.options({
         pixelRatio: 3,
       });
     });
     it('after setting, should dispatch "options" event', done => {
-      chart.on('options.test', () => {
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('options.test', () => { done(); });
       chart.options({ a: 1 });
     });
   });
 
   describe('.dimension(dimension)', () => {
     it('after setting, should dispatch "resize" event', done => {
-      chart.on('resize.test', () => {
-        // This block should be reached to pass the test.
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('resize.test', () => { done(); });
       chart.dimension([150, 150]);
     });
   });
@@ -175,22 +156,14 @@ describe('AbstractChart', () => {
       expect(chart.getInnerHeight()).to.equal(80);
     });
     it('after setting, should dispatch "resize" event', done => {
-      chart.on('resize.test', () => {
-        // This block should be reached to pass the test.
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('resize.test', () => { done(); });
       chart.margin({ left: 33 });
     });
   });
 
   describe('.offset(offset)', () => {
     it('after setting, should dispatch "resize" event', done => {
-      chart.on('resize.test', () => {
-        // This block should be reached to pass the test.
-        expect(true).to.be.true;
-        done();
-      });
+      chart.on('resize.test', () => { done(); });
       chart.offset([3, 3]);
     });
   });
@@ -198,17 +171,13 @@ describe('AbstractChart', () => {
   ['width', 'height', 'pixelRatio'].forEach(field => {
     describe(`.${field}(${field})`, () => {
       it('after setting, should dispatch "resize" event', done => {
-        chart.on('resize.test', () => {
-          // This block should be reached to pass the test.
-          expect(true).to.be.true;
-          done();
-        });
+        chart.on('resize.test', () => { done(); });
         chart[field](200);
       });
     });
   });
 
-  describe('fit(fitOptions)', () => {
+  describe('.fit(fitOptions)', () => {
     it('should fit the chart to container as instructed', () => {
       $element
         .style('width', '500px')
@@ -239,6 +208,17 @@ describe('AbstractChart', () => {
       chart.fit({
         width: '100%',
       }, true);
+    });
+
+    it('when watch is true, should update dimension if the container size has changed.', (done)=>{
+      chart.fit({
+        width: '100%',
+      }, true);
+      chart.container.node().style.width = '118px';
+      setTimeout(() => {
+        expect(chart.width()).to.equal(118);
+        done();
+      }, 100);
     });
   });
 
@@ -276,30 +256,25 @@ describe('AbstractChart', () => {
   });
 
   describe('.hasNonZeroArea()', () => {
-    it('should return true if innerWidth * innerHeight is more than zero', done => {
+    it('should return true if innerWidth * innerHeight is more than zero', () => {
       chart
         .width(80)
         .height(50)
         .options({
           margin: { top: 10, bottom: 20, left: 10, right: 10 },
-        });
-      setTimeout(() => {
-        expect(chart.hasNonZeroArea()).to.be.true;
-        done();
-      }, 0);
+        })
+        .updateDimensionNow();
+      expect(chart.hasNonZeroArea()).to.be.true;
     });
-    it('should return false otherwise', done => {
+    it('should return false otherwise', () => {
       chart
         .width(20)
         .height(30)
         .options({
           margin: { top: 10, bottom: 20, left: 10, right: 10 },
-        });
-
-      setTimeout(() => {
-        expect(chart.hasNonZeroArea()).to.be.false;
-        done();
-      }, 0);
+        })
+        .updateDimensionNow();
+      expect(chart.hasNonZeroArea()).to.be.false;
     });
   });
 
@@ -312,7 +287,6 @@ describe('AbstractChart', () => {
       chart2.destroy();
       chart2.dispatcher.call('custom1', chart);
       setTimeout(() => {
-        expect(true).to.be.true;
         done();
       }, 20);
     });
