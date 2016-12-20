@@ -25,46 +25,6 @@ describe('SvgChart', () => {
     });
   });
 
-  describe('.getCustomEventNames()', () => {
-    it('should return custom event names', () => {
-      expect(chart.getCustomEventNames()).to.deep.equal([]);
-    });
-    it('should return custom event names', () => {
-      class Chart extends SvgChart {
-        static getCustomEventNames() {
-          return ['custom1', 'custom2'];
-        }
-      }
-      const chart = new Chart();
-      expect(chart.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
-    });
-  });
-
-  describe('.margin(margin)', () => {
-    it('should update the root <g> transform/translate', () => {
-      chart
-        .margin({ left: 30, top: 30 })
-        .offset([0.5, 0.5])
-        .margin({ left: 10, top: 10 })
-        .updateDimensionNow();
-
-      const translate = chart.rootG.attr('transform');
-      expect(translate).to.equal('translate(10.5,10.5)');
-    });
-  });
-
-  describe('.offset(offset)', () => {
-    it('should update the root <g> transform/translate', () => {
-      chart
-        .offset([0.5, 0.5])
-        .margin({ left: 10, top: 10 })
-        .offset([2, 3])
-        .updateDimensionNow();
-      const translate = chart.rootG.attr('transform');
-      expect(translate).to.equal('translate(12,13)');
-    });
-  });
-
   describe('.width(width)', () => {
     it('should return <svg> width when called without argument', () => {
       const w = chart.svg.attr('width');
@@ -102,17 +62,4 @@ describe('SvgChart', () => {
     });
   });
 
-  describe('.dimension(dimension)', () => {
-    it('should return an array [width, height] when called without argument', () => {
-      const dim = [+chart.svg.attr('width'), +chart.svg.attr('height')];
-      expect(chart.dimension()).to.deep.equal(dim);
-    });
-    it('should set width and height of the <svg> when called with an array [width, height] as the first argument', done => {
-      chart.dimension([118, 118]);
-      setTimeout(() => {
-        expect([+chart.svg.attr('width'), +chart.svg.attr('height')]).to.deep.equal([118, 118]);
-        done();
-      }, 0);
-    });
-  });
 });

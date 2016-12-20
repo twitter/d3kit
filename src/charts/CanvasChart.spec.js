@@ -15,7 +15,7 @@ describe('CanvasChart', () => {
       expect(chart.canvas).to.exist;
       expect(chart.canvas.size()).to.be.equal(1);
     });
-    it('under the hood it is a CanvasPlate accessible from this.plates.canvas', () => {
+    it('has a CanvasPlate accessible from this.plates.canvas', () => {
       expect(chart.plates.canvas).to.be.instanceof(CanvasPlate);
     });
   });
