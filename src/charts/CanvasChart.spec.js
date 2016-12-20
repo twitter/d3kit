@@ -1,5 +1,6 @@
 import { select } from 'd3-selection';
 import CanvasChart from './CanvasChart.js';
+import CanvasPlate from '../plates/CanvasPlate.js';
 
 describe('CanvasChart', () => {
   let element, $element, $canvas, chart;
@@ -7,71 +8,31 @@ describe('CanvasChart', () => {
   beforeEach(() => {
     element = document.body.appendChild(document.createElement('div'));
     chart = new CanvasChart(element, null);
-    $element = select(element);
-    $canvas = $element.select('canvas');
   });
 
   describe('new CanvasChart(element, options)', () => {
-    it('should create <canvas> inside the element', () => {
-      expect($canvas.size()).to.be.equal(1);
-    });
-    it('which is accessible from chart.canvas', () => {
+    it('should create <canvas> inside the element, which is accessible from chart.canvas', () => {
       expect(chart.canvas).to.exist;
+      expect(chart.canvas.size()).to.be.equal(1);
+    });
+    it('under the hood it is a CanvasPlate accessible from this.plates.canvas', ()=>{
+      expect(chart.plates.canvas).to.be.instanceof(CanvasPlate);
     });
   });
 
-  describe('.getCustomEventNames()', () => {
-    it('should return custom event names', () => {
-      expect(chart.getCustomEventNames()).to.deep.equal([]);
-    });
-    it('should return custom event names', () => {
-      class Chart extends CanvasChart {
-        static getCustomEventNames() {
-          return ['custom1', 'custom2'];
-        }
-      }
-      const chart = new Chart( );
-      expect(chart.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
+  describe('.getContext2d()', ()=>{
+    it('should return context2d from canvas', ()=>{
+      const ctx = chart.getContext2d();
+      expect(ctx).to.exist;
+      expect(ctx).to.be.instanceof(CanvasRenderingContext2D);
     });
   });
 
-  describe('.width(width)', () => {
-    it('should return <canvas> width when called without argument', () => {
-      const w = $canvas.attr('width');
-      expect(chart.width()).to.equal(+w);
-    });
-    it('should set <canvas> width when called with Number as the first argument', () => {
-      chart
-        .width(300)
-        .updateDimensionNow();
-      expect(+$canvas.attr('width')).to.equal(300);
+  describe('.clear()', ()=>{
+    it('should clear canvas and return this', ()=>{
+      const returnValue = chart.clear();
+      expect(returnValue).to.equal(chart);
     });
   });
 
-  describe('.height(height)', () => {
-    it('should return <canvas> height when called without argument', () => {
-      const w = $canvas.attr('height');
-      expect(chart.height()).to.equal(+w);
-    });
-    it('should set <canvas> height when called with Number as the first argument', () => {
-      chart
-        .height(300)
-        .updateDimensionNow();
-      expect(+$canvas.attr('height')).to.equal(300);
-    });
-  });
-
-  describe('.dimension(dimension)', () => {
-    it('should return an array [width, height] when called without argument', () => {
-      const dim = [+$canvas.attr('width'), +$canvas.attr('height')];
-      expect(chart.dimension()).to.deep.equal(dim);
-    });
-    it('should set width and height of the <canvas> when called with an array [width, height] as the first argument', done => {
-      chart.dimension([118, 118]);
-      setTimeout(() => {
-        expect([+$canvas.attr('width'), +$canvas.attr('height')]).to.deep.equal([118, 118]);
-        done();
-      }, 0);
-    });
-  });
 });

@@ -131,7 +131,7 @@ describe('helper', function () {
     });
   });
 
-  describe('#isFunction(function)', function () {
+  describe('.isFunction(function)', function () {
     it('should return true if the value is a function', function () {
       const fn1 = function (d) { return d + 1; };
       function fn2(d) { return d + 2; }
@@ -149,7 +149,7 @@ describe('helper', function () {
     });
   });
 
-  describe('#kebabCase(str)', function () {
+  describe('.kebabCase(str)', function () {
     it('should convert input to dash-case', function () {
       expect(helper.kebabCase('camelCase')).to.equal('camel-case');
     });
