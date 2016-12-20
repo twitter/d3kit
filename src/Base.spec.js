@@ -76,6 +76,9 @@ describe('Base', ()=>{
           done();
         }, 10);
       });
+      it('should return this', ()=>{
+        expect(base.dimension([5, 5])).to.equal(base);
+      });
     });
   });
 
@@ -101,6 +104,9 @@ describe('Base', ()=>{
           expect(base.counter.updateDimension).to.equal(0);
           done();
         }, 10);
+      });
+      it('should return this', ()=>{
+        expect(base.margin({top: 12})).to.equal(base);
       });
     });
   });
@@ -128,6 +134,9 @@ describe('Base', ()=>{
           done();
         }, 10);
       });
+      it('should return this', ()=>{
+        expect(base.offset([3, 3])).to.equal(base);
+      });
     });
   });
 
@@ -154,6 +163,9 @@ describe('Base', ()=>{
             expect(base.counter.updateDimension).to.equal(0);
             done();
           }, 10);
+        });
+        it('should return this', ()=>{
+          expect(base[field](12)).to.equal(base);
         });
       });
     });
@@ -193,6 +205,9 @@ describe('Base', ()=>{
         done();
       }, 10);
     });
+    it('should return this', ()=>{
+      expect(base.copyDimension()).to.equal(base);
+    });
   });
 
   describe('.updateDimensionNow()', ()=>{
@@ -200,6 +215,9 @@ describe('Base', ()=>{
       expect(base.counter.updateDimension).to.equal(0);
       base.updateDimensionNow();
       expect(base.counter.updateDimension).to.equal(1);
+    });
+    it('should return this', ()=>{
+      expect(base.updateDimensionNow()).to.equal(base);
     });
   });
 });
