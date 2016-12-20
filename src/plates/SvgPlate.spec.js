@@ -29,6 +29,7 @@ describe('SvgPlate', ()=>{
       expect(plate.getNode().tagName.toLowerCase()).to.equal('svg');
     });
     it('should create root <g> inside <svg>', ()=>{
+      expect(plate.getSelection().select('g').size()).to.equal(1);
       expect(plate.rootG.node().tagName).to.equal('g');
     });
     it('should create layer organizer', ()=>{

@@ -97,6 +97,16 @@ describe('Base', ()=>{
           done();
         }, 10);
       });
+      it('should accept partial values, not all "top", "left", "bottom", "right" have to be present.', ()=>{
+        base.margin({ left: 21 });
+        expect(base.margin().left).to.equal(21);
+        base.margin({ right: 22 });
+        expect(base.margin().right).to.equal(22);
+        base.margin({ top: 23 });
+        expect(base.margin().top).to.equal(23);
+        base.margin({ bottom: 24 });
+        expect(base.margin().bottom).to.equal(24);
+      });
       it('should not update dimension if the new value is equal to current value', (done)=>{
         base.margin({left: 10, right: 10, top: 10, bottom: 10});
         expect(base.margin()).to.deep.equal({left: 10, right: 10, top: 10, bottom: 10});

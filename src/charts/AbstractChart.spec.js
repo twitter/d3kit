@@ -1,6 +1,12 @@
 import { select } from 'd3-selection';
 import AbstractChart from './AbstractChart.js';
 
+class CustomChart extends AbstractChart {
+  static getCustomEventNames() {
+    return ['custom1', 'custom2'];
+  }
+}
+
 describe('AbstractChart', () => {
   let element, $element, chart;
 
@@ -8,6 +14,19 @@ describe('AbstractChart', () => {
     element = document.body.appendChild(document.createElement('div'));
     chart = new AbstractChart(element, null);
     $element = select(element);
+  });
+
+  describe('(static) AbstractChart.getCustomEventNames()', ()=>{
+    it('should return an array of custom event names', () => {
+      const names = AbstractChart.getCustomEventNames();
+      expect(names).to.be.an('Array');
+      expect(names).to.deep.equal([]);
+    });
+    it('can be overridden by subclass', () => {
+      const names = CustomChart.getCustomEventNames();
+      expect(names).to.be.an('Array');
+      expect(names).to.deep.equal(['custom1', 'custom2']);
+    });
   });
 
   describe('new AbstractChart(element, options)', () => {
@@ -19,17 +38,15 @@ describe('AbstractChart', () => {
   });
 
   describe('.getCustomEventNames()', () => {
-    it('should return custom event names', () => {
-      expect(chart.getCustomEventNames()).to.deep.equal([]);
+    it('should return an array of custom event names', () => {
+      const names = chart.getCustomEventNames();
+      expect(names).to.be.an('Array');
+      expect(names).to.deep.equal([]);
     });
-    it('should return custom event names', () => {
-      class Chart extends AbstractChart {
-        static getCustomEventNames() {
-          return ['custom1', 'custom2'];
-        }
-      }
-      const chart2 = new Chart();
-      expect(chart2.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
+    it('should return the same value with the static function by default', ()=>{
+      const chart2 = new CustomChart();
+      const names = chart2.getCustomEventNames();
+      expect(names).to.deep.equal(CustomChart.getCustomEventNames());
     });
   });
 
@@ -93,9 +110,35 @@ describe('AbstractChart', () => {
       expect(chart.options().a).to.equal(1);
       expect(chart.options().b).to.equal(2);
     });
+    it('should dispatch "resize" as necessary if margin was included in the options.', (done)=>{
+      chart.on('resize.test', () => {
+        expect(true).to.be.true;
+        done();
+      });
+      chart.options({
+        margin: {top: 12}
+      });
+    });
+    it('should dispatch "resize" as necessary if offset was included in the options.', (done)=>{
+      chart.on('resize.test', () => {
+        expect(true).to.be.true;
+        done();
+      });
+      chart.options({
+        offset: [4, 4]
+      });
+    });
+    it('should dispatch "resize" as necessary if pixelRatio was included in the options.', (done)=>{
+      chart.on('resize.test', () => {
+        expect(true).to.be.true;
+        done();
+      });
+      chart.options({
+        pixelRatio: 3,
+      });
+    });
     it('after setting, should dispatch "options" event', done => {
       chart.on('options.test', () => {
-        // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
@@ -103,25 +146,18 @@ describe('AbstractChart', () => {
     });
   });
 
+  describe('.dimension(dimension)', () => {
+    it('after setting, should dispatch "resize" event', done => {
+      chart.on('resize.test', () => {
+        // This block should be reached to pass the test.
+        expect(true).to.be.true;
+        done();
+      });
+      chart.dimension([150, 150]);
+    });
+  });
+
   describe('.margin(margin)', () => {
-    it('should return margin when called without argument', () => {
-      const margin = { left: 10, right: 10, top: 10, bottom: 10 };
-      chart.margin(margin);
-      expect(chart.margin()).to.deep.equal(margin);
-    });
-    it('should set margin when called with at least one argument', () => {
-      const margin = { left: 10, right: 10, top: 10, bottom: 10 };
-      chart.margin(margin);
-      chart.margin({ left: 20 });
-      expect(chart.margin().left).to.equal(20);
-      expect(chart.margin().right).to.equal(10);
-      chart.margin({ right: 20 });
-      expect(chart.margin().right).to.equal(20);
-      chart.margin({ top: 20 });
-      expect(chart.margin().top).to.equal(20);
-      chart.margin({ bottom: 20 });
-      expect(chart.margin().bottom).to.equal(20);
-    });
     it('should update innerWidth after setting margin', () => {
       chart
         .width(100)
@@ -149,49 +185,26 @@ describe('AbstractChart', () => {
   });
 
   describe('.offset(offset)', () => {
-    it('should return offset when called without argument', () => {
-      const offset = [1, 1];
-      chart.offset(offset);
-      expect(chart.offset()).to.deep.equal(offset);
-    });
-    it('should set offset when called with at least one argument', () => {
-      chart
-        .offset([1, 1])
-        .offset([2, 3]);
-      expect(chart.offset()).to.deep.equal([2, 3]);
-    });
-  });
-
-  describe('.width(width)', () => {
     it('after setting, should dispatch "resize" event', done => {
       chart.on('resize.test', () => {
         // This block should be reached to pass the test.
         expect(true).to.be.true;
         done();
       });
-      chart.width(200);
+      chart.offset([3, 3]);
     });
   });
 
-  describe('.height(height)', () => {
-    it('after setting, should dispatch "resize" event', done => {
-      chart.on('resize.test', () => {
-        // This block should be reached to pass the test.
-        expect(true).to.be.true;
-        done();
+  ['width', 'height', 'pixelRatio'].forEach(field => {
+    describe(`.${field}(${field})`, () => {
+      it('after setting, should dispatch "resize" event', done => {
+        chart.on('resize.test', () => {
+          // This block should be reached to pass the test.
+          expect(true).to.be.true;
+          done();
+        });
+        chart[field](200);
       });
-      chart.height(200);
-    });
-  });
-
-  describe('.dimension(dimension)', () => {
-    it('after setting, should dispatch "resize" event', done => {
-      chart.on('resize.test', () => {
-        // This block should be reached to pass the test.
-        expect(true).to.be.true;
-        done();
-      });
-      chart.dimension([150, 150]);
     });
   });
 
@@ -217,6 +230,29 @@ describe('AbstractChart', () => {
         .updateDimensionNow();
 
       expect(chart.dimension()).to.deep.equal([250, 400]);
+    });
+
+    it('should be called repeatedly without problem', ()=>{
+      chart.fit({
+        width: '100%'
+      }, true);
+      chart.fit({
+        width: '100%'
+      }, true);
+    });
+  });
+
+  describe('.stopFitWatcher()', ()=>{
+    it('should kill the fitWatcher, if exists', ()=>{
+      chart.fit({
+        width: '100%'
+      }, true);
+      chart.stopFitWatcher();
+      expect(chart.fitWatcher).to.not.exist;
+    });
+    it('should return this', ()=>{
+      const returnValue = chart.stopFitWatcher();
+      expect(returnValue).to.equal(chart);
     });
   });
 
@@ -266,4 +302,37 @@ describe('AbstractChart', () => {
       }, 0);
     });
   });
+
+  describe('.destroy()', ()=>{
+    it('should unregister all event handlers', (done)=>{
+      const chart2 = new CustomChart();
+      chart2.on('custom1', () => {
+        assert.fail('should not be called')
+      });
+      chart2.destroy();
+      chart2.dispatcher.call('custom1', chart);
+      setTimeout(() => {
+        expect(true).to.be.true;
+        done()
+      }, 20);
+    });
+    it('should stop fitWatcher if there is any', ()=>{
+      chart.destroy();
+      expect(chart.fitWatcher).to.not.exist;
+    });
+  });
+
+  describe('.dispatchAs(eventName)', ()=>{
+    it('should return a function which can be called to dispatch the named event with given arguments', (done)=>{
+      const chart2 = new CustomChart();
+      chart2.on('custom1', (a, b, c) => {
+        expect(a).to.equal(1);
+        expect(b).to.equal(2);
+        expect(c).to.equal(3);
+        done();
+      });
+      chart2.dispatchAs('custom1')(1, 2, 3);
+    });
+  });
+
 });

@@ -79,16 +79,23 @@ class AbstractChart extends Base {
   options(...args) {
     if (args.length === 0) return this._state.options;
     const [newOptions] = args;
+    const copy = extend({}, newOptions);
+
     if (newOptions.margin) {
       this.margin(newOptions.margin);
+      delete copy.margin;
     }
     if (newOptions.offset) {
       this.offset(newOptions.offset);
+      delete copy.offset;
     }
     if (newOptions.pixelRatio) {
       this.pixelRatio(newOptions.pixelRatio);
+      delete copy.pixelRatio;
     }
-    this._state.options = deepExtend(this._state.options, newOptions);
+
+    this._state.options = deepExtend(this._state.options, copy);
+
     this._dispatchOptions();
     return this;
   }
