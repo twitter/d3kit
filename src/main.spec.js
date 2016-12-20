@@ -17,7 +17,7 @@ describe('d3Kit', () => {
     'helper',
     'LayerOrganizer',
   ].forEach(module => {
-    it(`should have ${module}`, () => {
+    it(`should include module ${module}`, () => {
       expect(d3Kit[module]).to.exist;
     });
   })

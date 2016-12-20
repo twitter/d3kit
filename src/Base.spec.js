@@ -13,7 +13,7 @@ class TestBase extends Base {
   }
 }
 
-describe.only('Base', ()=>{
+describe('Base', ()=>{
   let base;
 
   it('should exist', ()=>{
