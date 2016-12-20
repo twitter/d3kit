@@ -46,7 +46,6 @@ class Base {
         },
       });
       this._updateDimension();
-      this._dispatchResize();
     }
     return this;
   }
@@ -57,7 +56,6 @@ class Base {
     if (newValue !== this._state.width) {
       this._state.width = newValue;
       this._updateDimension();
-      this._dispatchResize();
     }
     return this;
   }
@@ -68,7 +66,6 @@ class Base {
     if (newValue !== this._state.height) {
       this._state.height = newValue;
       this._updateDimension();
-      this._dispatchResize();
     }
     return this;
   }
@@ -91,7 +88,6 @@ class Base {
     if (changed) {
       this._state.options.margin = newMargin;
       this._updateDimension();
-      this._dispatchResize();
     }
     return this;
   }
@@ -104,7 +100,6 @@ class Base {
     if (ox !== nx || oy !== ny) {
       this._state.options.offset = newOffset;
       this._updateDimension();
-      this._dispatchResize();
     }
     return this;
   }
@@ -115,14 +110,7 @@ class Base {
     if (newValue !== this._state.options.pixelRatio) {
       this._state.options.pixelRatio = newValue;
       this._updateDimension();
-      this._dispatchResize();
     }
-    return this;
-  }
-
-  updateDimensionNow() {
-    this._updateDimension();
-    this._updateDimension.flush();
     return this;
   }
 
@@ -132,9 +120,9 @@ class Base {
     return this;
   }
 
-  _dispatchResize() {
-    // Intentionally do nothing
-    // Subclasses can override this function
+  updateDimensionNow() {
+    this._updateDimension();
+    this._updateDimension.flush();
     return this;
   }
 }

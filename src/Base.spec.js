@@ -37,19 +37,19 @@ describe.only('Base', ()=>{
 
   describe('(static) Base.getDefaultOptions()', ()=>{
     it('should return an options object', ()=>{
-
+      const options = Base.getDefaultOptions();
+      expect(options).to.be.an('Object');
     });
   });
 
   describe('new Base(options)', ()=>{
     it('should construct an object with the given options', ()=>{
-
-    });
-  });
-
-  describe('.copyDimension(another)', ()=>{
-    it('should', ()=>{
-
+      expect(base).to.exist;
+      expect(base.width()).to.equal(10);
+      expect(base.height()).to.equal(10);
+      expect(base.margin()).to.deep.equal({top: 10, right: 10, bottom: 10, left: 10});
+      expect(base.pixelRatio()).to.equal(10);
+      expect(base.offset()).to.deep.equal([1, 1]);
     });
   });
 
@@ -156,6 +156,42 @@ describe.only('Base', ()=>{
           }, 10);
         });
       });
+    });
+  });
+
+  describe('.copyDimension(another)', ()=>{
+    it('should copy all fields and update dimension', (done)=>{
+      const state = {
+        initialWidth: 20,
+        initialHeight: 20,
+        margin: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20,
+        },
+        offset: [2, 2],
+        pixelRatio: 2
+      };
+      base.copyDimension(new Base(state));
+      expect(base.width()).to.equal(state.initialWidth);
+      expect(base.height()).to.equal(state.initialHeight);
+      expect(base.pixelRatio()).to.equal(state.pixelRatio);
+      expect(base.margin()).to.deep.equal(state.margin);
+      expect(base.offset()).to.deep.equal(state.offset);
+
+      window.setTimeout(() => {
+        expect(base.counter.updateDimension).to.equal(1);
+        done();
+      }, 10);
+    });
+    it('should do nothing if "another" is not defined', (done)=>{
+      base.copyDimension(null);
+      base.copyDimension(undefined);
+      window.setTimeout(() => {
+        expect(base.counter.updateDimension).to.equal(0);
+        done();
+      }, 10);
     });
   });
 

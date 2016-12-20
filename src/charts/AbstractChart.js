@@ -39,7 +39,6 @@ class AbstractChart extends Base {
 
     this._dispatchData = debounce(this._dispatchData.bind(this), 1);
     this._dispatchOptions = debounce(this._dispatchOptions.bind(this), 1);
-    this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
   }
 
   addPlate(name, plate, doNotAppend) {
@@ -111,6 +110,10 @@ class AbstractChart extends Base {
         .updateDimensionNow();
     });
 
+    // Dispatch resize event
+    const { innerWidth, innerHeight } = this._state;
+    this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
+
     return this;
   }
 
@@ -176,12 +179,6 @@ class AbstractChart extends Base {
 
   _dispatchOptions() {
     this.dispatcher.call('options', this, this._state.options);
-    return this;
-  }
-
-  _dispatchResize() {
-    const { width, height, innerWidth, innerHeight } = this._state;
-    this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
     return this;
   }
 
