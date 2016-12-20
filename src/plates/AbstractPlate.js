@@ -1,5 +1,4 @@
 import { select } from 'd3-selection';
-import { extend } from '../helper.js';
 import Base from '../Base.js';
 
 class AbstractPlate extends Base {

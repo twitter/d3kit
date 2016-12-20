@@ -13,7 +13,7 @@ class CanvasPlate extends AbstractPlate {
     const [x, y] = this.offset();
 
     const ctx = this.node.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(pixelRatio, pixelRatio);
     ctx.translate(left + x, top + y);
     return ctx;
@@ -25,7 +25,7 @@ class CanvasPlate extends AbstractPlate {
     const pixelRatio = this.pixelRatio();
 
     const ctx = this.node.getContext('2d');
-    ctx.setTransform(1,0,0,1,0,0);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(pixelRatio, pixelRatio);
     ctx.clearRect(0, 0, width, height);
     return this;

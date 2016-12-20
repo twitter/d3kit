@@ -16,7 +16,7 @@ describe('AbstractChart', () => {
     $element = select(element);
   });
 
-  describe('(static) AbstractChart.getCustomEventNames()', ()=>{
+  describe('(static) AbstractChart.getCustomEventNames()', () => {
     it('should return an array of custom event names', () => {
       const names = AbstractChart.getCustomEventNames();
       expect(names).to.be.an('Array');
@@ -43,7 +43,7 @@ describe('AbstractChart', () => {
       expect(names).to.be.an('Array');
       expect(names).to.deep.equal([]);
     });
-    it('should return the same value with the static function by default', ()=>{
+    it('should return the same value with the static function by default', () => {
       const chart2 = new CustomChart();
       const names = chart2.getCustomEventNames();
       expect(names).to.deep.equal(CustomChart.getCustomEventNames());
@@ -110,25 +110,25 @@ describe('AbstractChart', () => {
       expect(chart.options().a).to.equal(1);
       expect(chart.options().b).to.equal(2);
     });
-    it('should dispatch "resize" as necessary if margin was included in the options.', (done)=>{
+    it('should dispatch "resize" as necessary if margin was included in the options.', (done) => {
       chart.on('resize.test', () => {
         expect(true).to.be.true;
         done();
       });
       chart.options({
-        margin: {top: 12}
+        margin: { top: 12 },
       });
     });
-    it('should dispatch "resize" as necessary if offset was included in the options.', (done)=>{
+    it('should dispatch "resize" as necessary if offset was included in the options.', (done) => {
       chart.on('resize.test', () => {
         expect(true).to.be.true;
         done();
       });
       chart.options({
-        offset: [4, 4]
+        offset: [4, 4],
       });
     });
-    it('should dispatch "resize" as necessary if pixelRatio was included in the options.', (done)=>{
+    it('should dispatch "resize" as necessary if pixelRatio was included in the options.', (done) => {
       chart.on('resize.test', () => {
         expect(true).to.be.true;
         done();
@@ -232,25 +232,25 @@ describe('AbstractChart', () => {
       expect(chart.dimension()).to.deep.equal([250, 400]);
     });
 
-    it('should be called repeatedly without problem', ()=>{
+    it('should be called repeatedly without problem', () => {
       chart.fit({
-        width: '100%'
+        width: '100%',
       }, true);
       chart.fit({
-        width: '100%'
+        width: '100%',
       }, true);
     });
   });
 
-  describe('.stopFitWatcher()', ()=>{
-    it('should kill the fitWatcher, if exists', ()=>{
+  describe('.stopFitWatcher()', () => {
+    it('should kill the fitWatcher, if exists', () => {
       chart.fit({
-        width: '100%'
+        width: '100%',
       }, true);
       chart.stopFitWatcher();
       expect(chart.fitWatcher).to.not.exist;
     });
-    it('should return this', ()=>{
+    it('should return this', () => {
       const returnValue = chart.stopFitWatcher();
       expect(returnValue).to.equal(chart);
     });
@@ -303,27 +303,27 @@ describe('AbstractChart', () => {
     });
   });
 
-  describe('.destroy()', ()=>{
-    it('should unregister all event handlers', (done)=>{
+  describe('.destroy()', () => {
+    it('should unregister all event handlers', (done) => {
       const chart2 = new CustomChart();
       chart2.on('custom1', () => {
-        assert.fail('should not be called')
+        assert.fail('should not be called');
       });
       chart2.destroy();
       chart2.dispatcher.call('custom1', chart);
       setTimeout(() => {
         expect(true).to.be.true;
-        done()
+        done();
       }, 20);
     });
-    it('should stop fitWatcher if there is any', ()=>{
+    it('should stop fitWatcher if there is any', () => {
       chart.destroy();
       expect(chart.fitWatcher).to.not.exist;
     });
   });
 
-  describe('.dispatchAs(eventName)', ()=>{
-    it('should return a function which can be called to dispatch the named event with given arguments', (done)=>{
+  describe('.dispatchAs(eventName)', () => {
+    it('should return a function which can be called to dispatch the named event with given arguments', (done) => {
       const chart2 = new CustomChart();
       chart2.on('custom1', (a, b, c) => {
         expect(a).to.equal(1);
@@ -334,5 +334,4 @@ describe('AbstractChart', () => {
       chart2.dispatchAs('custom1')(1, 2, 3);
     });
   });
-
 });

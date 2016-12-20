@@ -20,6 +20,5 @@ describe('d3Kit', () => {
     it(`should include module ${module}`, () => {
       expect(d3Kit[module]).to.exist;
     });
-  })
-
+  });
 });

@@ -15,24 +15,23 @@ describe('CanvasChart', () => {
       expect(chart.canvas).to.exist;
       expect(chart.canvas.size()).to.be.equal(1);
     });
-    it('under the hood it is a CanvasPlate accessible from this.plates.canvas', ()=>{
+    it('under the hood it is a CanvasPlate accessible from this.plates.canvas', () => {
       expect(chart.plates.canvas).to.be.instanceof(CanvasPlate);
     });
   });
 
-  describe('.getContext2d()', ()=>{
-    it('should return context2d from canvas', ()=>{
+  describe('.getContext2d()', () => {
+    it('should return context2d from canvas', () => {
       const ctx = chart.getContext2d();
       expect(ctx).to.exist;
       expect(ctx).to.be.instanceof(CanvasRenderingContext2D);
     });
   });
 
-  describe('.clear()', ()=>{
-    it('should clear canvas and return this', ()=>{
+  describe('.clear()', () => {
+    it('should clear canvas and return this', () => {
       const returnValue = chart.clear();
       expect(returnValue).to.equal(chart);
     });
   });
-
 });

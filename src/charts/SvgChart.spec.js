@@ -35,7 +35,7 @@ describe('SvgChart', () => {
           return ['custom1', 'custom2'];
         }
       }
-      const chart = new Chart( );
+      const chart = new Chart();
       expect(chart.getCustomEventNames()).to.deep.equal(['custom1', 'custom2']);
     });
   });

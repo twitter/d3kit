@@ -1,5 +1,4 @@
 import AbstractChart from './AbstractChart.js';
-import CanvasPlate from '../plates/CanvasPlate.js';
 import { deepExtend } from '../helper.js';
 
 class CanvasChart extends AbstractChart {

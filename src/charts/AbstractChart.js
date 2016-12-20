@@ -18,7 +18,7 @@ class AbstractChart extends Base {
       innerHeight: 0,
       fitOptions: null,
       data: null,
-      plates: []
+      plates: [],
     });
 
     this.container = select(selector);
@@ -44,7 +44,7 @@ class AbstractChart extends Base {
   addPlate(name, plate, doNotAppend) {
     this._state.plates.push(plate);
     this.plates[name] = plate;
-    if(doNotAppend) return plate;
+    if (doNotAppend) return plate;
     plate.getSelection().style('position', 'absolute');
     this.chartRoot.append(() => plate.getNode());
     return plate;
