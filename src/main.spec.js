@@ -8,7 +8,12 @@ describe('d3Kit', () => {
   [
     'AbstractChart',
     'CanvasChart',
+    'HybridChart',
     'SvgChart',
+    'AbstractPlate',
+    'CanvasPlate',
+    'DivPlate',
+    'SvgPlate',
     'helper',
     'LayerOrganizer',
   ].forEach(module => {
