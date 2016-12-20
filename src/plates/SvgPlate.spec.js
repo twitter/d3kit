@@ -10,8 +10,8 @@ describe('SvgPlate', ()=>{
 
   beforeEach(() => {
     plate = new SvgPlate({
-      initialWidth: 10,
-      initialHeight: 10,
+      initialWidth: 100,
+      initialHeight: 100,
       margin: {
         top: 10,
         right: 10,
@@ -26,7 +26,7 @@ describe('SvgPlate', ()=>{
   describe('constructor(params)', ()=>{
     it('should construct a plate that contains <svg>', ()=>{
       expect(plate).to.exist;
-      expect(plate.getNode().tagName).to.equal('svg');
+      expect(plate.getNode().tagName.toLowerCase()).to.equal('svg');
     });
     it('should create root <g> inside <svg>', ()=>{
       expect(plate.rootG.node().tagName).to.equal('g');
@@ -40,8 +40,8 @@ describe('SvgPlate', ()=>{
     it('should update <svg> dimension', ()=>{
       plate.updateDimensionNow();
       const svg = plate.getSelection();
-      expect(+svg.attr('width')).to.equal(10);
-      expect(+svg.attr('height')).to.equal(10);
+      expect(+svg.attr('width')).to.equal(100);
+      expect(+svg.attr('height')).to.equal(100);
       expect(plate.rootG.attr('transform')).to.equal('translate(11,11)');
     });
   });
