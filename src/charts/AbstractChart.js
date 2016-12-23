@@ -49,13 +49,28 @@ class AbstractChart extends Base {
       .classed('d3kit-plate', true)
       .style('position', 'absolute');
     this.chartRoot.append(() => plate.getNode());
-    return plate;
+    return this;
+  }
+
+  removePlate(name) {
+    const plate = this.plates[name];
+    if (plate) {
+      const index = this._state.plates.indexOf(plate);
+      if (index > -1) {
+        this._state.plates.splice(index, 1);
+      }
+      if (plate.getNode().parentNode === this.chartRoot.node()) {
+        this.chartRoot.node().removeChild(plate.getNode());
+      }
+    }
+    return this;
   }
 
   setupDispatcher(customEventNames = []) {
     this._customEventNames = customEventNames;
     this._eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
     this.dispatcher = dispatch.apply(this, this._eventNames);
+    return this;
   }
 
   getCustomEventNames() {
@@ -213,6 +228,7 @@ class AbstractChart extends Base {
       this.off(name);
     });
     this.stopFitWatcher();
+    return this;
   }
 }
 

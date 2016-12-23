@@ -5,7 +5,8 @@ class HybridChart extends CanvasChart {
   constructor(selector, ...options) {
     super(selector, ...options);
 
-    const plate = this.addPlate('svg', new SvgPlate());
+    this.addPlate('svg', new SvgPlate());
+    const plate = this.plates.svg;
     this.svg = plate.getSelection();
     this.rootG = plate.rootG;
     this.layers = plate.layers;
