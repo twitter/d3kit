@@ -42,6 +42,9 @@ class AbstractChart extends Base {
   }
 
   addPlate(name, plate, doNotAppend) {
+    if(this.plates[name]) {
+      throw new Error('Plate with this name already exists', name);
+    }
     this._state.plates.push(plate);
     this.plates[name] = plate;
     if (doNotAppend) return plate;
@@ -62,6 +65,7 @@ class AbstractChart extends Base {
       if (plate.getNode().parentNode === this.chartRoot.node()) {
         this.chartRoot.node().removeChild(plate.getNode());
       }
+      delete this.plates[name];
     }
     return this;
   }

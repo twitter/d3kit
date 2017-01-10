@@ -1,5 +1,6 @@
 import { select } from 'd3-selection';
 import AbstractChart from './AbstractChart.js';
+import SvgPlate from '../plates/SvgPlate.js';
 
 class CustomChart extends AbstractChart {
   static getCustomEventNames() {
@@ -34,6 +35,24 @@ describe('AbstractChart', () => {
       const dispatcher = chart.dispatcher;
       expect(dispatcher).to.be.an('Object');
       expect(dispatcher.call).to.be.a('Function');
+    });
+  });
+
+  describe('.addPlate(name, plate [, doNotAppend])', ()=>{
+    it('should add a plate to the chart and make plate accessible via chart.plates[name]', ()=>{
+      const plate = new SvgPlate();
+      chart.addPlate('plate1', plate);
+      expect(chart.plates.plate1).to.equal(plate);
+    });
+    it('should append plate node to chartRoot', ()=>{
+      const plate = new SvgPlate();
+      chart.addPlate('plate1', plate);
+      expect(plate.getNode().parentNode).to.equal(chart.chartRoot.node());
+    });
+    it('should not append plate node to chartRoot if doNotAppend is true', ()=>{
+      const plate = new SvgPlate();
+      chart.addPlate('plate1', plate, true);
+      expect(plate.getNode().parentNode).to.not.equal(chart.chartRoot.node());
     });
   });
 

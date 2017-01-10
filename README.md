@@ -420,7 +420,7 @@ A diagram explaining D3's margin convention
 
 ## License
 
-© 2015-2016 [Twitter, Inc.](https://twitter.com) MIT License
+© 2015-2017 [Twitter, Inc.](https://twitter.com) MIT License
 
 
 [npm-image]: https://badge.fury.io/js/d3kit.svg
