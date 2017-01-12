@@ -54,6 +54,32 @@ describe('AbstractChart', () => {
       chart.addPlate('plate1', plate, true);
       expect(plate.getNode().parentNode).to.not.equal(chart.chartRoot.node());
     });
+    it('should throw error if a plate with this name already exists', ()=>{
+      chart.addPlate('plate1', new SvgPlate());
+      expect(() => {
+        chart.addPlate('plate1', new SvgPlate());
+      }).to.throw(Error);
+    });
+  });
+
+  describe('.removePlate(name)', ()=>{
+    it('should remove plate from the chart', ()=>{
+      const plate = new SvgPlate();
+      chart.addPlate('plate1', plate);
+      chart.removePlate('plate1');
+      expect(chart.plates.plate1).to.equal(undefined);
+    });
+    it('should remove plate node from chartRoot', ()=>{
+      const plate = new SvgPlate();
+      chart.addPlate('plate1', plate);
+      chart.removePlate('plate1');
+      expect(plate.getNode().parentNode).to.not.equal(chart.chartRoot.node());
+    });
+    it('should do nothing if there is no plate with this name', ()=>{
+      expect(() => {
+        chart.removePlate('plate1');
+      }).to.not.throw(Error);
+    });
   });
 
   describe('.getCustomEventNames()', () => {
