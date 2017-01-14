@@ -221,9 +221,8 @@ class AbstractChart extends Base {
   }
 
   dispatchAs(name) {
-    const self = this;
-    return function handler(...args) {
-      self.dispatcher.apply(name, this, args);
+    return (...args) => {
+      this.dispatcher.apply(name, this, args);
     };
   }
 

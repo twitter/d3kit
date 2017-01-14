@@ -31,31 +31,6 @@ var createClass = function () {
   };
 }();
 
-var get = function get(object, property, receiver) {
-  if (object === null) object = Function.prototype;
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent === null) {
-      return undefined;
-    } else {
-      return get(parent, property, receiver);
-    }
-  } else if ("value" in desc) {
-    return desc.value;
-  } else {
-    var getter = desc.get;
-
-    if (getter === undefined) {
-      return undefined;
-    }
-
-    return getter.call(receiver);
-  }
-};
-
 var inherits = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -1047,8 +1022,8 @@ var FitWatcher = function (_Watcher) {
   return FitWatcher;
 }(Watcher);
 
-var AbstractChart = function () {
-  createClass(AbstractChart, null, [{
+var Base = function () {
+  createClass(Base, null, [{
     key: 'getDefaultOptions',
     value: function getDefaultOptions() {
       for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
@@ -1064,21 +1039,17 @@ var AbstractChart = function () {
           bottom: 30,
           left: 30
         },
-        offset: [0.5, 0.5]
+        offset: [0.5, 0.5],
+        pixelRatio: window.devicePixelRatio || 1
       }].concat(options));
-    }
-  }, {
-    key: 'getCustomEventNames',
-    value: function getCustomEventNames() {
-      return [];
     }
   }]);
 
-  function AbstractChart(selector) {
-    classCallCheck(this, AbstractChart);
+  function Base() {
+    classCallCheck(this, Base);
 
-    for (var _len2 = arguments.length, options = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-      options[_key2 - 1] = arguments[_key2];
+    for (var _len2 = arguments.length, options = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      options[_key2] = arguments[_key2];
     }
 
     var mergedOptions = deepExtend.apply(undefined, [this.constructor.getDefaultOptions()].concat(options));
@@ -1086,62 +1057,37 @@ var AbstractChart = function () {
     this._state = {
       width: mergedOptions.initialWidth,
       height: mergedOptions.initialHeight,
-      innerWidth: 0,
-      innerHeight: 0,
-      fitOptions: null,
-      options: mergedOptions,
-      data: null
+      options: mergedOptions
     };
 
-    this._plates = [];
-
-    this.container = select(selector);
-    // Enforce line-height = 0 to fix issue with height resizing
-    // https://github.com/twitter/d3kit/issues/13
-    this.container.style('line-height', 0);
-
-    var customEvents = this.constructor.getCustomEventNames();
-    this.setupDispatcher(customEvents);
-
-    this._dispatchData = debounce(this._dispatchData.bind(this), 1);
-    this._dispatchOptions = debounce(this._dispatchOptions.bind(this), 1);
-    this._dispatchResize = debounce(this._dispatchResize.bind(this), 1);
     this._updateDimension = debounce(this._updateDimension.bind(this), 1);
   }
 
-  createClass(AbstractChart, [{
-    key: 'addPlate',
-    value: function addPlate(plate, doNotAppend) {
-      this._plates.push(plate);
-      if (doNotAppend) return plate;
-      this.container.append(function () {
-        return plate.getNode();
-      });
-      return plate;
-    }
-  }, {
-    key: 'setupDispatcher',
-    value: function setupDispatcher() {
-      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+  createClass(Base, [{
+    key: 'copyDimension',
+    value: function copyDimension(another) {
+      if (another) {
+        var _another$_state = another._state;
+        var width = _another$_state.width;
+        var height = _another$_state.height;
+        var _another$_state$optio = another._state.options;
+        var offset = _another$_state$optio.offset;
+        var margin = _another$_state$optio.margin;
+        var pixelRatio = _another$_state$optio.pixelRatio;
 
-      this._customEventNames = customEventNames;
-      this._eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
-      this.dispatcher = dispatch.apply(this, this._eventNames);
-    }
-  }, {
-    key: 'getCustomEventNames',
-    value: function getCustomEventNames() {
-      return this._customEventNames;
-    }
-  }, {
-    key: 'getInnerWidth',
-    value: function getInnerWidth() {
-      return this._state.innerWidth;
-    }
-  }, {
-    key: 'getInnerHeight',
-    value: function getInnerHeight() {
-      return this._state.innerHeight;
+
+        deepExtend(this._state, {
+          width: width,
+          height: height,
+          options: {
+            offset: offset.concat(),
+            margin: margin,
+            pixelRatio: pixelRatio
+          }
+        });
+        this._updateDimension();
+      }
+      return this;
     }
   }, {
     key: 'width',
@@ -1151,7 +1097,6 @@ var AbstractChart = function () {
       if (newValue !== this._state.width) {
         this._state.width = newValue;
         this._updateDimension();
-        this._dispatchResize();
       }
       return this;
     }
@@ -1163,7 +1108,6 @@ var AbstractChart = function () {
       if (newValue !== this._state.height) {
         this._state.height = newValue;
         this._updateDimension();
-        this._dispatchResize();
       }
       return this;
     }
@@ -1185,32 +1129,17 @@ var AbstractChart = function () {
       return this;
     }
   }, {
-    key: 'data',
-    value: function data() {
-      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      if (args.length === 0) return this._state.data;
-      var newData = args[0];
-
-      this._state.data = newData;
-      this._dispatchData();
-      return this;
-    }
-  }, {
     key: 'margin',
     value: function margin() {
       if (arguments.length === 0) return this._state.options.margin;
       var oldMargin = this._state.options.margin;
       var newMargin = extend({}, this._state.options.margin, arguments.length <= 0 ? undefined : arguments[0]);
-      var changed = Object.keys(oldMargin).some(function (field) {
+      var changed = Object.keys(newMargin).some(function (field) {
         return oldMargin[field] !== newMargin[field];
       });
       if (changed) {
         this._state.options.margin = newMargin;
         this._updateDimension();
-        this._dispatchResize();
       }
       return this;
     }
@@ -1233,38 +1162,192 @@ var AbstractChart = function () {
       if (ox !== nx || oy !== ny) {
         this._state.options.offset = newOffset;
         this._updateDimension();
-        this._dispatchResize();
       }
+      return this;
+    }
+  }, {
+    key: 'pixelRatio',
+    value: function pixelRatio() {
+      if (arguments.length === 0) return this._state.options.pixelRatio;
+      var newValue = +(arguments.length <= 0 ? undefined : arguments[0]);
+      if (newValue !== this._state.options.pixelRatio) {
+        this._state.options.pixelRatio = newValue;
+        this._updateDimension();
+      }
+      return this;
+    }
+  }, {
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      // Intentionally do nothing
+      // Subclasses can override this function
+      return this;
+    }
+  }, {
+    key: 'updateDimensionNow',
+    value: function updateDimensionNow() {
+      this._updateDimension();
+      this._updateDimension.flush();
+      return this;
+    }
+  }]);
+  return Base;
+}();
+
+var AbstractChart = function (_Base) {
+  inherits(AbstractChart, _Base);
+  createClass(AbstractChart, null, [{
+    key: 'getCustomEventNames',
+    value: function getCustomEventNames() {
+      return [];
+    }
+  }]);
+
+  function AbstractChart(selector) {
+    var _Object$getPrototypeO;
+
+    classCallCheck(this, AbstractChart);
+
+    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      options[_key - 1] = arguments[_key];
+    }
+
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(AbstractChart)).call.apply(_Object$getPrototypeO, [this].concat(options)));
+
+    extend(_this._state, {
+      innerWidth: 0,
+      innerHeight: 0,
+      fitOptions: null,
+      data: null,
+      plates: []
+    });
+
+    _this.container = select(selector);
+    // Enforce line-height = 0 to fix issue with height resizing
+    // https://github.com/twitter/d3kit/issues/13
+    _this.container.style('line-height', 0);
+
+    _this.chartRoot = _this.container.append('div').classed('d3kit-chart-root', true).style('display', 'inline-block').style('position', 'relative').style('line-height', 0);
+
+    _this.plates = {};
+
+    var customEvents = _this.constructor.getCustomEventNames();
+    _this.setupDispatcher(customEvents);
+
+    _this._dispatchData = debounce(_this._dispatchData.bind(_this), 1);
+    _this._dispatchOptions = debounce(_this._dispatchOptions.bind(_this), 1);
+    return _this;
+  }
+
+  createClass(AbstractChart, [{
+    key: 'addPlate',
+    value: function addPlate(name, plate, doNotAppend) {
+      if (this.plates[name]) {
+        throw new Error('Plate with this name already exists', name);
+      }
+      this._state.plates.push(plate);
+      this.plates[name] = plate;
+      if (doNotAppend) return plate;
+      plate.getSelection().classed('d3kit-plate', true).style('position', 'absolute');
+      this.chartRoot.append(function () {
+        return plate.getNode();
+      });
+      return this;
+    }
+  }, {
+    key: 'removePlate',
+    value: function removePlate(name) {
+      var plate = this.plates[name];
+      if (plate) {
+        var index = this._state.plates.indexOf(plate);
+        if (index > -1) {
+          this._state.plates.splice(index, 1);
+        }
+        if (plate.getNode().parentNode === this.chartRoot.node()) {
+          this.chartRoot.node().removeChild(plate.getNode());
+        }
+        delete this.plates[name];
+      }
+      return this;
+    }
+  }, {
+    key: 'setupDispatcher',
+    value: function setupDispatcher() {
+      var customEventNames = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+      this._customEventNames = customEventNames;
+      this._eventNames = AbstractChart.DEFAULT_EVENTS.concat(customEventNames);
+      this.dispatcher = dispatch.apply(this, this._eventNames);
+      return this;
+    }
+  }, {
+    key: 'getCustomEventNames',
+    value: function getCustomEventNames() {
+      return this._customEventNames;
+    }
+  }, {
+    key: 'getInnerWidth',
+    value: function getInnerWidth() {
+      return this._state.innerWidth;
+    }
+  }, {
+    key: 'getInnerHeight',
+    value: function getInnerHeight() {
+      return this._state.innerHeight;
+    }
+  }, {
+    key: 'data',
+    value: function data() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      if (args.length === 0) return this._state.data;
+      var newData = args[0];
+
+      this._state.data = newData;
+      this._dispatchData();
       return this;
     }
   }, {
     key: 'options',
     value: function options() {
-      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
       }
 
       if (args.length === 0) return this._state.options;
       var newOptions = args[0];
 
+      var copy = extend({}, newOptions);
+
       if (newOptions.margin) {
         this.margin(newOptions.margin);
+        delete copy.margin;
       }
       if (newOptions.offset) {
         this.offset(newOptions.offset);
+        delete copy.offset;
       }
-      this._state.options = deepExtend(this._state.options, newOptions);
+      if (newOptions.pixelRatio) {
+        this.pixelRatio(newOptions.pixelRatio);
+        delete copy.pixelRatio;
+      }
+
+      this._state.options = deepExtend(this._state.options, copy);
+
       this._dispatchOptions();
       return this;
     }
   }, {
     key: '_updateDimension',
     value: function _updateDimension() {
-      var _this = this;
+      var _this2 = this;
 
       var _state = this._state;
       var width = _state.width;
       var height = _state.height;
+      var plates = _state.plates;
       var margin = this._state.options.margin;
       var top = margin.top;
       var right = margin.right;
@@ -1275,17 +1358,19 @@ var AbstractChart = function () {
       this._state.innerWidth = width - left - right;
       this._state.innerHeight = height - top - bottom;
 
-      this._plates.forEach(function (plate) {
-        plate.updateDimension(_this);
+      this.chartRoot.style('width', width + 'px').style('height', height + 'px');
+
+      plates.forEach(function (plate) {
+        plate.copyDimension(_this2).updateDimensionNow();
       });
 
-      return this;
-    }
-  }, {
-    key: 'updateDimensionNow',
-    value: function updateDimensionNow() {
-      this._updateDimension();
-      this._updateDimension.flush();
+      // Dispatch resize event
+      var _state2 = this._state;
+      var innerWidth = _state2.innerWidth;
+      var innerHeight = _state2.innerHeight;
+
+      this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
+
       return this;
     }
   }, {
@@ -1298,16 +1383,16 @@ var AbstractChart = function () {
   }, {
     key: 'hasNonZeroArea',
     value: function hasNonZeroArea() {
-      var _state2 = this._state;
-      var innerWidth = _state2.innerWidth;
-      var innerHeight = _state2.innerHeight;
+      var _state3 = this._state;
+      var innerWidth = _state3.innerWidth;
+      var innerHeight = _state3.innerHeight;
 
       return innerWidth > 0 && innerHeight > 0;
     }
   }, {
     key: 'fit',
     value: function fit(fitOptions) {
-      var _this2 = this;
+      var _this3 = this;
 
       var watchOptions = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
@@ -1338,9 +1423,9 @@ var AbstractChart = function () {
         // pass getter instead of value
         // because the value may change when time the watcher checks
         function () {
-          return _this2.dimension();
+          return _this3.dimension();
         }, this.container.node(), this._state.fitOptions, isObject(watchOptions) ? watchOptions : null).on('change', function (dim) {
-          return _this2.dimension([dim.width, dim.height]);
+          return _this3.dimension([dim.width, dim.height]);
         }).start();
       }
 
@@ -1368,18 +1453,6 @@ var AbstractChart = function () {
       return this;
     }
   }, {
-    key: '_dispatchResize',
-    value: function _dispatchResize() {
-      var _state3 = this._state;
-      var width = _state3.width;
-      var height = _state3.height;
-      var innerWidth = _state3.innerWidth;
-      var innerHeight = _state3.innerHeight;
-
-      this.dispatcher.apply('resize', this, [width, height, innerWidth, innerHeight]);
-      return this;
-    }
-  }, {
     key: 'on',
     value: function on(name, listener) {
       this.dispatcher.on(name, listener);
@@ -1392,40 +1465,52 @@ var AbstractChart = function () {
       return this;
     }
   }, {
+    key: 'dispatchAs',
+    value: function dispatchAs(name) {
+      var _this4 = this;
+
+      return function () {
+        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+          args[_key4] = arguments[_key4];
+        }
+
+        _this4.dispatcher.apply(name, _this4, args);
+      };
+    }
+  }, {
     key: 'destroy',
     value: function destroy() {
-      var _this3 = this;
+      var _this5 = this;
 
       this._eventNames.forEach(function (name) {
-        _this3.off(name);
+        _this5.off(name);
       });
       this.stopFitWatcher();
+      return this;
     }
   }]);
   return AbstractChart;
-}();
+}(Base);
 
 AbstractChart.DEFAULT_EVENTS = ['data', 'options', 'resize'];
 
-var AbstractPlate = function () {
+var AbstractPlate = function (_Base) {
+  inherits(AbstractPlate, _Base);
+
   function AbstractPlate(node) {
+    var _Object$getPrototypeO;
+
     classCallCheck(this, AbstractPlate);
 
-    this._state = {
-      width: 720,
-      height: 500,
-      options: {
-        margin: {
-          top: 30,
-          right: 30,
-          bottom: 30,
-          left: 30
-        },
-        offset: [0.5, 0.5]
-      }
-    };
-    this.node = node;
-    this.selection = select(this.node);
+    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      options[_key - 1] = arguments[_key];
+    }
+
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(AbstractPlate)).call.apply(_Object$getPrototypeO, [this].concat(options)));
+
+    _this.node = node;
+    _this.selection = select(_this.node);
+    return _this;
   }
 
   createClass(AbstractPlate, [{
@@ -1438,82 +1523,70 @@ var AbstractPlate = function () {
     value: function getSelection() {
       return this.selection;
     }
-  }, {
-    key: 'updateDimension',
-    value: function updateDimension(parent) {
-      if (parent) {
-        var _parent$_state = parent._state;
-        var width = _parent$_state.width;
-        var height = _parent$_state.height;
-        var _parent$_state$option = parent._state.options;
-        var offset = _parent$_state$option.offset;
-        var margin = _parent$_state$option.margin;
-
-        this._state.width = width;
-        this._state.height = height;
-        this._state.options.offset = offset.concat();
-        extend(this._state.options.margin, margin);
-      }
-    }
   }]);
   return AbstractPlate;
-}();
+}(Base);
 
 var CanvasPlate = function (_AbstractPlate) {
   inherits(CanvasPlate, _AbstractPlate);
 
   function CanvasPlate() {
+    var _Object$getPrototypeO;
+
     classCallCheck(this, CanvasPlate);
 
-    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(CanvasPlate).call(this, document.createElement('canvas')));
+    for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
+      options[_key] = arguments[_key];
+    }
 
-    _this._state.options.pixelRatio = window.devicePixelRatio;
-    return _this;
+    return possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasPlate)).call.apply(_Object$getPrototypeO, [this, document.createElement('canvas')].concat(options)));
   }
 
   createClass(CanvasPlate, [{
     key: 'getContext2d',
     value: function getContext2d() {
-      var _state$options = this._state.options;
-      var pixelRatio = _state$options.pixelRatio;
-      var margin = _state$options.margin;
-      var offset = _state$options.offset;
+      var width = this.width();
+      var height = this.height();
+      var pixelRatio = this.pixelRatio();
 
-      var _offset = slicedToArray(offset, 2);
+      var _margin = this.margin();
 
-      var x = _offset[0];
-      var y = _offset[1];
+      var top = _margin.top;
+      var left = _margin.left;
+
+      var _offset = this.offset();
+
+      var _offset2 = slicedToArray(_offset, 2);
+
+      var x = _offset2[0];
+      var y = _offset2[1];
+
 
       var ctx = this.node.getContext('2d');
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(pixelRatio, pixelRatio);
-      ctx.translate(margin.left + x, margin.top + y);
+      ctx.translate(left + x, top + y);
       return ctx;
     }
   }, {
     key: 'clear',
     value: function clear() {
-      var pixelRatio = this._state.options.pixelRatio;
+      var width = this.width();
+      var height = this.height();
+      var pixelRatio = this.pixelRatio();
 
       var ctx = this.node.getContext('2d');
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(pixelRatio, pixelRatio);
-      ctx.clearRect(0, 0, this._state.width, this._state.height);
+      ctx.clearRect(0, 0, width, height);
       return this;
     }
   }, {
-    key: 'updateDimension',
-    value: function updateDimension(parent) {
-      get(Object.getPrototypeOf(CanvasPlate.prototype), 'updateDimension', this).call(this, parent);
-      if (parent) {
-        this._state.options.pixelRatio = parent._state.options.pixelRatio || window.devicePixelRatio;
-      }
-
-      var _state = this._state;
-      var width = _state.width;
-      var height = _state.height;
-      var pixelRatio = this._state.options.pixelRatio;
-
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      var width = this.width();
+      var height = this.height();
+      var pixelRatio = this.pixelRatio();
 
       this.node.setAttribute('width', width * pixelRatio);
       this.node.setAttribute('height', height * pixelRatio);
@@ -1528,14 +1601,6 @@ var CanvasPlate = function (_AbstractPlate) {
 
 var CanvasChart = function (_AbstractChart) {
   inherits(CanvasChart, _AbstractChart);
-  createClass(CanvasChart, null, [{
-    key: 'getDefaultOptions',
-    value: function getDefaultOptions() {
-      return deepExtend(get(Object.getPrototypeOf(CanvasChart), 'getDefaultOptions', this).call(this), {
-        pixelRatio: window.devicePixelRatio
-      });
-    }
-  }]);
 
   function CanvasChart(selector) {
     var _Object$getPrototypeO;
@@ -1548,8 +1613,8 @@ var CanvasChart = function (_AbstractChart) {
 
     var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CanvasChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
 
-    _this.canvasPlate = _this.addPlate(new CanvasPlate());
-    _this.canvas = _this.canvasPlate.getSelection();
+    _this.addPlate('canvas', new CanvasPlate());
+    _this.canvas = _this.plates.canvas.getSelection();
     _this.updateDimensionNow();
     return _this;
   }
@@ -1557,12 +1622,12 @@ var CanvasChart = function (_AbstractChart) {
   createClass(CanvasChart, [{
     key: 'getContext2d',
     value: function getContext2d() {
-      return this.canvasPlate.getContext2d();
+      return this.plates.canvas.getContext2d();
     }
   }, {
     key: 'clear',
     value: function clear() {
-      this.canvasPlate.clear();
+      this.plates.canvas.clear();
       return this;
     }
   }]);
@@ -1664,9 +1729,15 @@ var SvgPlate = function (_AbstractPlate) {
   inherits(SvgPlate, _AbstractPlate);
 
   function SvgPlate() {
+    var _Object$getPrototypeO;
+
     classCallCheck(this, SvgPlate);
 
-    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(SvgPlate).call(this, document.createElementNS('http://www.w3.org/2000/svg', 'svg')));
+    for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
+      options[_key] = arguments[_key];
+    }
+
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgPlate)).call.apply(_Object$getPrototypeO, [this, document.createElementNS('http://www.w3.org/2000/svg', 'svg')].concat(options)));
 
     _this.rootG = _this.selection.append('g');
     _this.layers = new LayerOrganizer(_this.rootG);
@@ -1674,29 +1745,22 @@ var SvgPlate = function (_AbstractPlate) {
   }
 
   createClass(SvgPlate, [{
-    key: 'updateDimension',
-    value: function updateDimension() {
-      var _babelHelpers$get;
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      var width = this.width();
+      var height = this.height();
 
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
+      var _margin = this.margin();
 
-      (_babelHelpers$get = get(Object.getPrototypeOf(SvgPlate.prototype), 'updateDimension', this)).call.apply(_babelHelpers$get, [this].concat(args));
+      var top = _margin.top;
+      var left = _margin.left;
 
-      var _state = this._state;
-      var width = _state.width;
-      var height = _state.height;
-      var _state$options = this._state.options;
-      var offset = _state$options.offset;
-      var margin = _state$options.margin;
-      var top = margin.top;
-      var left = margin.left;
+      var _offset = this.offset();
 
-      var _offset = slicedToArray(offset, 2);
+      var _offset2 = slicedToArray(_offset, 2);
 
-      var x = _offset[0];
-      var y = _offset[1];
+      var x = _offset2[0];
+      var y = _offset2[1];
 
 
       this.selection.attr('width', width).attr('height', height);
@@ -1708,6 +1772,32 @@ var SvgPlate = function (_AbstractPlate) {
   }]);
   return SvgPlate;
 }(AbstractPlate);
+
+var HybridChart = function (_CanvasChart) {
+  inherits(HybridChart, _CanvasChart);
+
+  function HybridChart(selector) {
+    var _Object$getPrototypeO;
+
+    classCallCheck(this, HybridChart);
+
+    for (var _len = arguments.length, options = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      options[_key - 1] = arguments[_key];
+    }
+
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(HybridChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
+
+    _this.addPlate('svg', new SvgPlate());
+    var plate = _this.plates.svg;
+    _this.svg = plate.getSelection();
+    _this.rootG = plate.rootG;
+    _this.layers = plate.layers;
+    _this.updateDimensionNow();
+    return _this;
+  }
+
+  return HybridChart;
+}(CanvasChart);
 
 var SvgChart = function (_AbstractChart) {
   inherits(SvgChart, _AbstractChart);
@@ -1723,7 +1813,8 @@ var SvgChart = function (_AbstractChart) {
 
     var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgChart)).call.apply(_Object$getPrototypeO, [this, selector].concat(options)));
 
-    var plate = _this.addPlate(new SvgPlate());
+    _this.addPlate('svg', new SvgPlate());
+    var plate = _this.plates.svg;
     _this.svg = plate.getSelection();
     _this.rootG = plate.rootG;
     _this.layers = plate.layers;
@@ -1734,4 +1825,39 @@ var SvgChart = function (_AbstractChart) {
   return SvgChart;
 }(AbstractChart);
 
-export { helper, AbstractChart, CanvasChart, SvgChart, AbstractPlate, CanvasPlate, SvgPlate, LayerOrganizer };
+var DivPlate = function (_AbstractPlate) {
+  inherits(DivPlate, _AbstractPlate);
+
+  function DivPlate() {
+    var _Object$getPrototypeO;
+
+    classCallCheck(this, DivPlate);
+
+    for (var _len = arguments.length, options = Array(_len), _key = 0; _key < _len; _key++) {
+      options[_key] = arguments[_key];
+    }
+
+    return possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(DivPlate)).call.apply(_Object$getPrototypeO, [this, document.createElement('div')].concat(options)));
+  }
+
+  createClass(DivPlate, [{
+    key: '_updateDimension',
+    value: function _updateDimension() {
+      var width = this.width();
+      var height = this.height();
+      var margin = this.margin();
+
+      this.node.style.width = width - margin.left - margin.right + 'px';
+      this.node.style.height = height - margin.top - margin.bottom + 'px';
+      this.node.style.marginLeft = margin.left + 'px';
+      this.node.style.marginRight = margin.right + 'px';
+      this.node.style.marginTop = margin.top + 'px';
+      this.node.style.marginBottom = margin.bottom + 'px';
+
+      return this;
+    }
+  }]);
+  return DivPlate;
+}(AbstractPlate);
+
+export { helper, AbstractChart, CanvasChart, HybridChart, SvgChart, AbstractPlate, CanvasPlate, DivPlate, SvgPlate, LayerOrganizer };
