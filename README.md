@@ -29,43 +29,47 @@ Here are a few examples of d3Kit in action:
 * [Using d3Kit to scaffold \<canvas>](http://bl.ocks.org/kristw/2cc83b10a1677a16f6448a5108b322a1)
 * [SVG Scatterplot](http://bl.ocks.org/kristw/4628672d57f5fe822bb4c84b682abb6e)
 * [Canvas Scatterplot](http://bl.ocks.org/kristw/840bd7750742458f20f00749c13e6241)
-* [Simple bar graph in v4 (with d3Kit)](http://bl.ocks.org/kristw/12991fb0fec6e9287980902bfb746ef7) - forked from [Simple bar graph in v4](http://bl.ocks.org/d3noob/bdf28027e0ce70bd132edc64f1dd7ea4) to show how to use d3Kit for scaffolding svg with D3 margin convention.
+* [Simple bar graph](http://bl.ocks.org/kristw/12991fb0fec6e9287980902bfb746ef7) - show how to use d3Kit for scaffolding svg with D3 margin convention.
 * [Reusable bar graph](http://bl.ocks.org/kristw/f57f88f6f60d2ef22992d7866ba2933f) - forked from the bar chart above and make it a reusable component.
 
 
 ## Why should you use d3Kit?
 
-##### 😫 You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples.
+### Avoid coding basic building blocks again and again.
 
-There is `SvgChart` for that.
+😫 You are tired of copying the boilerplate `d3.select('body').append('svg')...` from D3 examples.
 
-##### 😫 You want to create a chart on `<canvas>` but never remember how to handle different screen resolution (retina display).
+**Solution:** There is `SvgChart` for that.
 
-There is `CanvasChart` for that.
+😫 You want to create a chart on `<canvas>` but never remember how to handle different screen resolution (retina display).
 
-##### 🤔 You want to create a *reusable* chart in D3.
+**Solution:** There is `CanvasChart` for that.
 
-You can extends from `SvgChart`, `CanvasChart`, or `AbstractChart`.
+🤔 You want to use `<svg>` and `<canvas>` together.
 
-##### 😫 You want to create a *responsive* chart, but are tired of listening to window resize or manually polling for changes of element size by yourself.
+**Solution:** There is `HybridChart` for that.
 
-If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
+😫 You use [D3's margin convention](http://bl.ocks.org/mbostock/3019563) and are tired of copy pasting from [Mike's block](http://bl.ocks.org/mbostock/3019563).
 
-##### 🤔 You want to make a responsive chart that maintains aspect ratio.
+**Solution:** All `SvgChart`, `CanvasChart` and `HybridChart` extends `AbstractChart`, which was built based on the margin convention.
 
-If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
+### Reusable charts
 
-##### 😫 You use [D3's margin convention](http://bl.ocks.org/mbostock/3019563) and are tired of copy pasting from [Mike's block](http://bl.ocks.org/mbostock/3019563).
+🤔 You want to create a *reusable* chart in D3.
 
-If your chart extends from `SvgChart`, `CanvasChart` or `AbstractChart`, you get that ability for free.
+😫 You want to create a *responsive* chart, but are tired of listening to window resize or manually polling for element size.
 
-##### 🤔 You are familiar with creating charts in D3 and want to adapt them easily into React or angular components.
+🤔 You want to make a responsive chart that maintains aspect ratio.
 
-Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert charts written in d3Kit into React and angular components, respectively, in a few lines of code.
+**Solution:** Create a chart extends from `SvgChart`, `CanvasChart`, `HybridChart` or `AbstractChart` then you get all of the above handled.
+
+🤔 You are familiar with creating charts in D3 and want to adapt them easily into React or angular components.
+
+**Solution:** Currently there are [react-d3kit](https://github.com/kristw/react-d3kit) and [angular-d3kit-adapter](https://github.com/kristw/angular-d3kit-adapter) that can convert charts written in d3Kit into React and Angular 1 components, respectively, in a few lines of code.
 
 ## What is d3Kit?
 
-The core of d3Kit are base classes for creating a chart. Currently there are `SvgChart` and `CanvasChart`, both extends from `AbstractChart`. (This was revised and improved from the `Skeleton` in d3Kit v1-2.)
+The core of d3Kit are base classes for creating a chart. Currently there are `SvgChart`, `CanvasChart` and `HybridChart`. All are extended from `AbstractChart`.
 
 ### AbstractChart
 
@@ -90,267 +94,23 @@ The core of d3Kit are base classes for creating a chart. Currently there are `Sv
   * `chart.on('options', listener)`
 * assumes little about how you implement a chart. You can extends the class and implements it the way you want.
 
-Most of the time you will not need to access `AbstractChart` directly, but you will use one of its children: `SvgChart` or `CanvasChart`.
+Most of the time you will not need to access `AbstractChart` directly, but you will use one of its children: `SvgChart`, `CanvasChart` or `HybridChart`.
 
 ### SvgChart
 
 This class creates `<svg>` boilerplate inside the container.
 
-#### A. Scaffold and create something quickly
-
-```html
-<div id="chart0"></div>
-```
-
-```javascript
-import { SvgChart } from 'd3kit';
-const chart = new SvgChart('#chart0', {
-  initialWidth: 720,
-  initialHeight: 500,
-  margin: { top: 30, right: 30, bottom: 30, left: 30 },
-  offset: [0.5, 0.5] // add little offset for sharp-edge rendering
-});
-```
-
-The output will looks like this.
-
-```html
-<!--chart.container is a D3 selection of this element.-->
-<div id="chart0">
-  <!--chart.svg is a D3 selection of this element.-->
-  <svg width="720" height="500">
-    <!--chart.rootG is a D3 selection of this element.-->
-    <g transform="translate(30.5,30.5)"></g>
-  </svg>
-</div>
-```
-
-So you can append a circle or do anything you usually do with D3.
-
-```javascript
-chart.rootG.append('circle')
-  .attr('cx', 10)
-  .attr('cy', 10)
-  .attr('r', 5)
-```
-
-#### B. Create a reusable chart
-
-First create a chart by extending `SvgChart`.
-
-```javascript
-import { SvgChart, helper } from 'd3kit';
-import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
-import { axisLeft, axisBottom } from 'd3-axis';
-import { extent } from 'd3-array';
-
-class SvgBubbleChart extends SvgChart {
-  // Define default options for this chart
-  static getDefaultOptions() {
-    return helper.deepExtend(
-      super.getDefaultOptions(),
-      {
-		  margin: {top: 60, right: 60, bottom: 60, left: 60},
-		  initialWidth: 800,
-		  initialHeight: 460
-      }
-    );
-  }
-
-  /**
-   * Define the names of custom events that can be dispatched from this chart
-   * @return {Array[String]} event names
-   */
-  static getCustomEventNames() {
-    return ['bubbleClick'];
-  }
-
-  constructor(selector, options) {
-    super(selector, options);
-
-    // Add custom variables
-    this.xScale = scaleLinear();
-    this.yScale = scaleLinear();
-    this.color = scaleOrdinal(schemeCategory10);
-    this.xAxis = axisBottom().scale(this.xScale);
-    this.yAxis = axisLeft().scale(this.yScale);
-    this.xAxisG = this.rootG.append('g');
-    this.yAxisG = this.rootG.append('g');
-
-    // Add basic event listeners
-    this.visualize = this.visualize.bind(this);
-    this.on('resize.default', this.visualize);
-    this.on('data.default', this.visualize);
-  }
-
-  // You can define a new function for this class.
-  visualize() {
-    if(!this.hasData()) return;
-
-    const data = this.data();
-
-    this.xScale.domain(extent(data, d => d.x))
-      .range([0, this.getInnerWidth()]);
-    this.yScale.domain(extent(data, d => d.y))
-      .range([this.getInnerHeight(), 0]);
-
-    this.xAxisG
-      .attr('transform', `translate(0,${this.getInnerHeight()})`)
-      .call(this.xAxis);
-
-    this.yAxisG.call(this.yAxis);
-
-    const selection = this.rootG.selectAll('circle')
-      .data(data);
-
-    selection.exit().remove();
-
-    const sEnter = selection.enter().append('circle')
-      .attr('cx', d => this.xScale(d.x))
-      .attr('cy', d => this.yScale(d.y))
-      .on('click', (...args) => {
-        this.dispatcher.apply('bubbleClick', this, args);
-      });
-
-    selection.merge(sEnter)
-      .attr('cx', d => this.xScale(d.x))
-      .attr('cy', d => this.yScale(d.y))
-      .attr('r', d => d.r)
-      .style('fill', (d,i) => this.color(i));
-  }
-}
-
-export default SvgBubbleChart;
-```
-
-Then use it
-
-```javascript
-const chart1 = new SvgBubbleChart('#chart1', {
-  margin: { top: 20 },
-  initialWidth: 300,
-  initialHeight: 300,
-})
-  .data(bubbles)
-  // handle bubbleClick event
-  .on('bubbleClick', d => { alert(JSON.stringify(d)); })
-  // demonstrate auto resizing to maintain 16:9 aspect ratio
-  .fit({
-    mode: 'aspectRatio',
-    ratio: 16/9,
-  }, true);
-```
-
 ### CanvasChart
 
 While `SvgChart` creates necessary element for building chart with `<svg>`. This class creates `<canvas>` inside the container. It also handles different screen resolution for you (retina display vs. standard display).
 
-#### A. Scaffold and create something quickly
+### HybridChart
 
-```html
-<div id="chart0"></div>
-```
+Thought about using `<svg>` and `<canvas>` in combination? Here it is. A `HybridChart` creates both `<svg>` and `<canvas>` inside the container.
 
-```javascript
-import { SvgChart } from 'd3kit';
-const chart = new CanvasChart('#chart0', {
-  initialWidth: 720,
-  initialHeight: 500,
-  margin: { top: 30, right: 30, bottom: 30, left: 30 }
-});
-```
+### Build your own chart with `plates`
 
-The output will looks like this.
 
-```html
-<!--chart.container is a D3 selection of this element.-->
-<div id="chart0">
-  <!--chart.canvas is a D3 selection of this element.-->
-  <!--notice that width/height are handled to ensure that it will look nice on retina display-->
-  <canvas width="1440" height="1000" style="width: 720px; height: 500px;"></canvas>
-</div>
-```
-
-So you can draw on the canvas
-
-```javascript
-const ctx = chart.getContext2d();
-ctx.fillRect(10, 10, 10, 10);
-```
-
-#### B. Create a reusable chart
-
-```javascript
-import { CanvasChart, helper } from 'd3kit';
-import { scaleLinear, scaleOrdinal, schemeCategory10 } from 'd3-scale';
-import { extent } from 'd3-array';
-
-class CanvasBubbleChart extends CanvasChart {
-  // Define default options for this chart
-  static getDefaultOptions() {
-    return helper.deepExtend(
-      super.getDefaultOptions(),
-      {
-		  margin: {top: 60, right: 60, bottom: 60, left: 60},
-		  initialWidth: 800,
-		  initialHeight: 460
-      }
-    );
-  }
-
-  /**
-   * Define the names of custom events that can be dispatched from this chart
-   * @return {Array[String]} event names
-   */
-  static getCustomEventNames() {
-    return [];
-  }
-
-  constructor(selector, options) {
-    super(selector, options);
-
-    // add custom variables
-    this.xScale = scaleLinear();
-    this.yScale = scaleLinear();
-    this.color = scaleOrdinal(schemeCategory10);
-
-    // add basic event listeners
-    this.visualize = this.visualize.bind(this);
-    this.on('resize.default', this.visualize);
-    this.on('data.default', this.visualize);
-  }
-
-  // You can define a new function for this class.
-  visualize() {
-    this.clear();
-
-    if(!this.hasData()){
-      return;
-    }
-
-    const data = this.data();
-
-    this.xScale.domain(extent(data, d => d.x))
-      .range([0, this.getInnerWidth()]);
-    this.yScale.domain(extent(data, d => d.y))
-      .range([this.getInnerHeight(), 0]);
-
-    const ctx = this.getContext2d();
-    data.forEach((d,i) => {
-      ctx.fillStyle = this.color(i);
-      ctx.fillRect(
-        this.xScale(d.x) - d.r,
-        this.yScale(d.y) - d.r,
-        d.r * 2,
-        d.r * 2
-      );
-    });
-
-  }
-}
-
-export default CanvasBubbleChart;
-```
 
 ## Other features
 
@@ -401,8 +161,6 @@ Want to learn more? Follow these links.
 * [Getting started guide](docs/Getting-started.md)
 * [API Reference](docs/api/index.md)
 
-(We are still updating them to reflect the latest API, so some pages may be a bit outdated at the moment.)
-
 ## Appendix
 
 A diagram explaining D3's margin convention
@@ -421,7 +179,6 @@ A diagram explaining D3's margin convention
 ## License
 
 © 2015-2017 [Twitter, Inc.](https://twitter.com) MIT License
-
 
 [npm-image]: https://badge.fury.io/js/d3kit.svg
 [npm-url]: https://npmjs.org/package/d3kit

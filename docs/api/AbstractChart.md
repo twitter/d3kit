@@ -2,7 +2,7 @@
 
 # AbstractChart
 
-An AbstractChart does all the basic groundwork for you before creating any chart.
+An AbstractChart does all the basic groundwork for you before creating any chart. (This was revised and improved from the `Skeleton` in d3Kit v1-2.)
 
 ## Constructor
 
