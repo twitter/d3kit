@@ -1,27 +1,36 @@
-body{
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+// Overwrite milligram
+a {
+  color: #55acee;
 }
 
-h1 {
+button {
+  background-color: #55acee;
+  border-color: #55acee;
+}
+
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="text"]:focus,
+input[type="url"]:focus,
+textarea:focus, select:focus {
+  border-color: #55acee;
+  outline: 0px;
+}
+
+header {
   text-align: center;
+  margin-top: 20px;
 }
 
-h1, h2, h3{
-  font-weight: 300;
+.button-bar {
+  margin-bottom: 20px;
 }
 
-h2{
-  color: #777;
-}
-
-a, a:link, a:visited{
-  color: #5d7da7;
-  text-decoration: none;
-}
-
-a:hover{
-  color: #232d5f;
-  text-decoration: underline;
+p {
+  text-align: justify;
 }
 
 footer{
@@ -29,6 +38,5 @@ footer{
   color: #aaa;
   font-size: 12px;
   font-weight: 300;
-  padding: 20px;
-  padding-top: 40px;
+  padding: 40px 20px;
 }

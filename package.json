@@ -71,7 +71,8 @@
     "version": "npm run build && git add -A dist",
     "postversion": "git push ; git push --tags; pkgfiles",
     "prepublish": "pkgfiles",
-    "dev-examples": "rollup -c rollup.config.examples.js -w",
+    "server": "browser-sync start --server 'examples' --browser \"Google Chrome\" --files \"examples/**/*.*\" --port 3003",
+    "dev-examples": "rollup -c rollup.config.examples.js -w & npm run server",
     "build-examples": "rollup -c rollup.config.examples.js",
     "gh-pages": "npm run build-examples && gh-pages -d examples"
   }

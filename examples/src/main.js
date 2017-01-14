@@ -14,7 +14,7 @@ const info = document.querySelector('#info');
 //---------------------------------------------------
 
 const options = {
-  margin: { top: 20 },
+  margin: { top: 20, left: 30, right: 30, bottom: 40 },
   initialWidth: 300,
   initialHeight: 200,
 };
@@ -40,8 +40,9 @@ const charts = [
 //---------------------------------------------------
 document.querySelector('#data-btn')
   .addEventListener('click', () => {
+    const newData = generateBubbles();
     charts.forEach(chart => {
-      chart.data(generateBubbles());
+      chart.data(newData);
     });
   });
 

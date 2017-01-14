@@ -47,9 +47,11 @@ export default class CanvasExample extends CanvasChart {
     const data = this.data();
 
     this.xScale.domain(extent(data, d => d.x))
-      .range([0, this.getInnerWidth()]);
+      .range([0, this.getInnerWidth()])
+      .nice();
     this.yScale.domain(extent(data, d => d.y))
-      .range([this.getInnerHeight(), 0]);
+      .range([this.getInnerHeight(), 0])
+      .nice();
 
     const ctx = this.getContext2d();
     data.forEach((d,i) => {

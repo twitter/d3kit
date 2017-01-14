@@ -21,31 +21,66 @@
   <!-- Fallback to og:title and og:description by default -->
   <meta name="twitter:image" content="https://twitter.github.io/d3kit/images/thumbnail.png">
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+  <link rel="stylesheet" href="vendor/normalize.css">
+  <link rel="stylesheet" href="vendor/milligram.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>
-    d3Kit
-  </h1>
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <header>
+          <h1>
+            d3Kit
+          </h1>
 
-  <iframe src="https://ghbtns.com/github-btn.html?user=twitter&repo=d3kit&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+          <iframe src="https://ghbtns.com/github-btn.html?user=twitter&repo=d3kit&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+        </header>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div class="button-bar">
+          <button id="data-btn">Update data</button>
+          <button id="resize-btn">Resize</button>
+          <button id="fit-btn">Fit</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <h4>SvgChart</h4>
+        <div id="chart"></div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi commodi, eos asperiores vero expedita iste quibusdam ducimus, impedit voluptas, dolores nam cum totam iure accusantium voluptates fuga adipisci libero dicta.
+        </p>
+      </div>
+      <div class="column">
+        <h4>CanvasChart</h4>
+        <div id="chart2"></div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi commodi, eos asperiores vero expedita iste quibusdam ducimus, impedit voluptas, dolores nam cum totam iure accusantium voluptates fuga adipisci libero dicta.
+        </p>
+      </div>
+      <div class="column">
+        <h4>HybridChart</h4>
+        <div id="chart3"></div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi commodi, eos asperiores vero expedita iste quibusdam ducimus, impedit voluptas, dolores nam cum totam iure accusantium voluptates fuga adipisci libero dicta.
+        </p>
+      </div>
+    </div>
+  </div>
 
   <p>
-    <button id="data-btn">Change data</button>
-    <button id="resize-btn">Resize</button>
-    <button id="fit-btn">Fit</button>
     <div id="info"></div>
-    <h2>SvgChart</h2>
-    <div id="chart"></div>
-    <h2>CanvasChart</h2>
-    <div id="chart2"></div>
-    <h2>HybridChart</h2>
-    <div id="chart3"></div>
   </p>
 
   <footer>
-    &copy; 2016. Twitter, Inc. by <a href="http://kristw.yellowpigz.com">Krist Wongsuphasawat</a> / <a href="https://twitter.com/kristw">@kristw</a> &mdash; MIT License
+    &copy; 2015-2017. Twitter, Inc. by <a href="https://twitter.com/trebor">@trebor</a> and <a href="https://twitter.com/kristw">@kristw</a> &mdash; MIT License
   </footer>
 
   <!-- http://tholman.com/github-corners/ -->
