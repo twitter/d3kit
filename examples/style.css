@@ -1,5 +1,8 @@
 body{
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1 {
   text-align: center;
 }
 
@@ -22,6 +25,7 @@ a:hover{
 }
 
 footer{
+  text-align: center;
   color: #aaa;
   font-size: 12px;
   font-weight: 300;

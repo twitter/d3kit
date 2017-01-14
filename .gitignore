@@ -1,5 +1,5 @@
-bower_components
 node_modules
 tmp
 coverage
 npm-debug.log
+examples/dist

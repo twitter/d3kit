@@ -50,7 +50,9 @@ class AbstractChart extends Base {
     if (doNotAppend) return plate;
     plate.getSelection()
       .classed('d3kit-plate', true)
-      .style('position', 'absolute');
+      .style('position', 'absolute')
+      .style('top', 0)
+      .style('left', 0);
     this.chartRoot.append(() => plate.getNode());
     return this;
   }

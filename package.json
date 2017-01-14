@@ -34,6 +34,7 @@
     "babelrc-rollup": "^3.0.0",
     "browser-sync": "~2.14.0",
     "chai": "^3.5.0",
+    "d3": "^4.4.1",
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.12.0",
@@ -55,6 +56,7 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-istanbul": "^1.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-watch": "^3.2.2",
     "slimfit": "^0.4.2",
     "uglifyjs": "^2.4.10"
   },
@@ -69,6 +71,8 @@
     "version": "npm run build && git add -A dist",
     "postversion": "git push ; git push --tags; pkgfiles",
     "prepublish": "pkgfiles",
-    "gh-pages": "npm run build && gh-pages -d dist"
+    "dev-examples": "rollup -c rollup.config.examples.js -w",
+    "build-examples": "rollup -c rollup.config.examples.js",
+    "gh-pages": "npm run build-examples && gh-pages -d examples"
   }
 }
