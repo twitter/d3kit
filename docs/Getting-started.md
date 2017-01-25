@@ -40,7 +40,7 @@ import { SvgChart, CanvasChart } from 'd3kit';
 
 #### Option 3: AMD (requirejs)
 
-```
+```javascript
 require.config({
   paths: {
     d3:    'path/to/d3',
@@ -54,6 +54,6 @@ require(['d3', 'd3Kit'], function(d3, d3Kit) {
 
 #### Option 4: commonjs (browserify)
 
-```
+```javascript
 var d3Kit = require('d3kit');
 ```

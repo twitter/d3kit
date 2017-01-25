@@ -9,6 +9,10 @@
 * module: [CanvasChart](api/CanvasChart.md)
 * module: [HybridChart](api/HybridChart.md)
 * module: [SvgChart](api/SvgChart.md)
+* module: [AbstractPlate](api/AbstractPlate.md)
+* module: [CanvasPlate](api/CanvasPlate.md)
+* module: [DivPlate](api/DivPlate.md)
+* module: [SvgPlate](api/SvgPlate.md)
 * module: [LayerOrganizer](api/LayerOrganizer.md)
 * module: [helper](api/helper.md)
 
