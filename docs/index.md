@@ -1,6 +1,6 @@
-> [Docs](../TableOfContent.md) ▸ **Table of Content**
+> Docs ▸ **Table of Content**
 
-### [Getting started](Getting started.md)
+### [Getting started](Getting-started.md)
 
 ### [API Reference](api/index.md)
 
