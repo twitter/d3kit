@@ -99,6 +99,48 @@ const chart = [new HybridChart(container[, options])](HybridChart.md#constructor
 * *inherits from* `CanvasChart`
 * *inherits from* `SvgChart`
 
+## AbstractPlate
+
+##### Constructor
+
+const plate = [new AbstractPlate(node[, options])](AbstractPlate.md#constructor)
+
+##### Functions
+
+* [plate.getNode()](CanvasPlate.md#getNode) - returns a DOM node represented by this plate
+* [plate.getSelection()](CanvasPlate.md#getSelection) - returns a D3 selection of the DOM node represented by this plate
+
+## CanvasPlate
+
+##### Constructor
+
+const plate = [new CanvasPlate(node[, options])](CanvasPlate.md#constructor)
+
+##### Functions
+
+* *inherits from* `AbstractPlate`
+* [plate.clear()](CanvasPlate.md#clear) - clear canvas.
+* [plate.getContext2d()](CanvasPlate.md#getContext2d) - return a context for drawing on canvas.
+
+## DivPlate
+
+##### Constructor
+
+const plate = [new DivPlate(node[, options])](DivPlate.md#constructor)
+
+##### Functions
+
+* *inherits from* `AbstractPlate`
+
+## SvgPlate
+
+##### Constructor
+
+const plate = [new SvgPlate(node[, options])](SvgPlate.md#constructor)
+
+##### Functions
+
+* *inherits from* `AbstractPlate`
 
 <!--
 ## d3Kit.Chartlet
