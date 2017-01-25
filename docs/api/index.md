@@ -4,7 +4,7 @@
 
 ##### Constructor
 
-* const chart = [new AbstractChart(container[, options])](AbstractChart.md#constructor)
+const chart = [new AbstractChart(container[, options])](AbstractChart.md#constructor)
 
 ##### Fields
 
@@ -43,36 +43,60 @@
 * [chart.width([width])](AbstractChart.md#width) - get/set the width.
 * [chart.on('resize', listener)](AbstractChart.md#event_resize) - handle when the dimension is changed.
 
+##### Plate functions
+
+
+
 ##### Other functions
 
 * [chart.destroy()](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore.
 
-## SvgChart *extends* AbstractChart
+## SvgChart 
 
 ##### Constructor
 
-* const chart = [new SvgChart(container[, options])](SvgChart.md#constructor)
+const chart = [new SvgChart(container[, options])](SvgChart.md#constructor)
 
 ##### Fields
 
+* *inherits from* `AbstractChart`
 * [chart.layers](SvgChart.md#layers) - return the LayerOrganizer.
 * [chart.rootG](SvgChart.md#rootG) - D3 selection of the root `<g>` element.
 * [chart.svg](SvgChart.md#svg) - D3 selection of the `<svg>` element.
 
-## CanvasChart *extends* AbstractChart
+## CanvasChart
 
 ##### Constructor
 
-* const chart = [new CanvasChart(container[, options])](CanvasChart.md#constructor)
+const chart = [new CanvasChart(container[, options])](CanvasChart.md#constructor)
 
 ##### Fields
 
+* *inherits from* `AbstractChart`
 * [chart.canvas](CanvasChart.md#canvas) - D3 selection of the `<canvas>` element.
 
 ##### Functions
 
+* *inherits from* `AbstractChart`
 * [chart.clear()](CanvasChart.md#clear) - clear canvas.
 * [chart.getContext2d()](CanvasChart.md#getContext2d) - return a context for drawing on canvas.
+
+## HybridChart
+
+##### Constructor
+
+const chart = [new HybridChart(container[, options])](HybridChart.md#constructor)
+
+##### Fields
+
+* *inherits from* `CanvasChart`
+* *inherits from* `SvgChart`
+
+##### Functions
+
+* *inherits from* `CanvasChart`
+* *inherits from* `SvgChart`
+
 
 <!--
 ## d3Kit.Chartlet
@@ -113,7 +137,7 @@
 
 ##### Constructor
 
-* const layers = [new LayerOrganizer(container[, defaultTag])](LayerOrganizer.md#constructor)
+const layers = [new LayerOrganizer(container[, defaultTag])](LayerOrganizer.md#constructor)
 
 ##### Functions
 

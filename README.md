@@ -110,7 +110,57 @@ Thought about using `<svg>` and `<canvas>` in combination? Here it is. A `Hybrid
 
 ### Build your own chart with `plates`
 
+Under the hood, d3Kit use its "plating" system for dealing with different type of components (`<svg>`, `<canvas>`, etc.). The current implementation includes three types of plates: `SvgPlate`, `CanvasPlate` and `DivPlate`.
 
+Think of `AbstractChart` as a container. **Any resizing done to the chart will be applied to the plates in it.** 
+
+* An `SvgChart` is an `AbstractChart` that has an `SvgPlate` in it. 
+* A `CanvasChart` is an `AbstractChart` that has a `CanvasPlate` in it. 
+* A `HybridChart`, as you may guess, is an `AbstractChart` that has two plates (`CanvasPlate` and `SvgPlate`) in it.
+
+Now if you want to create a chart with multiple canvases and svg, just create a new subclass.
+
+```javascript
+import { AbstractChart, CanvasPlate, SvgPlate } from 'd3kit';
+
+class CustomChart extends AbstractChart {
+  constructor(selector, ...options) {
+    super(selector, ...options);
+
+    this.addPlate('canvas1', new CanvasPlate());
+    // now access D3 selection of this <canvas> element 
+    // via this.plates.canvas1.getSelection()
+
+    this.addPlate('canvas2', new CanvasPlate());
+    // now access D3 selection of this <canvas> element 
+    // via this.plates.canvas2.getSelection()
+
+    this.addPlate('svg', new SvgPlate());
+    // now access D3 selection of this <svg> element 
+    // via this.plates.svg.getSelection()
+
+    this.updateDimensionNow();
+  }
+}
+```
+
+Once you call
+
+```javascript
+new CustomChart('#my-chart');
+```
+
+This will be created.
+
+```html
+<div id="my-chart">
+  <div class="d3kit-chart-root">
+  	 <canvas />
+  	 <canvas />
+  	 <svg></svg>
+  </div>
+</div>
+```
 
 ## Other features
 
@@ -160,6 +210,7 @@ Want to learn more? Follow these links.
 
 * [Getting started guide](docs/Getting-started.md)
 * [API Reference](docs/api/index.md)
+* [All Documentation](docs/TableOfContent.md)
 
 ## Appendix
 
@@ -173,8 +224,8 @@ A diagram explaining D3's margin convention
 
 ## Authors
 
-* Robert Harris [@trebor](https://twitter.com/trebor)
-* Krist Wongsuphasawat [@kristw](https://twitter.com/kristw)
+* Robert Harris / [@trebor](https://twitter.com/trebor)
+* Krist Wongsuphasawat / [@kristw](https://twitter.com/kristw)
 
 ## License
 

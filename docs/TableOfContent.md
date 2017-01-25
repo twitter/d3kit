@@ -7,6 +7,7 @@
 * [Brief version of everything](api/index.md)
 * module: [AbstractChart](api/AbstractChart.md)
 * module: [CanvasChart](api/CanvasChart.md)
+* module: [HybridChart](api/HybridChart.md)
 * module: [SvgChart](api/SvgChart.md)
 * module: [LayerOrganizer](api/LayerOrganizer.md)
 * module: [helper](api/helper.md)

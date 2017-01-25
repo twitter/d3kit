@@ -2,6 +2,10 @@
 
 ## v3.x.x
 
+### 3.2.0
+- Add `HybridChart`
+- Implement plating systems with `SvgPlate`, `CanvasPlate` and `DivPlate`.
+
 ### 3.1.3
 - Fix issue with CanvasChart when setting style `width` and `height` by adding `'px'`.
 
