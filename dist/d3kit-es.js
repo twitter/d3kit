@@ -1248,7 +1248,7 @@ var AbstractChart = function (_Base) {
       this._state.plates.push(plate);
       this.plates[name] = plate;
       if (doNotAppend) return plate;
-      plate.getSelection().classed('d3kit-plate', true).style('position', 'absolute');
+      plate.getSelection().classed('d3kit-plate', true).style('position', 'absolute').style('top', 0).style('left', 0);
       this.chartRoot.append(function () {
         return plate.getNode();
       });
