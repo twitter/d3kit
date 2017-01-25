@@ -40,3 +40,7 @@ footer{
   font-weight: 300;
   padding: 40px 20px;
 }
+
+.column {
+  overflow: hidden;
+}
