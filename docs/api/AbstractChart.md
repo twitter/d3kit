@@ -61,6 +61,10 @@ Remove event listener.
 
 Setup the dispatcher to include the specified custom event names.
 
+<a name="dispatchAs" href="AbstractChart.md#dispatchAs">#</a> chart.**dispatchAs**(*name:String*)
+
+Returns an event handler that will capture all arguments and dispatch as event `name`.
+
 #### Events
 
 By default, the chart can dispatch these events out-of-the-box.
@@ -220,6 +224,16 @@ console.log(chart.container.clientWidth); // 800
 <a name="width" href="AbstractChart.md#width">#</a> chart.**width**([*value:Number*])
 
 Get/Set the total width for this chart. Calling ```chart.width(value)``` will make the chart dispatch event *resize*.
+
+### Plate functions
+
+<a name="addPlate" href="AbstractChart.md#addPlate">#</a> chart.**addPlate**(*name:String*, *plate:AbstractPlate*[, *doNotAppend:Boolean*])
+
+Add a plate to this chart with the given name. If `doNotAppend` is true, will not append the plate node to this chart node (only keep in memory).
+
+<a name="removePlate" href="AbstractChart.md#removePlate">#</a> chart.**removePlate**(*name:String*)
+
+Remove a plate with the specified name.
 
 ### Other functions
 

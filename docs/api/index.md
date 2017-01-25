@@ -18,6 +18,7 @@ const chart = [new AbstractChart(container[, options])](AbstractChart.md#constru
 * [chart.on(eventName, listener)](AbstractChart.md#on) - add an event listener to an event from this chart.
 * [chart.off(eventName, listener)](AbstractChart.md#off) - remove an event listener from this chart.
 * [chart.setupDispatcher(customEventNames)](AbstractChart.md#setupDispatcher) - setup the dispatcher to include the specified custom event names.
+* [chart.dispatchAs(name)](AbstractChart.md#dispatchAs) - Returns an event handler that will capture all arguments and dispatch as event `name`.
 
 ##### Data functions
 
@@ -45,13 +46,14 @@ const chart = [new AbstractChart(container[, options])](AbstractChart.md#constru
 
 ##### Plate functions
 
-
+* [chart.addPlate(name, plate[, doNotAppend])](AbstractChart.md#addPlate) - Add a plate to this chart with the given name. If `doNotAppend` is true, will not append the plate node to this chart node (only keep in memory).
+* [chart.removePlate(name)](AbstractChart.md#removePlate) - Remove a plate with the specified name.
 
 ##### Other functions
 
 * [chart.destroy()](AbstractChart.md#destroy) - kill all event listeners and watchers. Useful for cleaning up when the chart is not needed anymore.
 
-## SvgChart 
+## SvgChart
 
 ##### Constructor
 

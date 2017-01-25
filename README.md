@@ -110,12 +110,14 @@ Thought about using `<svg>` and `<canvas>` in combination? Here it is. A `Hybrid
 
 ### Build your own chart with `plates`
 
-Under the hood, d3Kit use its "plating" system for dealing with different type of components (`<svg>`, `<canvas>`, etc.). The current implementation includes three types of plates: `SvgPlate`, `CanvasPlate` and `DivPlate`.
+If `SvgChart`, `CanvasChart` or `HybridChart` does not fit your need yet, you can create your own.
 
-Think of `AbstractChart` as a container. **Any resizing done to the chart will be applied to the plates in it.** 
+Under the hood, d3Kit use its "plating" system to wrap different type of components (`<svg>`, `<canvas>`, etc.). The current implementation includes three types of plates: `SvgPlate`, `CanvasPlate` and `DivPlate`.
 
-* An `SvgChart` is an `AbstractChart` that has an `SvgPlate` in it. 
-* A `CanvasChart` is an `AbstractChart` that has a `CanvasPlate` in it. 
+Think of `AbstractChart` as a container. **Any resizing done to the chart will be applied to the plates in it by d3Kit.** This abstraction helps you think of a chart as one piece and not to worry about how to keep track of each children size. Then you can just focus on what to drawn on svg or canvas based on the current dimension of the chart.
+
+* An `SvgChart` is an `AbstractChart` that has an `SvgPlate` in it.
+* A `CanvasChart` is an `AbstractChart` that has a `CanvasPlate` in it.
 * A `HybridChart`, as you may guess, is an `AbstractChart` that has two plates (`CanvasPlate` and `SvgPlate`) in it.
 
 Now if you want to create a chart with multiple canvases and svg, just create a new subclass.
@@ -128,15 +130,15 @@ class CustomChart extends AbstractChart {
     super(selector, ...options);
 
     this.addPlate('canvas1', new CanvasPlate());
-    // now access D3 selection of this <canvas> element 
+    // now access D3 selection of this <canvas> element
     // via this.plates.canvas1.getSelection()
 
     this.addPlate('canvas2', new CanvasPlate());
-    // now access D3 selection of this <canvas> element 
+    // now access D3 selection of this <canvas> element
     // via this.plates.canvas2.getSelection()
 
     this.addPlate('svg', new SvgPlate());
-    // now access D3 selection of this <svg> element 
+    // now access D3 selection of this <svg> element
     // via this.plates.svg.getSelection()
 
     this.updateDimensionNow();

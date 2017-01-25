@@ -2,7 +2,7 @@
 
 # CanvasChart
 
-This class extends from [AbstractChart](AbstractChart.md) and therefore inherits all fields and functions. In addition, this class also creates ```<canvas>``` in side the container.
+This class extends from [AbstractChart](AbstractChart.md) and therefore inherits all fields and functions. In addition, this class also creates `<canvas>` in side the container.
 
 ## Examples
 
