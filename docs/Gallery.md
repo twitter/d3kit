@@ -1,4 +1,4 @@
-> [Docs](../TableOfContent.md) ▸ **Gallery**
+> [Docs](./index.md) ▸ **Gallery**
 
 ** TODO: This page has not been updated for v3 yet. **
 

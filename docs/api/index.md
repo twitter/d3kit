@@ -1,4 +1,4 @@
-> [Docs](../../TableOfContent.md) ▸ **API Reference**
+> [Docs](../index.md) ▸ **API Reference**
 
 ## AbstractChart
 

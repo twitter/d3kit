@@ -1,4 +1,4 @@
-> [Docs](../TableOfContent.md) ▸ **Getting started**
+> [Docs](./index.md) ▸ **Getting started**
 
 ### Download the library
 

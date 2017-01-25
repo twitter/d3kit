@@ -1,4 +1,4 @@
-> [Docs](../TableOfContent.md) ▸ Development ▸ **Versioning**
+> [Docs](./index.md) ▸ Development ▸ **Versioning**
 
 ## Versioning
 

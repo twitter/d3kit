@@ -1,4 +1,4 @@
-> [Docs](../TableOfContent.md) ▸ Development ▸ **Developing d3Kit**
+> [Docs](./index.md) ▸ Development ▸ **Developing d3Kit**
 
 ### One-time setup
 
