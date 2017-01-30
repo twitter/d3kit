@@ -1,0 +1,46 @@
+// Overwrite milligram
+a {
+  color: #55acee;
+}
+
+button {
+  background-color: #55acee;
+  border-color: #55acee;
+}
+
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="text"]:focus,
+input[type="url"]:focus,
+textarea:focus, select:focus {
+  border-color: #55acee;
+  outline: 0px;
+}
+
+header {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.button-bar {
+  margin-bottom: 20px;
+}
+
+p {
+  text-align: justify;
+}
+
+footer{
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  font-weight: 300;
+  padding: 40px 20px;
+}
+
+.column {
+  overflow: hidden;
+}
