@@ -1,6 +1,7 @@
 # d3Kit
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+[![CDNJS version](https://img.shields.io/cdnjs/v/d3kit.svg)](https://cdnjs.com/libraries/d3kit)
 
 **d3Kit** provides thin scaffold for creating *reusable* and *responsive* charts with [D3](https://github.com/mbostock/d3).
 It aims to relieve you from the same groundwork tasks you found yourself doing again and again.
