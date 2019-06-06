@@ -1740,7 +1740,7 @@ var SvgPlate = function (_AbstractPlate) {
       options[_key] = arguments[_key];
     }
 
-    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgPlate)).call.apply(_Object$getPrototypeO, [this, document.createElementNS('http://www.w3.org/2000/svg', 'svg')].concat(options)));
+    var _this = possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SvgPlate)).call.apply(_Object$getPrototypeO, [this, document.createElementNS('https://www.w3.org/2000/svg', 'svg')].concat(options)));
 
     _this.rootG = _this.selection.append('g');
     _this.layers = new LayerOrganizer(_this.rootG);

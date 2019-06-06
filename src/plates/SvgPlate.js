@@ -3,7 +3,7 @@ import LayerOrganizer from '../layerOrganizer.js';
 
 class SvgPlate extends AbstractPlate {
   constructor(...options) {
-    super(document.createElementNS('http://www.w3.org/2000/svg', 'svg'), ...options);
+    super(document.createElementNS('https://www.w3.org/2000/svg', 'svg'), ...options);
     this.rootG = this.selection.append('g');
     this.layers = new LayerOrganizer(this.rootG);
   }
