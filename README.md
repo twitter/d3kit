@@ -1,5 +1,7 @@
 # d3Kit
 
+[![status: retired](https://opensource.twitter.dev/status/retired.svg)](https://opensource.twitter.dev/status/#retired)
+
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 [![CDNJS version](https://img.shields.io/cdnjs/v/d3kit.svg)](https://cdnjs.com/libraries/d3kit)
 
